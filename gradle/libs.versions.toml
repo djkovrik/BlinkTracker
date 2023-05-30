@@ -14,7 +14,7 @@ mvi-kotlin = "3.2.1"
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
-datastore = { group = "androidx.activity", name = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
