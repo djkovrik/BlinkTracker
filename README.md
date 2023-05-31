@@ -2,9 +2,9 @@
 Tracks how many times you blink per minute and notifies you if it's below defined threshold.
 
 - [x] Project setup
-- [ ] Permissions
-- [ ] Camera preview and vision
-- [ ] Blinks detector
+- [x] Permissions
+- [x] Camera preview and vision
+- [x] Blinks detector
 - [ ] Stores, controllers and logic
 - [ ] Material Theme
 - [ ] UI: counters, buttons
