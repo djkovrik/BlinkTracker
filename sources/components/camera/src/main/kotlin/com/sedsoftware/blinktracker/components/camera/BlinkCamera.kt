@@ -1,12 +1,12 @@
 package com.sedsoftware.blinktracker.components.camera
 
-import com.arkivanov.decompose.value.Value
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
 import com.sedsoftware.blinktracker.components.camera.model.PermissionState
+import kotlinx.coroutines.flow.Flow
 
 interface BlinkCamera {
 
-    val models: Value<Model>
+    val models: Flow<Model>
 
     fun onPermissionGranted()
     fun onPermissionDenied()

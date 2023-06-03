@@ -17,7 +17,7 @@ internal class BlinkCameraStoreProvider(
     private val storeFactory: StoreFactory,
 ) {
 
-    fun create(): BlinkCameraStore =
+    fun provide(): BlinkCameraStore =
         object : BlinkCameraStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
             name = "BlinkCameraStore",
             initialState = State(),

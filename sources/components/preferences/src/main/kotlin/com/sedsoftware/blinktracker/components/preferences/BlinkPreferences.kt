@@ -1,10 +1,10 @@
 package com.sedsoftware.blinktracker.components.preferences
 
-import com.arkivanov.decompose.value.Value
+import kotlinx.coroutines.flow.Flow
 
 interface BlinkPreferences {
 
-    val models: Value<Model>
+    val models: Flow<Model>
 
     fun onMinimalThresholdChanged(value: Int)
     fun onNotifySoundChanged(value: Boolean)

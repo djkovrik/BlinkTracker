@@ -1,10 +1,10 @@
 package com.sedsoftware.blinktracker.components.tracker
 
-import com.arkivanov.decompose.value.Value
+import kotlinx.coroutines.flow.Flow
 
 interface BlinkTracker {
 
-    val models: Value<Model>
+    val models: Flow<Model>
 
     fun onTrackingStarted()
     fun onTrackingStopped()
