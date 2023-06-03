@@ -10,8 +10,8 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
     sealed class Intent {
         object TrackingStarted : Intent()
         object TrackingStopped : Intent()
-        data class EyesProbabilityChanged(val left: Float, val right: Float) : Intent()
         data class FaceDetectedStateChanged(val detected: Boolean) : Intent()
+        data class EyesProbabilityChanged(val left: Float, val right: Float) : Intent()
     }
 
     data class State(
@@ -21,6 +21,9 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
         val blinksTotal: Int = 0,
         val minimized: Boolean = false,
         val faceDetected: Boolean = false,
+        val threshold: Int = Int.MAX_VALUE,
+        val notifyWithSound: Boolean = false,
+        val notifyWithVibration: Boolean = false,
     )
 
     sealed class Label {

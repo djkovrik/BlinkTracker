@@ -10,11 +10,9 @@ import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore.Intent
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore.Label
-import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore.Label.ErrorCaught
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore.State
 import com.sedsoftware.blinktracker.settings.Settings
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 internal class BlinkPreferencesStoreProvider(
@@ -27,55 +25,35 @@ internal class BlinkPreferencesStoreProvider(
             name = "BlinkPreferencesStore",
             initialState = State(),
             bootstrapper = coroutineBootstrapper {
-                launch {
-                    dispatch(Action.ObserveThresholdOption)
-                    dispatch(Action.ObserveNotifySoundOption)
-                    dispatch(Action.ObserveNotifyVibrationOption)
-                }
+
             },
             executorFactory = coroutineExecutorFactory {
-                onAction<Action.ObserveThresholdOption> {
-                    launch(getExceptionHandler(this)) {
-                        settings.getPerMinuteThreshold()
-                            .onEach { Msg.ThresholdOptionChanged(it) }
-                    }
-                }
-                onAction<Action.ObserveNotifySoundOption> {
-                    launch(getExceptionHandler(this)) {
-                        settings.getNotifySoundEnabled()
-                            .onEach { Msg.SoundOptionChanged(it) }
-                    }
-                }
-                onAction<Action.ObserveNotifyVibrationOption> {
-                    launch(getExceptionHandler(this)) {
-                        settings.getNotifyVibrationEnabled()
-                            .onEach { Msg.VibrationOptionChanged(it) }
-                    }
-                }
-
                 onIntent<Intent.MinimalThresholdChanged> {
                     launch(getExceptionHandler(this)) {
                         settings.setPerMinuteThreshold(it.value)
+                        dispatch(Msg.ThresholdOptionChanged(it.value))
                     }
                 }
 
                 onIntent<Intent.NotifySoundChanged> {
                     launch(getExceptionHandler(this)) {
                         settings.setNotifySoundEnabled(it.value)
+                        dispatch(Msg.SoundOptionChanged(it.value))
                     }
                 }
 
                 onIntent<Intent.NotifyVibrationChanged> {
                     launch(getExceptionHandler(this)) {
                         settings.setNotifyVibrationEnabled(it.value)
+                        dispatch(Msg.VibrationOptionChanged(it.value))
                     }
                 }
 
-                onIntent<Intent.SettingsRequested> {
+                onIntent<Intent.SettingsPanelRequested> {
                     dispatch(Msg.SettingsVisibilityChanged(true))
                 }
 
-                onIntent<Intent.SettingsClosed> {
+                onIntent<Intent.SettingsPanelClosed> {
                     dispatch(Msg.SettingsVisibilityChanged(false))
                 }
             },
@@ -100,11 +78,7 @@ internal class BlinkPreferencesStoreProvider(
             }
         ) {}
 
-    private sealed interface Action {
-        object ObserveThresholdOption : Action
-        object ObserveNotifySoundOption : Action
-        object ObserveNotifyVibrationOption : Action
-    }
+    private interface Action
 
     private sealed interface Msg {
         data class ThresholdOptionChanged(val newValue: Int) : Msg
@@ -115,6 +89,6 @@ internal class BlinkPreferencesStoreProvider(
 
     private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =
         CoroutineExceptionHandler { _, throwable ->
-            scope.publish(ErrorCaught(throwable))
+            scope.publish(Label.ErrorCaught(throwable))
         }
 }

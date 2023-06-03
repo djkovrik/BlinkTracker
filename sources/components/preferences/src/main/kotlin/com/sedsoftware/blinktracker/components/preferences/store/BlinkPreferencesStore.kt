@@ -11,8 +11,8 @@ internal interface BlinkPreferencesStore : Store<Intent, State, Label> {
         data class MinimalThresholdChanged(val value: Int) : Intent()
         data class NotifySoundChanged(val value: Boolean) : Intent()
         data class NotifyVibrationChanged(val value: Boolean) : Intent()
-        object SettingsRequested : Intent()
-        object SettingsClosed : Intent()
+        object SettingsPanelRequested : Intent()
+        object SettingsPanelClosed : Intent()
     }
 
     data class State(
