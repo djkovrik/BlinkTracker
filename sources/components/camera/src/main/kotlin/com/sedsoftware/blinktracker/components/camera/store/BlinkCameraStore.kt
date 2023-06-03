@@ -21,7 +21,5 @@ internal interface BlinkCameraStore : Store<Intent, State, Label> {
         val lensFacing: CameraLens = CameraLens.NOT_AVAILABLE,
     )
 
-    sealed class Label {
-        data class ErrorCaught(val throwable: Throwable) : Label()
-    }
+    class Label
 }

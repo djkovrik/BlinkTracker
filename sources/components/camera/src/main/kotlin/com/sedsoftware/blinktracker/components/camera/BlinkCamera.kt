@@ -17,8 +17,4 @@ interface BlinkCamera {
         val currentPermissionState: PermissionState,
         val selectedLens: CameraLens,
     )
-
-    sealed class Output {
-        data class ErrorCaught(val throwable: Throwable) : Output()
-    }
 }
