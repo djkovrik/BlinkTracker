@@ -9,6 +9,8 @@ interface BlinkPreferences {
     fun onMinimalThresholdChanged(value: Int)
     fun onNotifySoundChanged(value: Boolean)
     fun onNotifyVibrationChanged(value: Boolean)
+    fun requestPreferencesPanel()
+    fun closePreferencesPanel()
 
     data class Model(
         val settingsPanelVisible: Boolean,

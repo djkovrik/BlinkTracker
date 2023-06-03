@@ -21,6 +21,12 @@ android {
 }
 
 dependencies {
+    implementation(project(":sources:settings"))
+    implementation(project(":sources:components:camera"))
+    implementation(project(":sources:components:preferences"))
+    implementation(project(":sources:components:tracker"))
+
+
     implementation(libs.ark.mvikotlin.core)
     implementation(libs.ark.mvikotlin.main)
     implementation(libs.ark.mvikotlin.extensions.coroutines)

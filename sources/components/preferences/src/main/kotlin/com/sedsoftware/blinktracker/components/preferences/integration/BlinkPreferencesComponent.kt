@@ -52,4 +52,12 @@ class BlinkPreferencesComponent(
     override fun onNotifyVibrationChanged(value: Boolean) {
         store.accept(BlinkPreferencesStore.Intent.NotifyVibrationChanged(value))
     }
+
+    override fun requestPreferencesPanel() {
+        store.accept(BlinkPreferencesStore.Intent.SettingsPanelRequested)
+    }
+
+    override fun closePreferencesPanel() {
+        store.accept(BlinkPreferencesStore.Intent.SettingsPanelClosed)
+    }
 }

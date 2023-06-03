@@ -23,7 +23,7 @@ internal class BlinkTrackerStoreProvider(
     private val settings: Settings,
 ) {
 
-    fun create(): BlinkTrackerStore =
+    fun provide(): BlinkTrackerStore =
         object : BlinkTrackerStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
             name = "BlinkTrackerStore",
             initialState = State(),

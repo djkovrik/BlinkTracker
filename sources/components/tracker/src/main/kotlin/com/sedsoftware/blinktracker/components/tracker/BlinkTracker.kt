@@ -25,6 +25,8 @@ interface BlinkTracker {
     sealed class Output {
         object PreferencesPanelRequested : Output()
         object PreferencesPanelClosed : Output()
+        object SoundNotificationTriggered : Output()
+        object VibroNotificationTriggered : Output()
         data class ErrorCaught(val throwable: Throwable) : Output()
     }
 }
