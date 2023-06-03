@@ -20,7 +20,7 @@ internal class BlinkPreferencesStoreProvider(
     private val settings: Settings,
 ) {
 
-    fun create(): BlinkPreferencesStore =
+    fun provide(): BlinkPreferencesStore =
         object : BlinkPreferencesStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
             name = "BlinkPreferencesStore",
             initialState = State(),
