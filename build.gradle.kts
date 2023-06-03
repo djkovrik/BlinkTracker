@@ -4,16 +4,17 @@ plugins {
     alias(libs.plugins.com.android.application) apply false
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
     id("io.gitlab.arturbosch.detekt") version "1.23.0"
+    alias(libs.plugins.com.android.library) apply false
 }
 true // Needed to make the Suppress annotation work for the plugins block
 
 detekt {
     buildUponDefaultConfig = true
     allRules = false
-    source = files("$projectDir/app/")
-    config = files("$projectDir/detekt/base-config.yml")
-    baseline = file("$projectDir/detekt/baseline.xml")
     parallel = true
+    baseline = file("$projectDir/detekt/baseline.xml")
+    source.setFrom(files("$projectDir/app/", "$projectDir/sources/"))
+    config.setFrom(file("$projectDir/detekt/base-config.yml"))
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {

@@ -1,6 +1,7 @@
 [versions]
 agp = "8.1.0-beta03"
 org-jetbrains-kotlin-android = "1.8.10"
+org-jetbrains-kotlin-coroutines = "1.7.1"
 compose-bom = "2023.05.01"
 core-ktx = "1.10.1"
 lifecycle-runtime-ktx = "2.6.1"
@@ -11,9 +12,15 @@ datastore = "1.0.0"
 decompose = "2.0.0-beta-01"
 essenty = "1.1.0"
 mvi-kotlin = "3.2.1"
+junit = "4.13.2"
+androidx-test-ext-junit = "1.1.5"
+espresso-core = "3.5.1"
+appcompat = "1.6.1"
+material = "1.9.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+org-jetbrains-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "org-jetbrains-kotlin-coroutines" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
@@ -33,10 +40,16 @@ ark-mvikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:mvikot
 ark-decompose-core = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 ark-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetpack", version.ref = "decompose" }
 ark-essenty = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
+com-android-library = { id = "com.android.library", version.ref = "agp" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
 
 [bundles]
