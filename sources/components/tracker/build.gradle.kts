@@ -21,6 +21,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":sources:settings"))
+
     implementation(libs.ark.mvikotlin.core)
     implementation(libs.ark.mvikotlin.main)
     implementation(libs.ark.mvikotlin.extensions.coroutines)

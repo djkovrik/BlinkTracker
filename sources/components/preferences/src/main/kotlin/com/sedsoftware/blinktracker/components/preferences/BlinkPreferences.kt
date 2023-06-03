@@ -16,4 +16,8 @@ interface BlinkPreferences {
         val notifySoundChecked: Boolean,
         val notifyVibrationChecked: Boolean,
     )
+
+    sealed class Output {
+        data class ErrorCaught(val throwable: Throwable) : Output()
+    }
 }

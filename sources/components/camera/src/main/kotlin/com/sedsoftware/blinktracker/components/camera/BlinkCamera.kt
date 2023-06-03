@@ -19,7 +19,6 @@ interface BlinkCamera {
     )
 
     sealed class Output {
-        object PreferencesPanelRequested : Output()
-        object PreferencesPanelClosed : Output()
+        data class ErrorCaught(val throwable: Throwable) : Output()
     }
 }
