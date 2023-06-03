@@ -26,7 +26,7 @@ dependencies {
     implementation(project(":sources:components:preferences"))
     implementation(project(":sources:components:tracker"))
 
-
+    implementation(libs.org.jetbrains.coroutines)
     implementation(libs.ark.mvikotlin.core)
     implementation(libs.ark.mvikotlin.main)
     implementation(libs.ark.mvikotlin.extensions.coroutines)
