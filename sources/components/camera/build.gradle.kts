@@ -21,6 +21,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.org.jetbrains.coroutines)
     implementation(libs.ark.mvikotlin.core)
     implementation(libs.ark.mvikotlin.main)
     implementation(libs.ark.mvikotlin.extensions.coroutines)
