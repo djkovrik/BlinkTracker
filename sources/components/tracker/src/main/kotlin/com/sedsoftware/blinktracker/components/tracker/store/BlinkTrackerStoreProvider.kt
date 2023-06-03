@@ -37,7 +37,7 @@ internal class BlinkTrackerStoreProvider(
                         .asSequence()
                         .asFlow()
                         .onEach {
-                            delay(1_000)
+                            delay(TIMER_DELAY)
                             dispatch(Action.OnTick)
                         }
                 }
@@ -136,4 +136,8 @@ internal class BlinkTrackerStoreProvider(
         CoroutineExceptionHandler { _, throwable ->
             scope.publish(Label.ErrorCaught(throwable))
         }
+
+    private companion object {
+        const val TIMER_DELAY = 1000L
+    }
 }
