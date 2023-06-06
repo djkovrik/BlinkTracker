@@ -35,7 +35,10 @@ internal class BlinkCameraStoreProvider(
                     }
 
                     is Msg.LensSelected -> {
-                        copy(lensFacing = msg.newLens)
+                        copy(
+                            lensFacing = msg.newLens,
+                            cameraAvailable = msg.newLens != CameraLens.NOT_AVAILABLE,
+                        )
                     }
                 }
             }

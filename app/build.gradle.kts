@@ -12,8 +12,8 @@ android {
         applicationId = "com.sedsoftware.blinktracker"
         minSdk = 24
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 1000
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -51,6 +51,12 @@ android {
 }
 
 dependencies {
+    implementation(project(":sources:root"))
+    implementation(project(":sources:settings"))
+    implementation(project(":sources:components:camera"))
+    implementation(project(":sources:components:preferences"))
+    implementation(project(":sources:components:tracker"))
+
     implementation(platform(libs.compose.bom))
 
     implementation(libs.ark.mvikotlin.core)
@@ -72,6 +78,7 @@ dependencies {
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
     implementation(libs.face.detection)
+    implementation(libs.timber)
 
     debugImplementation(libs.ui.tooling)
 }

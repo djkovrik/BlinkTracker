@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 interface BlinkTracker {
 
     val models: Flow<Model>
+    val initial: Model
 
     fun onTrackingStarted()
     fun onTrackingStopped()

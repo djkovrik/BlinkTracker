@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 interface BlinkPreferences {
 
     val models: Flow<Model>
+    val initial: Model
 
     fun onMinimalThresholdChanged(value: Int)
     fun onNotifySoundChanged(value: Boolean)

@@ -41,6 +41,8 @@ class BlinkPreferencesComponent(
 
     override val models: Flow<Model> = store.states.map { stateToModel(it) }
 
+    override val initial: Model = stateToModel(BlinkPreferencesStore.State())
+
     override fun onMinimalThresholdChanged(value: Int) {
         store.accept(BlinkPreferencesStore.Intent.MinimalThresholdChanged(value))
     }

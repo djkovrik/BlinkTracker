@@ -49,6 +49,8 @@ class BlinkTrackerComponent(
 
     override val models: Flow<Model> = store.states.map { stateToModel(it) }
 
+    override val initial: Model = stateToModel(BlinkTrackerStore.State())
+
     override fun onTrackingStarted() {
         store.accept(BlinkTrackerStore.Intent.TrackingStarted)
     }
