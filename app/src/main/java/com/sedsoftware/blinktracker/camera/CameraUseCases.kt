@@ -15,6 +15,7 @@ import com.sedsoftware.blinktracker.camera.core.VisionImageProcessor
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+@Suppress("MagicNumber")
 suspend fun Context.bindCameraUseCases(
     previewView: PreviewView,
     cameraSelector: CameraSelector,
@@ -47,10 +48,8 @@ suspend fun Context.bindCameraUseCases(
         cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, previewUseCase)
         cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, analysisUseCase)
     } catch (exception: IllegalStateException) {
-        Timber.e("CameraX unable to bind preview use case")
+        Timber.e("CameraX unable to bind preview use case", exception)
     } catch (exception: IllegalArgumentException) {
-        Timber.e("CameraX unable to resolve camera")
-    } catch (exception: Exception) {
-        Timber.e("CameraX unable to bind use cases")
+        Timber.e("CameraX unable to resolve camera", exception)
     }
 }

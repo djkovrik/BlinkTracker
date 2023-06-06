@@ -24,9 +24,6 @@ suspend fun Context.getCameraProvider(): ProcessCameraProvider = suspendCoroutin
         } catch (exception: CameraUnavailableException) {
             Timber.e("Failed to open camera: ${exception.message}")
             continuation.resumeWithException(exception)
-        } catch (exception: Exception) {
-            Timber.e("Camera provider future is not available: ${exception.message}")
-            continuation.resumeWithException(exception)
         }
     }
 }

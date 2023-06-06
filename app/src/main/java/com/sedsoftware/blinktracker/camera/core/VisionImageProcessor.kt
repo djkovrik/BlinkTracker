@@ -43,8 +43,8 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions) : VisionImageP
                 if (results.isNotEmpty()) {
                     val face = results.first()
                     _faceData.value = VisionFaceData(
-                        leftEye = face.leftEyeOpenProbability.roundTo(4),
-                        rightEye = face.rightEyeOpenProbability.roundTo(4),
+                        leftEye = face.leftEyeOpenProbability.roundTo(PRECISION),
+                        rightEye = face.rightEyeOpenProbability.roundTo(PRECISION),
                         faceAvailable = face.leftEyeOpenProbability != null && face.rightEyeOpenProbability != null,
                     )
                 } else {
@@ -65,10 +65,15 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions) : VisionImageP
         detector.close()
     }
 
+    @Suppress("MagicNumber")
     private fun Float?.roundTo(decimals: Int): Float? {
         if (this == null) return null
         var multiplier = 1.0f
         repeat(decimals) { multiplier *= 10f }
         return round(this * multiplier) / multiplier
+    }
+
+    private companion object {
+        const val PRECISION = 4
     }
 }

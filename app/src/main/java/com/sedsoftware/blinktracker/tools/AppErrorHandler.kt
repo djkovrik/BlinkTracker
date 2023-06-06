@@ -12,6 +12,7 @@ class AppErrorHandler(
         get() = TODO("Not yet implemented")
 
     override fun consume(throwable: Throwable) {
+        context
         TODO("Not yet implemented")
     }
 }

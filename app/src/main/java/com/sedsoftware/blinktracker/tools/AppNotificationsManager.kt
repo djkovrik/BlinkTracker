@@ -8,6 +8,7 @@ class AppNotificationsManager(
 ) : NotificationsManager {
 
     override fun notifyWithSound() {
+        context
         TODO("Not yet implemented")
     }
 
