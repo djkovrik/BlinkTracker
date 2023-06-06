@@ -58,7 +58,8 @@ dependencies {
     implementation(project(":sources:components:tracker"))
 
     implementation(platform(libs.compose.bom))
-
+    
+    implementation(libs.org.jetbrains.coroutines)
     implementation(libs.ark.mvikotlin.core)
     implementation(libs.ark.mvikotlin.main)
     implementation(libs.ark.mvikotlin.extensions.coroutines)

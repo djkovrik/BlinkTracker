@@ -2,7 +2,6 @@
 
 package com.sedsoftware.blinktracker.components.tracker.store
 
-import android.util.Log
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
@@ -17,7 +16,6 @@ import com.sedsoftware.blinktracker.settings.Settings
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock.System
 import kotlin.time.Duration.Companion.milliseconds
@@ -40,7 +38,7 @@ internal class BlinkTrackerStoreProvider(
                     (0..Int.MAX_VALUE)
                         .asSequence()
                         .asFlow()
-                        .onEach {
+                        .collect {
                             delay(TIMER_DELAY)
                             dispatch(Action.OnTick)
                         }
@@ -50,19 +48,19 @@ internal class BlinkTrackerStoreProvider(
                 onAction<Action.ObserveThresholdOption> {
                     launch(getExceptionHandler(this)) {
                         settings.getPerMinuteThreshold()
-                            .onEach { Msg.ObservedThresholdOptionChanged(it) }
+                            .collect { dispatch(Msg.ObservedThresholdOptionChanged(it)) }
                     }
                 }
                 onAction<Action.ObserveNotifySoundOption> {
                     launch(getExceptionHandler(this)) {
                         settings.getNotifySoundEnabled()
-                            .onEach { Msg.ObservedSoundOptionChanged(it) }
+                            .collect { dispatch(Msg.ObservedSoundOptionChanged(it)) }
                     }
                 }
                 onAction<Action.ObserveNotifyVibrationOption> {
                     launch(getExceptionHandler(this)) {
                         settings.getNotifyVibrationEnabled()
-                            .onEach { Msg.ObservedVibrationOptionChanged(it) }
+                            .collect { dispatch(Msg.ObservedVibrationOptionChanged(it)) }
                     }
                 }
 
@@ -94,7 +92,6 @@ internal class BlinkTrackerStoreProvider(
                     dispatch(Msg.FaceDataAvailable(it.data))
 
                     if (it.data.hasEyesData() && state.blinkPeriodEnded()) {
-                        Log.d("BLINKDEBUG", "BLINK!")
                         dispatch(Msg.Blink)
                     }
                 }

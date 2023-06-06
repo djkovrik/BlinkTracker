@@ -29,5 +29,6 @@ dependencies {
     implementation(libs.ark.mvikotlin.main)
     implementation(libs.ark.mvikotlin.extensions.coroutines)
     implementation(libs.ark.decompose.core)
+    implementation(libs.ark.decompose.extensions)
     implementation(libs.ark.essenty)
 }

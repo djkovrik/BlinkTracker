@@ -22,7 +22,6 @@ import com.sedsoftware.blinktracker.tools.AppErrorHandler
 import com.sedsoftware.blinktracker.tools.AppNotificationsManager
 import com.sedsoftware.blinktracker.ui.compose.BlinkRootContent
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -72,9 +71,9 @@ class MainActivity : ComponentActivity() {
         )
 
         lifecycleScope.launch {
-            imageProcessor.faceData.collect(FlowCollector {
+            imageProcessor.faceData.collect {
                 root.trackerComponent.onFaceDataChanged(it)
-            })
+            }
         }
 
         setContent {
