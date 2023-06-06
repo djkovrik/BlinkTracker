@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.arkivanov.decompose.defaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.google.mlkit.vision.face.FaceDetectorOptions
@@ -21,6 +22,8 @@ import com.sedsoftware.blinktracker.tools.AppErrorHandler
 import com.sedsoftware.blinktracker.tools.AppNotificationsManager
 import com.sedsoftware.blinktracker.ui.compose.BlinkRootContent
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -67,6 +70,12 @@ class MainActivity : ComponentActivity() {
             notificationsManager = AppNotificationsManager(this),
             settings = AppSettings(applicationContext)
         )
+
+        lifecycleScope.launch {
+            imageProcessor.faceData.collect(FlowCollector {
+                root.trackerComponent.onFaceDataChanged(it)
+            })
+        }
 
         setContent {
             BlinkTrackerTheme {

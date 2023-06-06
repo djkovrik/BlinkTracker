@@ -2,12 +2,14 @@
 
 package com.sedsoftware.blinktracker.components.tracker.store
 
+import android.util.Log
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
+import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Intent
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Label
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.State
@@ -79,12 +81,14 @@ internal class BlinkTrackerStoreProvider(
                     dispatch(Msg.TrackerStateChangedStarted(false))
                 }
 
-                onIntent<Intent.FaceDetectedStateChanged> {
-                    dispatch(Msg.DetectedFaceAvailable(it.detected))
-                }
+                onIntent<Intent.FaceDataChanged> {
+                    dispatch(Msg.FaceDataAvailable(it.data))
 
-                onIntent<Intent.EyesProbabilityChanged> {
-                    // TODO REGISTER BLINK
+                    // TODO REGISTER BLINKS
+                    Log.d("BLINKDEBUG", "${it.data.faceAvailable}: left ${it.data.leftEye} right ${it.data.rightEye}")
+                    if (it.data.leftEye != null && it.data.leftEye < 0.8 && it.data.rightEye != null && it.data.rightEye < 0.8) {
+                        Log.d("BLINKDEBUG", "BLINK!")
+                    }
                 }
             },
             reducer = { msg ->
@@ -101,8 +105,8 @@ internal class BlinkTrackerStoreProvider(
                         copy(notifyWithVibration = msg.newValue)
                     }
 
-                    is Msg.DetectedFaceAvailable -> {
-                        copy(faceDetected = msg.available)
+                    is Msg.FaceDataAvailable -> {
+                        copy(faceDetected = msg.data.faceAvailable)
                     }
 
                     is Msg.TrackerStateChangedStarted -> {
@@ -127,7 +131,7 @@ internal class BlinkTrackerStoreProvider(
         data class ObservedThresholdOptionChanged(val newValue: Int) : Msg
         data class ObservedSoundOptionChanged(val newValue: Boolean) : Msg
         data class ObservedVibrationOptionChanged(val newValue: Boolean) : Msg
-        data class DetectedFaceAvailable(val available: Boolean) : Msg
+        data class FaceDataAvailable(val data: VisionFaceData) : Msg
         data class TrackerStateChangedStarted(val started: Boolean) : Msg
         data class Tick(val seconds: Int) : Msg
     }

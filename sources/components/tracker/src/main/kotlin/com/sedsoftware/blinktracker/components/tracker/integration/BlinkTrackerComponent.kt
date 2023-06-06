@@ -7,6 +7,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker.Model
+import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStoreProvider
 import com.sedsoftware.blinktracker.settings.Settings
@@ -59,12 +60,8 @@ class BlinkTrackerComponent(
         store.accept(BlinkTrackerStore.Intent.TrackingStopped)
     }
 
-    override fun onEyesProbabilityChanged(left: Float, right: Float) {
-        store.accept(BlinkTrackerStore.Intent.EyesProbabilityChanged(left, right))
-    }
-
-    override fun onFaceDetectionChanged(detected: Boolean) {
-        store.accept(BlinkTrackerStore.Intent.FaceDetectedStateChanged(detected))
+    override fun onFaceDataChanged(data: VisionFaceData) {
+        store.accept(BlinkTrackerStore.Intent.FaceDataChanged(data))
     }
 
     override fun onPreferencesPanelRequested() {

@@ -9,8 +9,10 @@ import androidx.camera.core.Preview
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.google.mlkit.common.MlKitException
 import com.sedsoftware.blinktracker.camera.core.VisionImageProcessor
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 suspend fun Context.bindCameraUseCases(
@@ -32,7 +34,9 @@ suspend fun Context.bindCameraUseCases(
 
         analysisUseCase.setAnalyzer(ContextCompat.getMainExecutor(this)) { imageProxy: ImageProxy ->
             try {
-                imageProcessor.process(imageProxy)
+                lifecycleOwner.lifecycleScope.launch {
+                    imageProcessor.process(imageProxy)
+                }
             } catch (e: MlKitException) {
                 Timber.e("Failed to process image. Error: ${e.localizedMessage}")
             }
