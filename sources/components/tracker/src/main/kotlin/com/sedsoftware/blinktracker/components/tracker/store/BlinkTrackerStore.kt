@@ -5,6 +5,7 @@ import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Intent
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Label
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.State
+import kotlinx.datetime.Instant
 
 internal interface BlinkTrackerStore : Store<Intent, State, Label> {
 
@@ -24,6 +25,7 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
         val threshold: Int = Int.MAX_VALUE,
         val notifyWithSound: Boolean = false,
         val notifyWithVibration: Boolean = false,
+        val lastBlink: Instant = Instant.DISTANT_PAST,
     )
 
     sealed class Label {

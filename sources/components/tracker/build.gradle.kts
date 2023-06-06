@@ -24,6 +24,7 @@ dependencies {
     implementation(project(":sources:settings"))
 
     implementation(libs.org.jetbrains.coroutines)
+    implementation(libs.org.jetbrains.datetime)
     implementation(libs.ark.mvikotlin.core)
     implementation(libs.ark.mvikotlin.main)
     implementation(libs.ark.mvikotlin.extensions.coroutines)

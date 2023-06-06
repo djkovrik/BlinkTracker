@@ -19,6 +19,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock.System
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class BlinkTrackerStoreProvider(
     private val storeFactory: StoreFactory,
@@ -67,9 +69,16 @@ internal class BlinkTrackerStoreProvider(
                 onAction<Action.OnTick> {
                     if (state.active) {
                         val counter = state.timer
-                        dispatch(Msg.Tick(counter + 1))
 
-                        // TODO CHECK STATS
+                        if (counter % MEASURE_PERIOD_SEC == 0) {
+                            if (state.blinkLastMinute < state.threshold) {
+                                if (state.notifyWithSound) publish(Label.SoundNotificationTriggered)
+                                if (state.notifyWithVibration) publish(Label.VibrationNotificationTriggered)
+                            }
+                            dispatch(Msg.ResetMinute)
+                        }
+
+                        dispatch(Msg.Tick(counter + 1))
                     }
                 }
 
@@ -84,10 +93,9 @@ internal class BlinkTrackerStoreProvider(
                 onIntent<Intent.FaceDataChanged> {
                     dispatch(Msg.FaceDataAvailable(it.data))
 
-                    // TODO REGISTER BLINKS
-                    Log.d("BLINKDEBUG", "${it.data.faceAvailable}: left ${it.data.leftEye} right ${it.data.rightEye}")
-                    if (it.data.leftEye != null && it.data.leftEye < 0.8 && it.data.rightEye != null && it.data.rightEye < 0.8) {
+                    if (it.data.hasEyesData() && state.blinkPeriodEnded()) {
                         Log.d("BLINKDEBUG", "BLINK!")
+                        dispatch(Msg.Blink)
                     }
                 }
             },
@@ -116,6 +124,20 @@ internal class BlinkTrackerStoreProvider(
                     is Msg.Tick -> {
                         copy(timer = msg.seconds)
                     }
+
+                    is Msg.Blink -> {
+                        copy(
+                            blinkLastMinute = this.blinkLastMinute + 1,
+                            blinksTotal = this.blinksTotal + 1,
+                            lastBlink = System.now(),
+                        )
+                    }
+
+                    is Msg.ResetMinute -> {
+                        copy(
+                            blinkLastMinute = 0
+                        )
+                    }
                 }
             }
         ) {}
@@ -134,6 +156,8 @@ internal class BlinkTrackerStoreProvider(
         data class FaceDataAvailable(val data: VisionFaceData) : Msg
         data class TrackerStateChangedStarted(val started: Boolean) : Msg
         data class Tick(val seconds: Int) : Msg
+        object Blink : Msg
+        object ResetMinute : Msg
     }
 
     private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =
@@ -141,7 +165,16 @@ internal class BlinkTrackerStoreProvider(
             scope.publish(Label.ErrorCaught(throwable))
         }
 
+    private fun VisionFaceData.hasEyesData(): Boolean =
+        this.leftEye != null && this.leftEye < BLINK_THRESHOLD && this.rightEye != null && this.rightEye < BLINK_THRESHOLD
+
+    private fun State.blinkPeriodEnded(): Boolean =
+        this.lastBlink < System.now().minus(BLINK_REGISTER_PERIOD_MS.milliseconds)
+
     private companion object {
         const val TIMER_DELAY = 1000L
+        const val BLINK_THRESHOLD = 0.25f
+        const val BLINK_REGISTER_PERIOD_MS = 500L
+        const val MEASURE_PERIOD_SEC = 60
     }
 }
