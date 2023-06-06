@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface BlinkCamera {
 
     val models: Flow<Model>
+    val initial: Model
 
     fun onPermissionGranted()
     fun onPermissionDenied()
@@ -15,6 +16,7 @@ interface BlinkCamera {
 
     data class Model(
         val currentPermissionState: PermissionState,
-        val selectedLens: CameraLens,
+        val selectedLens: Int,
+        val cameraAvailable: Boolean,
     )
 }

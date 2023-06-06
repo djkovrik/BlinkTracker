@@ -19,6 +19,7 @@ internal interface BlinkCameraStore : Store<Intent, State, Label> {
     data class State(
         val permissionState: PermissionState = PermissionState.NOT_ASKED,
         val lensFacing: CameraLens = CameraLens.NOT_AVAILABLE,
+        val cameraAvailable: Boolean = false,
     )
 
     class Label

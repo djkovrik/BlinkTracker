@@ -26,6 +26,8 @@ class BlinkCameraComponent(
 
     override val models: Flow<Model> = store.states.map { stateToModel(it) }
 
+    override val initial: Model = stateToModel(BlinkCameraStore.State())
+
     override fun onPermissionGranted() {
         store.accept(BlinkCameraStore.Intent.PermissionGranted)
     }

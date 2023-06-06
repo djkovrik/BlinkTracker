@@ -2,13 +2,14 @@
 agp = "8.1.0-beta03"
 org-jetbrains-kotlin-android = "1.8.10"
 org-jetbrains-kotlin-coroutines = "1.7.1"
+org-jetbrains-kotlin-datetime = "0.4.0"
 compose-bom = "2023.05.01"
 core-ktx = "1.10.1"
 lifecycle-runtime-ktx = "2.6.1"
 activity-compose = "1.7.2"
 face-detection = "16.1.5"
 camera = "1.2.3"
-datastore = "1.0.0"
+datastore = "1.1.0-alpha04"
 decompose = "2.0.0-beta-01"
 essenty = "1.1.0"
 mvi-kotlin = "3.2.1"
@@ -17,10 +18,12 @@ androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 appcompat = "1.6.1"
 material = "1.9.0"
+timber = "5.0.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 org-jetbrains-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "org-jetbrains-kotlin-coroutines" }
+org-jetbrains-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "org-jetbrains-kotlin-datetime" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
@@ -45,7 +48,7 @@ androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
