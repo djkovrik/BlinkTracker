@@ -20,7 +20,7 @@ import com.sedsoftware.blinktracker.root.integration.ErrorHandler
 import com.sedsoftware.blinktracker.settings.AppSettings
 import com.sedsoftware.blinktracker.tools.AppErrorHandler
 import com.sedsoftware.blinktracker.tools.AppNotificationsManager
-import com.sedsoftware.blinktracker.ui.compose.BlinkRootContent
+import com.sedsoftware.blinktracker.ui.BlinkRootContent
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 import kotlinx.coroutines.launch
 
