@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="permissions_declined_info">Вы запретили доступ к камере, поэтому отслеживание недоступно</string>
+    <string name="permissions_rationale_info">Для отслеживания морганий приложению требуется доступ к фронтальной камере</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+</resources>

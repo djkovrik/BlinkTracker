@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">Blink Tracker</string>
+    <string name="app_name" translatable="false">Blink Tracker</string>
+    <string name="permissions_declined_info">You declined camera permission so tracking is not available</string>
+    <string name="permissions_rationale_info">This app requires camera permission to use frontal camera for blink tracking</string>
+    <string name="unknown_error">Unknown error</string>
 </resources>

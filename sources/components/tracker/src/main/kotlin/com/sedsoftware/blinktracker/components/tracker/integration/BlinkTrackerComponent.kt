@@ -63,12 +63,4 @@ class BlinkTrackerComponent(
     override fun onFaceDataChanged(data: VisionFaceData) {
         store.accept(BlinkTrackerStore.Intent.FaceDataChanged(data))
     }
-
-    override fun onPreferencesPanelRequested() {
-        output(BlinkTracker.Output.PreferencesPanelRequested)
-    }
-
-    override fun onPreferencesPanelClosed() {
-        output(BlinkTracker.Output.PreferencesPanelClosed)
-    }
 }

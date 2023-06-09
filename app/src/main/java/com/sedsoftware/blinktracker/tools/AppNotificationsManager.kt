@@ -9,10 +9,9 @@ class AppNotificationsManager(
 
     override fun notifyWithSound() {
         context
-        TODO("Not yet implemented")
     }
 
     override fun notifyWithVibro() {
-        TODO("Not yet implemented")
+        context
     }
 }

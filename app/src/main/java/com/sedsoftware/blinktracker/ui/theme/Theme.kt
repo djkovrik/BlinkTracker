@@ -103,6 +103,30 @@ fun BlinkTrackerTheme(
     )
 
     val typography = Typography(
+        displayLarge = TextStyle(
+            fontFamily = Fonts.exo2(),
+            fontWeight = FontWeight.Medium,
+            fontStyle = FontStyle.Normal,
+            fontSize = 22.sp,
+            lineHeight = 32.sp,
+            letterSpacing = 0.sp,
+        ),
+        displayMedium = TextStyle(
+            fontFamily = Fonts.exo2(),
+            fontWeight = FontWeight.Normal,
+            fontStyle = FontStyle.Normal,
+            fontSize = 21.sp,
+            lineHeight = 29.sp,
+            letterSpacing = 0.0.sp,
+        ),
+        displaySmall = TextStyle(
+            fontFamily = Fonts.exo2(),
+            fontWeight = FontWeight.Normal,
+            fontStyle = FontStyle.Normal,
+            fontSize = 20.sp,
+            lineHeight = 28.sp,
+            letterSpacing = 0.0.sp,
+        ),
         titleLarge = TextStyle(
             fontFamily = Fonts.exo2(),
             fontWeight = FontWeight.Bold,

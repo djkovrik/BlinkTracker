@@ -1,23 +1,21 @@
 package com.sedsoftware.blinktracker.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.sedsoftware.blinktracker.camera.CameraPreviewComposable
 import com.sedsoftware.blinktracker.camera.core.VisionImageProcessor
-import com.sedsoftware.blinktracker.camera.getLensFacing
 import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
@@ -29,34 +27,46 @@ fun BlinkRootContent(
     processor: VisionImageProcessor,
     modifier: Modifier = Modifier,
 ) {
-    Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        val camera: BlinkCamera = root.cameraComponent
-        val preferences: BlinkPreferences = root.preferencesComponent
-        val tracker: BlinkTracker = root.trackerComponent
+    val cameraState: BlinkCamera.Model by root.cameraComponent.models
+        .collectAsState(initial = root.cameraComponent.initial)
 
-        val cameraState by camera.models.collectAsState(initial = camera.initial)
-        val preferencesState by preferences.models.collectAsState(initial = preferences.initial)
-        val trackerState by tracker.models.collectAsState(initial = tracker.initial)
+    val preferencesState: BlinkPreferences.Model by root.preferencesComponent.models
+        .collectAsState(initial = root.preferencesComponent.initial)
 
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
+    val trackerState: BlinkTracker.Model by root.trackerComponent.models
+        .collectAsState(initial = root.trackerComponent.initial)
+
+    val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(root.errorHandler) {
+        root.errorHandler.messages.collect { message ->
+            message?.let { snackbarHostState.showSnackbar(message = it) }
+        }
+    }
+
+    Scaffold(
+        modifier = modifier,
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
+    ) { contentPadding: PaddingValues ->
+        Surface(
+            color = MaterialTheme.colorScheme.surface,
+            modifier = modifier
+                .fillMaxSize()
+                .padding(contentPadding),
         ) {
-            if (cameraState.cameraAvailable) {
-                Card(
-                    shape = RoundedCornerShape(size = 16.dp),
-                    modifier = modifier
-                        .padding(all = 64.dp)
-                        .aspectRatio(ratio = 1.0f)
-                ) {
-                    CameraPreviewComposable(
-                        imageProcessor = processor,
-                        lensFacing = cameraState.selectedLens.getLensFacing(),
-                        modifier = modifier.fillMaxSize(),
-                    )
-                }
-            } else {
-                Text(text = "Not available")
+            BlinkRootScreen(
+                camera = cameraState,
+                preferences = preferencesState,
+                tracker = trackerState,
+                modifier = modifier
+            ) {
+                CameraPreviewComposable(
+                    imageProcessor = processor,
+                    lensFacing = cameraState.selectedLens,
+                    modifier = modifier.fillMaxSize(),
+                )
             }
         }
     }
