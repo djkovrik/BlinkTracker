@@ -18,6 +18,7 @@ class AppSettings(
     private val perMinuteThresholdKey: Preferences.Key<Int> = intPreferencesKey("per_minute_threshold")
     private val notifySoundEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("notify_sound_enabled")
     private val notifyVibrationEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("notify_vibration_enabled")
+    private val launchMinimizedEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("launch_minimized_enabled")
 
     override suspend fun getPerMinuteThreshold(): Flow<Int> =
         getPrefsValue(perMinuteThresholdKey, PER_MINUTE_THRESHOLD_DEFAULT)
@@ -28,14 +29,20 @@ class AppSettings(
     override suspend fun getNotifyVibrationEnabled(): Flow<Boolean> =
         getPrefsValue(notifyVibrationEnabledKey, NOTIFY_VIBRATION_DEFAULT)
 
+    override suspend fun getLaunchMinimizedEnabled(): Flow<Boolean> =
+        getPrefsValue(launchMinimizedEnabledKey, LAUNCH_MINIMIZED_DEFAULT)
+
     override suspend fun setPerMinuteThreshold(value: Int) =
         setPrefsValue(perMinuteThresholdKey, value)
 
     override suspend fun setNotifySoundEnabled(value: Boolean) =
-        setPrefsValue(notifySoundEnabledKey, NOTIFY_SOUND_DEFAULT)
+        setPrefsValue(notifySoundEnabledKey, value)
 
     override suspend fun setNotifyVibrationEnabled(value: Boolean) =
-        setPrefsValue(notifyVibrationEnabledKey, NOTIFY_VIBRATION_DEFAULT)
+        setPrefsValue(notifyVibrationEnabledKey, value)
+
+    override suspend fun setLaunchMinimizedEnabled(value: Boolean) =
+        setPrefsValue(notifyVibrationEnabledKey, value)
 
     private fun <T> getPrefsValue(key: Preferences.Key<T>, default: T): Flow<T> =
         context.dataStore.data.map { it[key] ?: default }
@@ -50,5 +57,6 @@ class AppSettings(
         const val PER_MINUTE_THRESHOLD_DEFAULT = 12
         const val NOTIFY_SOUND_DEFAULT = false
         const val NOTIFY_VIBRATION_DEFAULT = true
+        const val LAUNCH_MINIMIZED_DEFAULT = false
     }
 }

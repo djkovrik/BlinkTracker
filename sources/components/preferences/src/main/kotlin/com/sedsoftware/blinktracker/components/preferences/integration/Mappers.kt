@@ -10,5 +10,6 @@ internal val stateToModel: (State) -> Model =
             selectedThreshold = it.minimalMinuteThreshold,
             notifySoundChecked = it.notifySound,
             notifyVibrationChecked = it.notifyVibration,
+            launchMinimized = it.launchMinimized,
         )
     }

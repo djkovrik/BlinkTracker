@@ -49,6 +49,14 @@ internal class BlinkPreferencesStoreProvider(
                     }
                 }
 
+                onIntent<Intent.LaunchMinimizedChanged> {
+                    launch(getExceptionHandler(this)) {
+                        settings.setLaunchMinimizedEnabled(it.value)
+                        dispatch(Msg.LaunchOptionChanged(it.value))
+                    }
+                }
+
+
                 onIntent<Intent.SettingsPanelRequested> {
                     dispatch(Msg.SettingsVisibilityChanged(true))
                 }
@@ -71,6 +79,10 @@ internal class BlinkPreferencesStoreProvider(
                         copy(notifyVibration = msg.newValue)
                     }
 
+                    is Msg.LaunchOptionChanged -> {
+                        copy(launchMinimized = msg.newValue)
+                    }
+
                     is Msg.SettingsVisibilityChanged -> {
                         copy(settingsPanelVisible = msg.visible)
                     }
@@ -84,6 +96,7 @@ internal class BlinkPreferencesStoreProvider(
         data class ThresholdOptionChanged(val newValue: Int) : Msg
         data class SoundOptionChanged(val newValue: Boolean) : Msg
         data class VibrationOptionChanged(val newValue: Boolean) : Msg
+        data class LaunchOptionChanged(val newValue: Boolean) : Msg
         data class SettingsVisibilityChanged(val visible: Boolean) : Msg
     }
 

@@ -18,6 +18,7 @@ interface BlinkPreferences {
         val selectedThreshold: Int,
         val notifySoundChecked: Boolean,
         val notifyVibrationChecked: Boolean,
+        val launchMinimized: Boolean,
     )
 
     sealed class Output {

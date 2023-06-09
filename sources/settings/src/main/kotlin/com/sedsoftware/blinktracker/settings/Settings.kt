@@ -6,7 +6,9 @@ interface Settings {
     suspend fun getPerMinuteThreshold(): Flow<Int>
     suspend fun getNotifySoundEnabled(): Flow<Boolean>
     suspend fun getNotifyVibrationEnabled(): Flow<Boolean>
+    suspend fun getLaunchMinimizedEnabled(): Flow<Boolean>
     suspend fun setPerMinuteThreshold(value: Int)
     suspend fun setNotifySoundEnabled(value: Boolean)
     suspend fun setNotifyVibrationEnabled(value: Boolean)
+    suspend fun setLaunchMinimizedEnabled(value: Boolean)
 }

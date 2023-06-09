@@ -11,6 +11,7 @@ internal interface BlinkPreferencesStore : Store<Intent, State, Label> {
         data class MinimalThresholdChanged(val value: Int) : Intent()
         data class NotifySoundChanged(val value: Boolean) : Intent()
         data class NotifyVibrationChanged(val value: Boolean) : Intent()
+        data class LaunchMinimizedChanged(val value: Boolean) : Intent()
         object SettingsPanelRequested : Intent()
         object SettingsPanelClosed : Intent()
     }
@@ -19,6 +20,7 @@ internal interface BlinkPreferencesStore : Store<Intent, State, Label> {
         val minimalMinuteThreshold: Int = -1,
         val notifySound: Boolean = false,
         val notifyVibration: Boolean = false,
+        val launchMinimized: Boolean = false,
         val settingsPanelVisible: Boolean = false,
     )
 

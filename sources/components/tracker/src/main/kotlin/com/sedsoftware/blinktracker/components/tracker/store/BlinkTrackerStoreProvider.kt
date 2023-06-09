@@ -34,6 +34,7 @@ internal class BlinkTrackerStoreProvider(
                     dispatch(Action.ObserveThresholdOption)
                     dispatch(Action.ObserveNotifySoundOption)
                     dispatch(Action.ObserveNotifyVibrationOption)
+                    dispatch(Action.ObserveLaunchOption)
 
                     (0..Int.MAX_VALUE)
                         .asSequence()
@@ -51,16 +52,25 @@ internal class BlinkTrackerStoreProvider(
                             .collect { dispatch(Msg.ObservedThresholdOptionChanged(it)) }
                     }
                 }
+
                 onAction<Action.ObserveNotifySoundOption> {
                     launch(getExceptionHandler(this)) {
                         settings.getNotifySoundEnabled()
                             .collect { dispatch(Msg.ObservedSoundOptionChanged(it)) }
                     }
                 }
+
                 onAction<Action.ObserveNotifyVibrationOption> {
                     launch(getExceptionHandler(this)) {
                         settings.getNotifyVibrationEnabled()
                             .collect { dispatch(Msg.ObservedVibrationOptionChanged(it)) }
+                    }
+                }
+
+                onAction<Action.ObserveLaunchOption> {
+                    launch(getExceptionHandler(this)) {
+                        settings.getLaunchMinimizedEnabled()
+                            .collect { dispatch(Msg.ObservedLaunchOptionChanged(it)) }
                     }
                 }
 
@@ -110,6 +120,10 @@ internal class BlinkTrackerStoreProvider(
                         copy(notifyWithVibration = msg.newValue)
                     }
 
+                    is Msg.ObservedLaunchOptionChanged -> {
+                        copy(shouldLaunchMinimized = msg.newValue)
+                    }
+
                     is Msg.FaceDataAvailable -> {
                         copy(faceDetected = msg.data.faceAvailable)
                     }
@@ -143,6 +157,7 @@ internal class BlinkTrackerStoreProvider(
         object ObserveThresholdOption : Action
         object ObserveNotifySoundOption : Action
         object ObserveNotifyVibrationOption : Action
+        object ObserveLaunchOption : Action
         object OnTick : Action
     }
 
@@ -150,6 +165,7 @@ internal class BlinkTrackerStoreProvider(
         data class ObservedThresholdOptionChanged(val newValue: Int) : Msg
         data class ObservedSoundOptionChanged(val newValue: Boolean) : Msg
         data class ObservedVibrationOptionChanged(val newValue: Boolean) : Msg
+        data class ObservedLaunchOptionChanged(val newValue: Boolean) : Msg
         data class FaceDataAvailable(val data: VisionFaceData) : Msg
         data class TrackerStateChangedStarted(val started: Boolean) : Msg
         data class Tick(val seconds: Int) : Msg
