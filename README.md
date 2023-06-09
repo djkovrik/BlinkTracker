@@ -15,4 +15,4 @@ Tracks how many times you blink per minute and notifies you if it's below define
 
 ### Resources used
 
-[Basic Miscellany Flat by Smashicons](https://www.flaticon.com/authors/smashicons)
+[Special Flat icons by Freepik](https://www.flaticon.com/authors/freepik)

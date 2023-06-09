@@ -26,6 +26,12 @@ object ComponentStubs {
         cameraAvailable = true,
     )
 
+    val cameraPermissionGrantedNoCamera = BlinkCamera.Model(
+        currentPermissionState = PermissionState.GRANTED,
+        selectedLens = CameraLens.NOT_AVAILABLE,
+        cameraAvailable = false,
+    )
+
     val cameraPermissionRationale = BlinkCamera.Model(
         currentPermissionState = PermissionState.RATIONALE,
         selectedLens = CameraLens.NOT_AVAILABLE,

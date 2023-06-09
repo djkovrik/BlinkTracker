@@ -1,5 +1,7 @@
 package com.sedsoftware.blinktracker.ui.component
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,13 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.sedsoftware.blinktracker.R
 
 @Composable
-fun PermissionsInfo(
-    message: String,
+fun FullScreenMessageInfo(
+    @DrawableRes iconRes: Int,
+    @StringRes messageRes: Int,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -27,7 +30,7 @@ fun PermissionsInfo(
         modifier = modifier.fillMaxSize(),
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_selfie),
+            painter = painterResource(id = iconRes),
             contentDescription = "Camera icon",
             modifier = modifier
                 .size(size = 176.dp)
@@ -35,7 +38,7 @@ fun PermissionsInfo(
         )
 
         Text(
-            text = message,
+            text = stringResource(id = messageRes),
             style = MaterialTheme.typography.displayMedium,
             color = MaterialTheme.colorScheme.primary,
             textAlign = TextAlign.Center,
