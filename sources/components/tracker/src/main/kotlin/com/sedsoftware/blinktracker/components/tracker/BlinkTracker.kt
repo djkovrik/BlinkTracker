@@ -14,7 +14,7 @@ interface BlinkTracker {
 
     data class Model(
         val isTrackingActive: Boolean,
-        val totalTrackedSeconds: Int,
+        val timerLabel: String,
         val blinksPerLastMinute: Int,
         val blinksTotal: Int,
         val isMinimized: Boolean,

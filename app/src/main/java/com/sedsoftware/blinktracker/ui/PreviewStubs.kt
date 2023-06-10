@@ -38,15 +38,6 @@ object PreviewStubs {
         cameraAvailable = false,
     )
 
-    val trackerNotActiveNoFace = BlinkTracker.Model(
-        isTrackingActive = false,
-        totalTrackedSeconds = 0,
-        blinksPerLastMinute = 0,
-        blinksTotal = 0,
-        isMinimized = false,
-        hasFaceDetected = false,
-    )
-
     val prefsNotVisibleAllDisabled = BlinkPreferences.Model(
         settingsPanelVisible = false,
         selectedThreshold = 12f,
@@ -71,13 +62,22 @@ object PreviewStubs {
         launchMinimized = true,
     )
 
+    val trackerNotActiveNoFace = BlinkTracker.Model(
+        isTrackingActive = false,
+        timerLabel = "00:00",
+        blinksPerLastMinute = 0,
+        blinksTotal = 0,
+        isMinimized = false,
+        hasFaceDetected = false,
+    )
+
     val trackerNotActiveWithFace = trackerNotActiveNoFace.copy(
         hasFaceDetected = true,
     )
 
     val trackerActiveNoFace = BlinkTracker.Model(
         isTrackingActive = true,
-        totalTrackedSeconds = 123,
+        timerLabel = "12:34",
         blinksPerLastMinute = 12,
         blinksTotal = 15,
         isMinimized = false,
@@ -86,7 +86,7 @@ object PreviewStubs {
 
     val trackerActiveWithFace = BlinkTracker.Model(
         isTrackingActive = true,
-        totalTrackedSeconds = 123,
+        timerLabel = "02:45",
         blinksPerLastMinute = 12,
         blinksTotal = 15,
         isMinimized = false,
