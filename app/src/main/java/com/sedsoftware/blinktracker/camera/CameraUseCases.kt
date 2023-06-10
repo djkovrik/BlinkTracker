@@ -22,7 +22,6 @@ suspend fun Context.bindCameraUseCases(
     imageProcessor: VisionImageProcessor,
     lifecycleOwner: LifecycleOwner,
 ) {
-
     try {
         val previewUseCase = Preview.Builder()
             .setTargetName("Preview")
