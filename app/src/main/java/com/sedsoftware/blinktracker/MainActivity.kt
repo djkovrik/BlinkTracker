@@ -113,18 +113,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun checkIfCamerasAvailable() {
-        when {
-            applicationContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT) -> {
-                root.cameraComponent.onCurrentLensChanged(CameraLens.FRONT)
-            }
-
-            applicationContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY) -> {
-                root.cameraComponent.onCurrentLensChanged(CameraLens.BACK)
-            }
-
-            else -> {
-                root.cameraComponent.onCurrentLensChanged(CameraLens.NOT_AVAILABLE)
-            }
+        if (applicationContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
+            root.cameraComponent.onCurrentLensChanged(CameraLens.FRONT)
+        } else {
+            root.cameraComponent.onCurrentLensChanged(CameraLens.NOT_AVAILABLE)
         }
     }
 }

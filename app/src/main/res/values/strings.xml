@@ -4,4 +4,8 @@
     <string name="permissions_rationale_info">This app requires camera permission to use frontal camera for blink tracking</string>
     <string name="camera_not_detected">Frontal camera is not detected so tracking not available</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="prefs_threshold">Blinks per minute threshold</string>
+    <string name="prefs_notify_sound">Notify with sound</string>
+    <string name="prefs_notify_vibro">Notify with vibration</string>
+    <string name="prefs_minimize_on_start">Minimize on start</string>
 </resources>

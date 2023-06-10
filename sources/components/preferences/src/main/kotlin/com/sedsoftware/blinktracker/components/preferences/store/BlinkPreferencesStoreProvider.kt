@@ -93,7 +93,7 @@ internal class BlinkPreferencesStoreProvider(
     private interface Action
 
     private sealed interface Msg {
-        data class ThresholdOptionChanged(val newValue: Int) : Msg
+        data class ThresholdOptionChanged(val newValue: Float) : Msg
         data class SoundOptionChanged(val newValue: Boolean) : Msg
         data class VibrationOptionChanged(val newValue: Boolean) : Msg
         data class LaunchOptionChanged(val newValue: Boolean) : Msg

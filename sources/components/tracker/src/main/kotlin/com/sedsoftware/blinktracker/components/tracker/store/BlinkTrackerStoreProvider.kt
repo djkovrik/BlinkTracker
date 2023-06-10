@@ -49,7 +49,7 @@ internal class BlinkTrackerStoreProvider(
                 onAction<Action.ObserveThresholdOption> {
                     launch(getExceptionHandler(this)) {
                         settings.getPerMinuteThreshold()
-                            .collect { dispatch(Msg.ObservedThresholdOptionChanged(it)) }
+                            .collect { dispatch(Msg.ObservedThresholdOptionChanged(it.toInt())) }
                     }
                 }
 

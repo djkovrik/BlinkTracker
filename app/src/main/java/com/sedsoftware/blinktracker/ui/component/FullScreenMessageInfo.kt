@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.blinktracker.ui.BlinkRootScreen
-import com.sedsoftware.blinktracker.ui.ComponentStubs
+import com.sedsoftware.blinktracker.ui.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
 @Composable
@@ -58,9 +58,9 @@ fun PreviewPermissionsDeniedLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
             BlinkRootScreen(
-                camera = ComponentStubs.cameraPermissionDenied,
-                preferences = ComponentStubs.prefsNotVisibleAllDisabled,
-                tracker = ComponentStubs.trackerNotActiveNoFace,
+                camera = PreviewStubs.cameraPermissionDenied,
+                preferences = PreviewStubs.prefsNotVisibleAllDisabled,
+                tracker = PreviewStubs.trackerNotActiveNoFace,
             )
         }
     }
@@ -72,9 +72,9 @@ fun PreviewPermissionsRationaleLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
             BlinkRootScreen(
-                camera = ComponentStubs.cameraPermissionRationale,
-                preferences = ComponentStubs.prefsNotVisibleAllDisabled,
-                tracker = ComponentStubs.trackerNotActiveNoFace,
+                camera = PreviewStubs.cameraPermissionRationale,
+                preferences = PreviewStubs.prefsNotVisibleAllDisabled,
+                tracker = PreviewStubs.trackerNotActiveNoFace,
             )
         }
     }
@@ -86,9 +86,9 @@ fun PreviewPermissionsNoCameraLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
             BlinkRootScreen(
-                camera = ComponentStubs.cameraPermissionGrantedNoCamera,
-                preferences = ComponentStubs.prefsNotVisibleAllDisabled,
-                tracker = ComponentStubs.trackerNotActiveNoFace,
+                camera = PreviewStubs.cameraPermissionGrantedNoCamera,
+                preferences = PreviewStubs.prefsNotVisibleAllDisabled,
+                tracker = PreviewStubs.trackerNotActiveNoFace,
             )
         }
     }
@@ -100,9 +100,9 @@ fun PreviewPermissionsDeniedDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
             BlinkRootScreen(
-                camera = ComponentStubs.cameraPermissionDenied,
-                preferences = ComponentStubs.prefsNotVisibleAllDisabled,
-                tracker = ComponentStubs.trackerNotActiveNoFace,
+                camera = PreviewStubs.cameraPermissionDenied,
+                preferences = PreviewStubs.prefsNotVisibleAllDisabled,
+                tracker = PreviewStubs.trackerNotActiveNoFace,
             )
         }
     }
@@ -114,9 +114,9 @@ fun PreviewPermissionsRationaleDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
             BlinkRootScreen(
-                camera = ComponentStubs.cameraPermissionRationale,
-                preferences = ComponentStubs.prefsNotVisibleAllDisabled,
-                tracker = ComponentStubs.trackerNotActiveNoFace,
+                camera = PreviewStubs.cameraPermissionRationale,
+                preferences = PreviewStubs.prefsNotVisibleAllDisabled,
+                tracker = PreviewStubs.trackerNotActiveNoFace,
             )
         }
     }
@@ -128,9 +128,9 @@ fun PreviewPermissionsNoCameraDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
             BlinkRootScreen(
-                camera = ComponentStubs.cameraPermissionGrantedNoCamera,
-                preferences = ComponentStubs.prefsNotVisibleAllDisabled,
-                tracker = ComponentStubs.trackerNotActiveNoFace,
+                camera = PreviewStubs.cameraPermissionGrantedNoCamera,
+                preferences = PreviewStubs.prefsNotVisibleAllDisabled,
+                tracker = PreviewStubs.trackerNotActiveNoFace,
             )
         }
     }

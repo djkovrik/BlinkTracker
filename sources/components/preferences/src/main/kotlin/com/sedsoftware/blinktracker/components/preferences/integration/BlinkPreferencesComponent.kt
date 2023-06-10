@@ -43,7 +43,7 @@ class BlinkPreferencesComponent(
 
     override val initial: Model = stateToModel(BlinkPreferencesStore.State())
 
-    override fun onMinimalThresholdChanged(value: Int) {
+    override fun onMinimalThresholdChanged(value: Float) {
         store.accept(BlinkPreferencesStore.Intent.MinimalThresholdChanged(value))
     }
 
@@ -53,6 +53,10 @@ class BlinkPreferencesComponent(
 
     override fun onNotifyVibrationChanged(value: Boolean) {
         store.accept(BlinkPreferencesStore.Intent.NotifyVibrationChanged(value))
+    }
+
+    override fun onLaunchMinimizedChanged(value: Boolean) {
+        store.accept(BlinkPreferencesStore.Intent.LaunchMinimizedChanged(value))
     }
 
     override fun requestPreferencesPanel() {

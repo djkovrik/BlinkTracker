@@ -13,7 +13,7 @@ import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 
 @Suppress("MemberVisibilityCanBePrivate")
-object ComponentStubs {
+object PreviewStubs {
     val cameraPermissionDenied = BlinkCamera.Model(
         currentPermissionState = PermissionState.DENIED,
         selectedLens = CameraLens.NOT_AVAILABLE,
@@ -49,23 +49,26 @@ object ComponentStubs {
 
     val prefsNotVisibleAllDisabled = BlinkPreferences.Model(
         settingsPanelVisible = false,
-        selectedThreshold = 12,
+        selectedThreshold = 12f,
         notifySoundChecked = false,
         notifyVibrationChecked = false,
+        launchMinimized = false,
     )
 
     val prefsVisibleAllDisabled = BlinkPreferences.Model(
         settingsPanelVisible = true,
-        selectedThreshold = 12,
+        selectedThreshold = 12f,
         notifySoundChecked = false,
         notifyVibrationChecked = false,
+        launchMinimized = false,
     )
 
     val prefsVisibleAllEnabled = BlinkPreferences.Model(
         settingsPanelVisible = true,
-        selectedThreshold = 12,
+        selectedThreshold = 16f,
         notifySoundChecked = true,
         notifyVibrationChecked = true,
+        launchMinimized = true,
     )
 
     val trackerNotActiveWithFace = trackerNotActiveNoFace.copy(

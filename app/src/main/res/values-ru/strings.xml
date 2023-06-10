@@ -4,4 +4,8 @@
     <string name="permissions_rationale_info">Для отслеживания морганий приложению требуется доступ к фронтальной камере</string>
     <string name="camera_not_detected">Фронтальная камера не найдена, поэтому отслеживание недоступно</string>
     <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="prefs_threshold">Минимум морганий в минуту</string>
+    <string name="prefs_notify_sound">Уведомлять звуковым сигналом</string>
+    <string name="prefs_notify_vibro">Уведомлять вибрацией</string>
+    <string name="prefs_minimize_on_start">Свенуть при старте</string>
 </resources>
