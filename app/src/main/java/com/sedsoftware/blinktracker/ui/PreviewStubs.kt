@@ -38,21 +38,14 @@ object PreviewStubs {
         cameraAvailable = false,
     )
 
-    val prefsNotVisibleAllDisabled = BlinkPreferences.Model(
+    val prefsAllDisabled = BlinkPreferences.Model(
         selectedThreshold = 12f,
         notifySoundChecked = false,
         notifyVibrationChecked = false,
         launchMinimized = false,
     )
 
-    val prefsVisibleAllDisabled = BlinkPreferences.Model(
-        selectedThreshold = 12f,
-        notifySoundChecked = false,
-        notifyVibrationChecked = false,
-        launchMinimized = false,
-    )
-
-    val prefsVisibleAllEnabled = BlinkPreferences.Model(
+    val prefsAllEnabled = BlinkPreferences.Model(
         selectedThreshold = 16f,
         notifySoundChecked = true,
         notifyVibrationChecked = true,
@@ -69,10 +62,15 @@ object PreviewStubs {
         isPreferencesPanelVisible = false,
     )
 
-    val trackerNotActiveWithFace = trackerNotActiveNoFace.copy(
+    val trackerNotActiveWithFaceNoPrefs = trackerNotActiveNoFace.copy(
+        hasFaceDetected = true,
+    )
+
+    val trackerNotActiveWithFaceAndPrefs = trackerNotActiveNoFace.copy(
         hasFaceDetected = true,
         isPreferencesPanelVisible = true,
     )
+
 
     val trackerActiveNoFace = BlinkTracker.Model(
         isTrackingActive = true,

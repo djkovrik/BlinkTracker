@@ -137,7 +137,7 @@ fun PreviewPreferencesAllDisabledLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
             PreferencesControls(
-                model = PreviewStubs.prefsVisibleAllDisabled,
+                model = PreviewStubs.prefsAllDisabled,
             )
         }
     }
@@ -149,7 +149,7 @@ fun PreviewPreferencesAllEnabledLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
             PreferencesControls(
-                model = PreviewStubs.prefsVisibleAllEnabled,
+                model = PreviewStubs.prefsAllEnabled,
             )
         }
     }
@@ -161,7 +161,7 @@ fun PreviewPreferencesAllDisabledDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
             PreferencesControls(
-                model = PreviewStubs.prefsVisibleAllDisabled,
+                model = PreviewStubs.prefsAllDisabled,
             )
         }
     }
@@ -173,7 +173,7 @@ fun PreviewPreferencesAllEnabledDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
             PreferencesControls(
-                model = PreviewStubs.prefsVisibleAllEnabled,
+                model = PreviewStubs.prefsAllEnabled,
             )
         }
     }

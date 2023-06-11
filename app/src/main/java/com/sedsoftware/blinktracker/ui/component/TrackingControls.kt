@@ -134,7 +134,7 @@ fun PreviewPreferencesNotActiveLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
             TrackingControls(
-                model = PreviewStubs.trackerNotActiveWithFace,
+                model = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
             )
         }
     }
@@ -158,7 +158,7 @@ fun PreviewPreferencesNotActiveDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
             TrackingControls(
-                model = PreviewStubs.trackerNotActiveWithFace,
+                model = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
             )
         }
     }

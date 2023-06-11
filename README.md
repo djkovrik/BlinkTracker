@@ -9,6 +9,7 @@ Tracks how many times you blink per minute and notifies you if it's below define
 - [x] Blinks detector
 - [ ] UI module
 - [ ] Picture in Picture
+- [ ] Animate everything
 - [ ] Icon
 - [ ] PlayMarket publish
 

@@ -59,7 +59,7 @@ fun PreviewPermissionsDeniedLight() {
         Surface {
             BlinkRootScreen(
                 camera = PreviewStubs.cameraPermissionDenied,
-                preferences = PreviewStubs.prefsNotVisibleAllDisabled,
+                preferences = PreviewStubs.prefsAllDisabled,
                 tracker = PreviewStubs.trackerNotActiveNoFace,
             )
         }
@@ -73,7 +73,7 @@ fun PreviewPermissionsRationaleLight() {
         Surface {
             BlinkRootScreen(
                 camera = PreviewStubs.cameraPermissionRationale,
-                preferences = PreviewStubs.prefsNotVisibleAllDisabled,
+                preferences = PreviewStubs.prefsAllDisabled,
                 tracker = PreviewStubs.trackerNotActiveNoFace,
             )
         }
@@ -87,7 +87,7 @@ fun PreviewPermissionsNoCameraLight() {
         Surface {
             BlinkRootScreen(
                 camera = PreviewStubs.cameraPermissionGrantedNoCamera,
-                preferences = PreviewStubs.prefsNotVisibleAllDisabled,
+                preferences = PreviewStubs.prefsAllDisabled,
                 tracker = PreviewStubs.trackerNotActiveNoFace,
             )
         }
@@ -101,7 +101,7 @@ fun PreviewPermissionsDeniedDark() {
         Surface {
             BlinkRootScreen(
                 camera = PreviewStubs.cameraPermissionDenied,
-                preferences = PreviewStubs.prefsNotVisibleAllDisabled,
+                preferences = PreviewStubs.prefsAllDisabled,
                 tracker = PreviewStubs.trackerNotActiveNoFace,
             )
         }
@@ -115,7 +115,7 @@ fun PreviewPermissionsRationaleDark() {
         Surface {
             BlinkRootScreen(
                 camera = PreviewStubs.cameraPermissionRationale,
-                preferences = PreviewStubs.prefsNotVisibleAllDisabled,
+                preferences = PreviewStubs.prefsAllDisabled,
                 tracker = PreviewStubs.trackerNotActiveNoFace,
             )
         }
@@ -129,7 +129,7 @@ fun PreviewPermissionsNoCameraDark() {
         Surface {
             BlinkRootScreen(
                 camera = PreviewStubs.cameraPermissionGrantedNoCamera,
-                preferences = PreviewStubs.prefsNotVisibleAllDisabled,
+                preferences = PreviewStubs.prefsAllDisabled,
                 tracker = PreviewStubs.trackerNotActiveNoFace,
             )
         }
