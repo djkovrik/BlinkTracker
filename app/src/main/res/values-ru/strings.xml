@@ -11,4 +11,5 @@
     <string name="button_start">Старт</string>
     <string name="button_stop">Стоп</string>
     <string name="button_minimize">Свернуть</string>
+    <string name="button_settings">Настройки</string>
 </resources>

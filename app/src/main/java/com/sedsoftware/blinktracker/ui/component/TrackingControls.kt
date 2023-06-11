@@ -43,8 +43,7 @@ fun TrackingControls(
             Button(
                 onClick = if (model.isTrackingActive) onStopClick else onStartClick,
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                modifier = Modifier
-                    .padding(horizontal = 4.dp),
+                modifier = Modifier.padding(horizontal = 4.dp),
             ) {
                 if (model.isTrackingActive) {
                     Icon(

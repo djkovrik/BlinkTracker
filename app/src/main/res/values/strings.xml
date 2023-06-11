@@ -11,4 +11,5 @@
     <string name="button_start">Start</string>
     <string name="button_stop">Stop</string>
     <string name="button_minimize">Minimize</string>
+    <string name="button_settings">Settings</string>
 </resources>

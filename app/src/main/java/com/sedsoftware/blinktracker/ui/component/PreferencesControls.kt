@@ -29,7 +29,7 @@ import com.sedsoftware.blinktracker.ui.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
 @Composable
-fun PreferencesPanel(
+fun PreferencesControls(
     model: BlinkPreferences.Model,
     modifier: Modifier = Modifier,
     onThresholdChange: (Float) -> Unit = {},
@@ -136,7 +136,7 @@ private fun PrefsOptionSlider(
 fun PreviewPreferencesAllDisabledLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
-            PreferencesPanel(
+            PreferencesControls(
                 model = PreviewStubs.prefsVisibleAllDisabled,
             )
         }
@@ -148,7 +148,7 @@ fun PreviewPreferencesAllDisabledLight() {
 fun PreviewPreferencesAllEnabledLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
-            PreferencesPanel(
+            PreferencesControls(
                 model = PreviewStubs.prefsVisibleAllEnabled,
             )
         }
@@ -160,7 +160,7 @@ fun PreviewPreferencesAllEnabledLight() {
 fun PreviewPreferencesAllDisabledDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
-            PreferencesPanel(
+            PreferencesControls(
                 model = PreviewStubs.prefsVisibleAllDisabled,
             )
         }
@@ -172,7 +172,7 @@ fun PreviewPreferencesAllDisabledDark() {
 fun PreviewPreferencesAllEnabledDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
-            PreferencesPanel(
+            PreferencesControls(
                 model = PreviewStubs.prefsVisibleAllEnabled,
             )
         }
