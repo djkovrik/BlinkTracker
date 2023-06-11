@@ -12,8 +12,6 @@ internal interface BlinkPreferencesStore : Store<Intent, State, Label> {
         data class NotifySoundChanged(val value: Boolean) : Intent()
         data class NotifyVibrationChanged(val value: Boolean) : Intent()
         data class LaunchMinimizedChanged(val value: Boolean) : Intent()
-        object SettingsPanelRequested : Intent()
-        object SettingsPanelClosed : Intent()
     }
 
     data class State(
@@ -21,7 +19,6 @@ internal interface BlinkPreferencesStore : Store<Intent, State, Label> {
         val notifySound: Boolean = false,
         val notifyVibration: Boolean = false,
         val launchMinimized: Boolean = false,
-        val settingsPanelVisible: Boolean = false,
     )
 
     sealed class Label {

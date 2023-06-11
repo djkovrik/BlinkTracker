@@ -11,6 +11,9 @@ interface BlinkTracker {
     fun onTrackingStarted()
     fun onTrackingStopped()
     fun onFaceDataChanged(data: VisionFaceData)
+    fun onMinimizedStateChanged(minimized: Boolean)
+    fun showPreferencesPanel()
+    fun closePreferencesPanel()
 
     data class Model(
         val isTrackingActive: Boolean,
@@ -19,6 +22,7 @@ interface BlinkTracker {
         val blinksTotal: Int,
         val isMinimized: Boolean,
         val hasFaceDetected: Boolean,
+        val isPreferencesPanelVisible: Boolean,
     )
 
     sealed class Output {

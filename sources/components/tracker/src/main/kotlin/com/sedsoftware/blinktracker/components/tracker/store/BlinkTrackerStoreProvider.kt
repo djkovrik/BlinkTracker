@@ -105,50 +105,66 @@ internal class BlinkTrackerStoreProvider(
                         dispatch(Msg.Blink)
                     }
                 }
+
+                onIntent<Intent.SettingsPanelRequested> {
+                    dispatch(Msg.SettingsVisibilityChanged(true))
+                }
+
+                onIntent<Intent.SettingsPanelClosed> {
+                    dispatch(Msg.SettingsVisibilityChanged(false))
+                }
+
+                onIntent<Intent.MinimizedStateChanged> {
+                    dispatch(Msg.MinimizedStateChanged(it.minimized))
+                }
             },
             reducer = { msg ->
                 when (msg) {
-                    is Msg.ObservedThresholdOptionChanged -> {
-                        copy(threshold = msg.newValue)
-                    }
+                    is Msg.ObservedThresholdOptionChanged -> copy(
+                        threshold = msg.newValue
+                    )
 
-                    is Msg.ObservedSoundOptionChanged -> {
-                        copy(notifyWithSound = msg.newValue)
-                    }
+                    is Msg.ObservedSoundOptionChanged -> copy(
+                        notifyWithSound = msg.newValue
+                    )
 
-                    is Msg.ObservedVibrationOptionChanged -> {
-                        copy(notifyWithVibration = msg.newValue)
-                    }
+                    is Msg.ObservedVibrationOptionChanged -> copy(
+                        notifyWithVibration = msg.newValue
+                    )
 
-                    is Msg.ObservedLaunchOptionChanged -> {
-                        copy(shouldLaunchMinimized = msg.newValue)
-                    }
+                    is Msg.ObservedLaunchOptionChanged -> copy(
+                        shouldLaunchMinimized = msg.newValue
+                    )
 
-                    is Msg.FaceDataAvailable -> {
-                        copy(faceDetected = msg.data.faceAvailable)
-                    }
+                    is Msg.FaceDataAvailable -> copy(
+                        faceDetected = msg.data.faceAvailable
+                    )
 
-                    is Msg.TrackerStateChangedStarted -> {
-                        copy(active = msg.started)
-                    }
+                    is Msg.TrackerStateChangedStarted -> copy(
+                        active = msg.started
+                    )
 
-                    is Msg.Tick -> {
-                        copy(timer = msg.seconds)
-                    }
+                    is Msg.Tick -> copy(
+                        timer = msg.seconds
+                    )
 
-                    is Msg.Blink -> {
-                        copy(
-                            blinkLastMinute = this.blinkLastMinute + 1,
-                            blinksTotal = this.blinksTotal + 1,
-                            lastBlink = System.now(),
-                        )
-                    }
+                    is Msg.Blink -> copy(
+                        blinkLastMinute = this.blinkLastMinute + 1,
+                        blinksTotal = this.blinksTotal + 1,
+                        lastBlink = System.now(),
+                    )
 
-                    is Msg.ResetMinute -> {
-                        copy(
-                            blinkLastMinute = 0
-                        )
-                    }
+                    is Msg.ResetMinute -> copy(
+                        blinkLastMinute = 0
+                    )
+
+                    is Msg.SettingsVisibilityChanged -> copy(
+                        preferencesPanelVisible = msg.visible
+                    )
+
+                    is Msg.MinimizedStateChanged -> copy(
+                        minimized = msg.minimized
+                    )
                 }
             }
         ) {}
@@ -171,6 +187,8 @@ internal class BlinkTrackerStoreProvider(
         data class Tick(val seconds: Int) : Msg
         object Blink : Msg
         object ResetMinute : Msg
+        data class SettingsVisibilityChanged(val visible: Boolean) : Msg
+        data class MinimizedStateChanged(val minimized: Boolean) : Msg
     }
 
     private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =

@@ -6,7 +6,6 @@ import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreference
 internal val stateToModel: (State) -> Model =
     {
         Model(
-            settingsPanelVisible = it.settingsPanelVisible,
             selectedThreshold = it.minimalMinuteThreshold,
             notifySoundChecked = it.notifySound,
             notifyVibrationChecked = it.notifyVibration,

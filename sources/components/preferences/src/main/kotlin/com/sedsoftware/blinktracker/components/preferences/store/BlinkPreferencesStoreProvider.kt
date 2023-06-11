@@ -55,37 +55,27 @@ internal class BlinkPreferencesStoreProvider(
                         dispatch(Msg.LaunchOptionChanged(it.value))
                     }
                 }
-
-
-                onIntent<Intent.SettingsPanelRequested> {
-                    dispatch(Msg.SettingsVisibilityChanged(true))
-                }
-
-                onIntent<Intent.SettingsPanelClosed> {
-                    dispatch(Msg.SettingsVisibilityChanged(false))
-                }
             },
             reducer = { msg ->
                 when (msg) {
-                    is Msg.ThresholdOptionChanged -> {
-                        copy(minimalMinuteThreshold = msg.newValue)
-                    }
+                    is Msg.ThresholdOptionChanged -> copy(
+                        minimalMinuteThreshold = msg.newValue
+                    )
 
-                    is Msg.SoundOptionChanged -> {
-                        copy(notifySound = msg.newValue)
-                    }
 
-                    is Msg.VibrationOptionChanged -> {
-                        copy(notifyVibration = msg.newValue)
-                    }
+                    is Msg.SoundOptionChanged -> copy(
+                        notifySound = msg.newValue
+                    )
 
-                    is Msg.LaunchOptionChanged -> {
-                        copy(launchMinimized = msg.newValue)
-                    }
 
-                    is Msg.SettingsVisibilityChanged -> {
-                        copy(settingsPanelVisible = msg.visible)
-                    }
+                    is Msg.VibrationOptionChanged -> copy(
+                        notifyVibration = msg.newValue
+                    )
+
+
+                    is Msg.LaunchOptionChanged -> copy(
+                        launchMinimized = msg.newValue
+                    )
                 }
             }
         ) {}
@@ -97,7 +87,6 @@ internal class BlinkPreferencesStoreProvider(
         data class SoundOptionChanged(val newValue: Boolean) : Msg
         data class VibrationOptionChanged(val newValue: Boolean) : Msg
         data class LaunchOptionChanged(val newValue: Boolean) : Msg
-        data class SettingsVisibilityChanged(val visible: Boolean) : Msg
     }
 
     private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =

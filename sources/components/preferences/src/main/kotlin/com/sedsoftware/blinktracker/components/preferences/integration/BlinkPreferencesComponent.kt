@@ -58,12 +58,4 @@ class BlinkPreferencesComponent(
     override fun onLaunchMinimizedChanged(value: Boolean) {
         store.accept(BlinkPreferencesStore.Intent.LaunchMinimizedChanged(value))
     }
-
-    override fun requestPreferencesPanel() {
-        store.accept(BlinkPreferencesStore.Intent.SettingsPanelRequested)
-    }
-
-    override fun closePreferencesPanel() {
-        store.accept(BlinkPreferencesStore.Intent.SettingsPanelClosed)
-    }
 }
