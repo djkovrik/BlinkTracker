@@ -125,7 +125,7 @@ private fun PrefsOptionSlider(
 
         Slider(
             value = value,
-            valueRange = 1f..20f,
+            valueRange = 1f..25f,
             onValueChange = onValueChanged,
         )
     }

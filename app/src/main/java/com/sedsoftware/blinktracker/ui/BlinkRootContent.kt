@@ -14,11 +14,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.sedsoftware.blinktracker.camera.CameraPreviewComposable
 import com.sedsoftware.blinktracker.camera.core.VisionImageProcessor
 import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.root.BlinkRoot
+import com.sedsoftware.blinktracker.ui.component.TopAppBar
 
 @Composable
 fun BlinkRootContent(
@@ -47,6 +49,19 @@ fun BlinkRootContent(
         modifier = modifier,
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
+        },
+        topBar = {
+            TopAppBar(
+                cameraModel = cameraState,
+                trackerModel = trackerState,
+                modifier = modifier,
+            ) {
+                CameraPreviewComposable(
+                    imageProcessor = processor,
+                    lensFacing = cameraState.selectedLens,
+                    modifier = modifier.fillMaxSize(),
+                )
+            }
         },
     ) { contentPadding: PaddingValues ->
         Surface(
