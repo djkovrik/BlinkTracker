@@ -8,18 +8,17 @@ import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreference
 internal interface BlinkPreferencesStore : Store<Intent, State, Label> {
 
     sealed class Intent {
-        data class MinimalThresholdChanged(val value: Int) : Intent()
+        data class MinimalThresholdChanged(val value: Float) : Intent()
         data class NotifySoundChanged(val value: Boolean) : Intent()
         data class NotifyVibrationChanged(val value: Boolean) : Intent()
-        object SettingsPanelRequested : Intent()
-        object SettingsPanelClosed : Intent()
+        data class LaunchMinimizedChanged(val value: Boolean) : Intent()
     }
 
     data class State(
-        val minimalMinuteThreshold: Int = -1,
+        val minimalMinuteThreshold: Float = -1f,
         val notifySound: Boolean = false,
         val notifyVibration: Boolean = false,
-        val settingsPanelVisible: Boolean = false,
+        val launchMinimized: Boolean = false,
     )
 
     sealed class Label {

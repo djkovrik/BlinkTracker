@@ -5,7 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -15,11 +15,12 @@ class AppSettings(
 ) : Settings {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-    private val perMinuteThresholdKey: Preferences.Key<Int> = intPreferencesKey("per_minute_threshold")
+    private val perMinuteThresholdKey: Preferences.Key<Float> = floatPreferencesKey("per_minute_threshold")
     private val notifySoundEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("notify_sound_enabled")
     private val notifyVibrationEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("notify_vibration_enabled")
+    private val launchMinimizedEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("launch_minimized_enabled")
 
-    override suspend fun getPerMinuteThreshold(): Flow<Int> =
+    override suspend fun getPerMinuteThreshold(): Flow<Float> =
         getPrefsValue(perMinuteThresholdKey, PER_MINUTE_THRESHOLD_DEFAULT)
 
     override suspend fun getNotifySoundEnabled(): Flow<Boolean> =
@@ -28,14 +29,20 @@ class AppSettings(
     override suspend fun getNotifyVibrationEnabled(): Flow<Boolean> =
         getPrefsValue(notifyVibrationEnabledKey, NOTIFY_VIBRATION_DEFAULT)
 
-    override suspend fun setPerMinuteThreshold(value: Int) =
+    override suspend fun getLaunchMinimizedEnabled(): Flow<Boolean> =
+        getPrefsValue(launchMinimizedEnabledKey, LAUNCH_MINIMIZED_DEFAULT)
+
+    override suspend fun setPerMinuteThreshold(value: Float) =
         setPrefsValue(perMinuteThresholdKey, value)
 
     override suspend fun setNotifySoundEnabled(value: Boolean) =
-        setPrefsValue(notifySoundEnabledKey, NOTIFY_SOUND_DEFAULT)
+        setPrefsValue(notifySoundEnabledKey, value)
 
     override suspend fun setNotifyVibrationEnabled(value: Boolean) =
-        setPrefsValue(notifyVibrationEnabledKey, NOTIFY_VIBRATION_DEFAULT)
+        setPrefsValue(notifyVibrationEnabledKey, value)
+
+    override suspend fun setLaunchMinimizedEnabled(value: Boolean) =
+        setPrefsValue(notifyVibrationEnabledKey, value)
 
     private fun <T> getPrefsValue(key: Preferences.Key<T>, default: T): Flow<T> =
         context.dataStore.data.map { it[key] ?: default }
@@ -47,8 +54,9 @@ class AppSettings(
     }
 
     private companion object {
-        const val PER_MINUTE_THRESHOLD_DEFAULT = 12
+        const val PER_MINUTE_THRESHOLD_DEFAULT = 12f
         const val NOTIFY_SOUND_DEFAULT = false
         const val NOTIFY_VIBRATION_DEFAULT = true
+        const val LAUNCH_MINIMIZED_DEFAULT = false
     }
 }

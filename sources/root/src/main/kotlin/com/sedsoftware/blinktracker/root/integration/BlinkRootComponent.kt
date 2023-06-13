@@ -73,12 +73,6 @@ class BlinkRootComponent internal constructor(
 
     private fun onTrackerOutput(output: BlinkTracker.Output) {
         when (output) {
-            is BlinkTracker.Output.PreferencesPanelRequested ->
-                preferencesComponent.requestPreferencesPanel()
-
-            is BlinkTracker.Output.PreferencesPanelClosed ->
-                preferencesComponent.closePreferencesPanel()
-
             is BlinkTracker.Output.SoundNotificationTriggered ->
                 notificationsManager.notifyWithSound()
 

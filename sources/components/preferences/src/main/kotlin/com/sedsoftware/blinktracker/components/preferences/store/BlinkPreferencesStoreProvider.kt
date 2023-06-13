@@ -49,31 +49,33 @@ internal class BlinkPreferencesStoreProvider(
                     }
                 }
 
-                onIntent<Intent.SettingsPanelRequested> {
-                    dispatch(Msg.SettingsVisibilityChanged(true))
-                }
-
-                onIntent<Intent.SettingsPanelClosed> {
-                    dispatch(Msg.SettingsVisibilityChanged(false))
+                onIntent<Intent.LaunchMinimizedChanged> {
+                    launch(getExceptionHandler(this)) {
+                        settings.setLaunchMinimizedEnabled(it.value)
+                        dispatch(Msg.LaunchOptionChanged(it.value))
+                    }
                 }
             },
             reducer = { msg ->
                 when (msg) {
-                    is Msg.ThresholdOptionChanged -> {
-                        copy(minimalMinuteThreshold = msg.newValue)
-                    }
+                    is Msg.ThresholdOptionChanged -> copy(
+                        minimalMinuteThreshold = msg.newValue
+                    )
 
-                    is Msg.SoundOptionChanged -> {
-                        copy(notifySound = msg.newValue)
-                    }
 
-                    is Msg.VibrationOptionChanged -> {
-                        copy(notifyVibration = msg.newValue)
-                    }
+                    is Msg.SoundOptionChanged -> copy(
+                        notifySound = msg.newValue
+                    )
 
-                    is Msg.SettingsVisibilityChanged -> {
-                        copy(settingsPanelVisible = msg.visible)
-                    }
+
+                    is Msg.VibrationOptionChanged -> copy(
+                        notifyVibration = msg.newValue
+                    )
+
+
+                    is Msg.LaunchOptionChanged -> copy(
+                        launchMinimized = msg.newValue
+                    )
                 }
             }
         ) {}
@@ -81,10 +83,10 @@ internal class BlinkPreferencesStoreProvider(
     private interface Action
 
     private sealed interface Msg {
-        data class ThresholdOptionChanged(val newValue: Int) : Msg
+        data class ThresholdOptionChanged(val newValue: Float) : Msg
         data class SoundOptionChanged(val newValue: Boolean) : Msg
         data class VibrationOptionChanged(val newValue: Boolean) : Msg
-        data class SettingsVisibilityChanged(val visible: Boolean) : Msg
+        data class LaunchOptionChanged(val newValue: Boolean) : Msg
     }
 
     private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =

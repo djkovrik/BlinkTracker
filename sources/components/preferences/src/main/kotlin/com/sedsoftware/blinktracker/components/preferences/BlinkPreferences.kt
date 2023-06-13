@@ -7,17 +7,16 @@ interface BlinkPreferences {
     val models: Flow<Model>
     val initial: Model
 
-    fun onMinimalThresholdChanged(value: Int)
+    fun onMinimalThresholdChanged(value: Float)
     fun onNotifySoundChanged(value: Boolean)
     fun onNotifyVibrationChanged(value: Boolean)
-    fun requestPreferencesPanel()
-    fun closePreferencesPanel()
+    fun onLaunchMinimizedChanged(value: Boolean)
 
     data class Model(
-        val settingsPanelVisible: Boolean,
-        val selectedThreshold: Int,
+        val selectedThreshold: Float,
         val notifySoundChecked: Boolean,
         val notifyVibrationChecked: Boolean,
+        val launchMinimized: Boolean,
     )
 
     sealed class Output {

@@ -10,14 +10,20 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.lifecycleScope
 import com.sedsoftware.blinktracker.camera.core.VisionImageProcessor
+import com.sedsoftware.blinktracker.components.camera.model.CameraLens
+import com.sedsoftware.blinktracker.components.camera.model.isNotValid
 import kotlinx.coroutines.launch
 
 @Composable
 fun CameraPreviewComposable(
     imageProcessor: VisionImageProcessor,
-    lensFacing: Int,
+    lensFacing: CameraLens,
     modifier: Modifier = Modifier
 ) {
+    if (lensFacing.isNotValid) {
+        return
+    }
+
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -50,8 +56,8 @@ fun CameraPreviewComposable(
         })
 }
 
-internal fun Int.getLensFacing() = when (this) {
-    0 -> CameraSelector.LENS_FACING_FRONT
-    1 -> CameraSelector.LENS_FACING_BACK
+internal fun CameraLens.getLensFacing() = when (this) {
+    CameraLens.FRONT -> CameraSelector.LENS_FACING_FRONT
+    CameraLens.BACK -> CameraSelector.LENS_FACING_BACK
     else -> error("Wrong lens value")
 }

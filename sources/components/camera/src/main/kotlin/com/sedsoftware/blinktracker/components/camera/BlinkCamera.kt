@@ -16,7 +16,7 @@ interface BlinkCamera {
 
     data class Model(
         val currentPermissionState: PermissionState,
-        val selectedLens: Int,
+        val selectedLens: CameraLens,
         val cameraAvailable: Boolean,
     )
 }

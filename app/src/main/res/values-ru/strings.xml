@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="permissions_declined_info">Вы запретили доступ к камере, поэтому отслеживание недоступно</string>
+    <string name="permissions_rationale_info">Для отслеживания морганий приложению требуется доступ к фронтальной камере</string>
+    <string name="camera_not_detected">Фронтальная камера не найдена, поэтому отслеживание недоступно</string>
+    <string name="camera_not_detected_short">Камера не найдена</string>
+    <string name="unknown_error">Неизвестная ошибка</string>
+    <string name="prefs_threshold">Минимум морганий в минуту</string>
+    <string name="prefs_notify_sound">Уведомлять звуковым сигналом</string>
+    <string name="prefs_notify_vibro">Уведомлять вибрацией</string>
+    <string name="prefs_minimize_on_start">Сворачивать при старте</string>
+    <string name="button_start">Старт</string>
+    <string name="button_stop">Стоп</string>
+    <string name="button_minimize">Свернуть</string>
+    <string name="button_settings">Настройки</string>
+    <string name="no_face_detected">Не удалось обнаружить лицо для распознавания</string>
+    <string name="blinks_last_minute">Морганий за последнюю минуту</string>
+    <string name="blinks_total">Морганий всего</string>
+    <string name="face_data_detected">Данные лица доступны</string>
+    <string name="face_data_not_detected">Данные лица недоступны</string>
+    <string name="info_title">Почему это важно?</string>
+    <string name="stats">Данные</string>
+    <string name="tracking">Отслеживание</string>
+    <string name="active">Активно</string>
+    <string name="not_active">Неактивно</string>
+
+    <string name="info">
+        Согласно данным National Library of Medicine, нормальное моргание необходимо для правильного распределения слезной плёнки и защиты
+        поверхности глаза. Аномалии моргания могут привести к плохому распределению слезы и, следовательно, к повреждениям глазной поверхности.\n
+        Несколько исследований было посвящено морганию и частоте моргания и было установлено, что нормальная частота спонтанных морганий равна
+        от 12 до 15 в минуту. Ряд других исследований показали, что интервал между морганиями может составлять от 4 до 10 секунд, что означает
+        частоту моргания равную 22 раза в минуту.
+    </string>
+</resources>

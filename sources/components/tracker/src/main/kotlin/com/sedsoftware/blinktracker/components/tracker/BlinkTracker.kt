@@ -11,21 +11,22 @@ interface BlinkTracker {
     fun onTrackingStarted()
     fun onTrackingStopped()
     fun onFaceDataChanged(data: VisionFaceData)
-    fun onPreferencesPanelRequested()
-    fun onPreferencesPanelClosed()
+    fun onMinimizeActivated()
+    fun onMinimizeDeactivated()
+    fun showPreferencesPanel()
+    fun closePreferencesPanel()
 
     data class Model(
         val isTrackingActive: Boolean,
-        val totalTrackedSeconds: Int,
+        val timerLabel: String,
         val blinksPerLastMinute: Int,
         val blinksTotal: Int,
         val isMinimized: Boolean,
         val hasFaceDetected: Boolean,
+        val isPreferencesPanelVisible: Boolean,
     )
 
     sealed class Output {
-        object PreferencesPanelRequested : Output()
-        object PreferencesPanelClosed : Output()
         object SoundNotificationTriggered : Output()
         object VibroNotificationTriggered : Output()
         data class ErrorCaught(val throwable: Throwable) : Output()

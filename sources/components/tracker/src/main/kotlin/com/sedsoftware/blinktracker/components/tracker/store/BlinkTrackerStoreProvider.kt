@@ -34,6 +34,7 @@ internal class BlinkTrackerStoreProvider(
                     dispatch(Action.ObserveThresholdOption)
                     dispatch(Action.ObserveNotifySoundOption)
                     dispatch(Action.ObserveNotifyVibrationOption)
+                    dispatch(Action.ObserveLaunchOption)
 
                     (0..Int.MAX_VALUE)
                         .asSequence()
@@ -48,19 +49,28 @@ internal class BlinkTrackerStoreProvider(
                 onAction<Action.ObserveThresholdOption> {
                     launch(getExceptionHandler(this)) {
                         settings.getPerMinuteThreshold()
-                            .collect { dispatch(Msg.ObservedThresholdOptionChanged(it)) }
+                            .collect { dispatch(Msg.ObservedThresholdOptionChanged(it.toInt())) }
                     }
                 }
+
                 onAction<Action.ObserveNotifySoundOption> {
                     launch(getExceptionHandler(this)) {
                         settings.getNotifySoundEnabled()
                             .collect { dispatch(Msg.ObservedSoundOptionChanged(it)) }
                     }
                 }
+
                 onAction<Action.ObserveNotifyVibrationOption> {
                     launch(getExceptionHandler(this)) {
                         settings.getNotifyVibrationEnabled()
                             .collect { dispatch(Msg.ObservedVibrationOptionChanged(it)) }
+                    }
+                }
+
+                onAction<Action.ObserveLaunchOption> {
+                    launch(getExceptionHandler(this)) {
+                        settings.getLaunchMinimizedEnabled()
+                            .collect { dispatch(Msg.ObservedLaunchOptionChanged(it)) }
                     }
                 }
 
@@ -95,46 +105,66 @@ internal class BlinkTrackerStoreProvider(
                         dispatch(Msg.Blink)
                     }
                 }
+
+                onIntent<Intent.SettingsPanelRequested> {
+                    dispatch(Msg.SettingsVisibilityChanged(true))
+                }
+
+                onIntent<Intent.SettingsPanelClosed> {
+                    dispatch(Msg.SettingsVisibilityChanged(false))
+                }
+
+                onIntent<Intent.MinimizedStateChanged> {
+                    dispatch(Msg.MinimizedStateChanged(it.minimized))
+                }
             },
             reducer = { msg ->
                 when (msg) {
-                    is Msg.ObservedThresholdOptionChanged -> {
-                        copy(threshold = msg.newValue)
-                    }
+                    is Msg.ObservedThresholdOptionChanged -> copy(
+                        threshold = msg.newValue
+                    )
 
-                    is Msg.ObservedSoundOptionChanged -> {
-                        copy(notifyWithSound = msg.newValue)
-                    }
+                    is Msg.ObservedSoundOptionChanged -> copy(
+                        notifyWithSound = msg.newValue
+                    )
 
-                    is Msg.ObservedVibrationOptionChanged -> {
-                        copy(notifyWithVibration = msg.newValue)
-                    }
+                    is Msg.ObservedVibrationOptionChanged -> copy(
+                        notifyWithVibration = msg.newValue
+                    )
 
-                    is Msg.FaceDataAvailable -> {
-                        copy(faceDetected = msg.data.faceAvailable)
-                    }
+                    is Msg.ObservedLaunchOptionChanged -> copy(
+                        shouldLaunchMinimized = msg.newValue
+                    )
 
-                    is Msg.TrackerStateChangedStarted -> {
-                        copy(active = msg.started)
-                    }
+                    is Msg.FaceDataAvailable -> copy(
+                        faceDetected = msg.data.faceAvailable
+                    )
 
-                    is Msg.Tick -> {
-                        copy(timer = msg.seconds)
-                    }
+                    is Msg.TrackerStateChangedStarted -> copy(
+                        active = msg.started
+                    )
 
-                    is Msg.Blink -> {
-                        copy(
-                            blinkLastMinute = this.blinkLastMinute + 1,
-                            blinksTotal = this.blinksTotal + 1,
-                            lastBlink = System.now(),
-                        )
-                    }
+                    is Msg.Tick -> copy(
+                        timer = msg.seconds
+                    )
 
-                    is Msg.ResetMinute -> {
-                        copy(
-                            blinkLastMinute = 0
-                        )
-                    }
+                    is Msg.Blink -> copy(
+                        blinkLastMinute = this.blinkLastMinute + 1,
+                        blinksTotal = this.blinksTotal + 1,
+                        lastBlink = System.now(),
+                    )
+
+                    is Msg.ResetMinute -> copy(
+                        blinkLastMinute = 0
+                    )
+
+                    is Msg.SettingsVisibilityChanged -> copy(
+                        preferencesPanelVisible = msg.visible
+                    )
+
+                    is Msg.MinimizedStateChanged -> copy(
+                        minimized = msg.minimized
+                    )
                 }
             }
         ) {}
@@ -143,6 +173,7 @@ internal class BlinkTrackerStoreProvider(
         object ObserveThresholdOption : Action
         object ObserveNotifySoundOption : Action
         object ObserveNotifyVibrationOption : Action
+        object ObserveLaunchOption : Action
         object OnTick : Action
     }
 
@@ -150,11 +181,14 @@ internal class BlinkTrackerStoreProvider(
         data class ObservedThresholdOptionChanged(val newValue: Int) : Msg
         data class ObservedSoundOptionChanged(val newValue: Boolean) : Msg
         data class ObservedVibrationOptionChanged(val newValue: Boolean) : Msg
+        data class ObservedLaunchOptionChanged(val newValue: Boolean) : Msg
         data class FaceDataAvailable(val data: VisionFaceData) : Msg
         data class TrackerStateChangedStarted(val started: Boolean) : Msg
         data class Tick(val seconds: Int) : Msg
         object Blink : Msg
         object ResetMinute : Msg
+        data class SettingsVisibilityChanged(val visible: Boolean) : Msg
+        data class MinimizedStateChanged(val minimized: Boolean) : Msg
     }
 
     private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =

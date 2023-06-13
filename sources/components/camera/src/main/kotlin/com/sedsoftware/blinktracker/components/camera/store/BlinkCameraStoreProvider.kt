@@ -30,16 +30,15 @@ internal class BlinkCameraStoreProvider(
             },
             reducer = { msg ->
                 when (msg) {
-                    is Msg.PermissionStateChanged -> {
-                        copy(permissionState = msg.newState)
-                    }
+                    is Msg.PermissionStateChanged -> copy(
+                        permissionState = msg.newState
+                    )
 
-                    is Msg.LensSelected -> {
-                        copy(
-                            lensFacing = msg.newLens,
-                            cameraAvailable = msg.newLens != CameraLens.NOT_AVAILABLE,
-                        )
-                    }
+                    is Msg.LensSelected -> copy(
+                        lensFacing = msg.newLens,
+                        cameraAvailable = msg.newLens != CameraLens.NOT_AVAILABLE,
+                    )
+
                 }
             }
         ) {}
