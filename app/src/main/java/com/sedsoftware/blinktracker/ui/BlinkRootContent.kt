@@ -14,7 +14,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.sedsoftware.blinktracker.camera.CameraPreviewComposable
 import com.sedsoftware.blinktracker.camera.core.VisionImageProcessor
 import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
@@ -81,13 +80,7 @@ fun BlinkRootContent(
                 onLaunchMinimizedChange = { root.preferencesComponent.onLaunchMinimizedChanged(it) },
                 onNotifySoundChange = { root.preferencesComponent.onNotifySoundChanged(it) },
                 onNotifyVibroChange = { root.preferencesComponent.onNotifyVibrationChanged(it) }
-            ) {
-                CameraPreviewComposable(
-                    imageProcessor = processor,
-                    lensFacing = cameraState.selectedLens,
-                    modifier = modifier.fillMaxSize(),
-                )
-            }
+            )
         }
     }
 }

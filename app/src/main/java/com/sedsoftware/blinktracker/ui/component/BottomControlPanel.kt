@@ -37,7 +37,7 @@ fun BottomControlPanel(
 
     val offsetAnimation: Dp by animateDpAsState(
         targetValue = if (trackerModel.isPreferencesPanelVisible) 0.dp else 230.dp,
-        label = "offsetAnimation",
+        label = "panelOffsetAnimation",
     )
 
     Card(
