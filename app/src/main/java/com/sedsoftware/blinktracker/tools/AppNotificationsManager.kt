@@ -26,6 +26,7 @@ class AppNotificationsManager(
         }
     }
 
+    @Suppress("TooGenericExceptionCaught")
     override fun notifyWithSound() {
         try {
             val notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)

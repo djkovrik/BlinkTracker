@@ -16,6 +16,7 @@ internal val stateToModel: (State) -> Model =
         )
     }
 
+@Suppress("MagicNumber")
 private fun buildStringFromTimer(timer: Int): String {
     val minutes = timer / 60
     val seconds = timer - minutes * 60
