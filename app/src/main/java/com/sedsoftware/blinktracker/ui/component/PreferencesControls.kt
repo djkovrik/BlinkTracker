@@ -149,7 +149,7 @@ fun PreviewPreferencesAllEnabledLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
             PreferencesControls(
-                model = PreviewStubs.prefsAllEnabled,
+                model = PreviewStubs.prefsMixed,
             )
         }
     }
@@ -173,7 +173,7 @@ fun PreviewPreferencesAllEnabledDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
             PreferencesControls(
-                model = PreviewStubs.prefsAllEnabled,
+                model = PreviewStubs.prefsMixed,
             )
         }
     }

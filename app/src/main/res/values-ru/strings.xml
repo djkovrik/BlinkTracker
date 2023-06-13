@@ -12,4 +12,11 @@
     <string name="button_stop">Стоп</string>
     <string name="button_minimize">Свернуть</string>
     <string name="button_settings">Настройки</string>
+    <string name="no_face_detected">Не удалось обнаружить лицо для распознавания</string>
+    <string name="blinks_last_minute">Морганий за последнюю минуту</string>
+    <string name="blinks_total">Морганий всего</string>
+    <string name="face_data_detected">Данные лица доступны</string>
+    <string name="face_data_not_detected">Данные лица недоступны</string>
+    <string name="tracking_active">Отслеживание активно</string>
+    <string name="tracking_not_active">Отслеживание не активно</string>
 </resources>

@@ -37,7 +37,7 @@ fun TrackingControls(
     onSettingsClick: () -> Unit = {},
 ) {
     Row(modifier = modifier.fillMaxWidth()) {
-        // Start/Stop Minimize
+        // Start/Stop
         Row(modifier = Modifier.weight(1f)) {
             Button(
                 onClick = if (model.isTrackingActive) onStopClick else onStartClick,
@@ -48,31 +48,32 @@ fun TrackingControls(
                     Icon(
                         imageVector = Icons.Default.Stop,
                         contentDescription = "Stop",
-                        tint = MaterialTheme.colorScheme.onPrimary,
+                        tint = MaterialTheme.colorScheme.tertiaryContainer,
                         modifier = Modifier
                     )
                     Text(
                         text = stringResource(id = R.string.button_stop),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.tertiaryContainer,
                         modifier = Modifier.padding(horizontal = 4.dp),
                     )
                 } else {
                     Icon(
                         imageVector = Icons.Default.PlayArrow,
                         contentDescription = "Start",
-                        tint = MaterialTheme.colorScheme.onPrimary,
+                        tint = MaterialTheme.colorScheme.tertiaryContainer,
                         modifier = Modifier
                     )
                     Text(
                         text = stringResource(id = R.string.button_start),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.tertiaryContainer,
                         modifier = Modifier.padding(horizontal = 4.dp),
                     )
                 }
             }
 
+            // Minimize
             OutlinedButton(
                 onClick = onMinimizeClick,
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
@@ -132,7 +133,7 @@ fun TrackingControls(
 @Preview(showBackground = true)
 fun PreviewPreferencesNotActiveLight() {
     BlinkTrackerTheme(darkTheme = false) {
-        Surface {
+        Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
             TrackingControls(
                 model = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
             )
@@ -144,7 +145,7 @@ fun PreviewPreferencesNotActiveLight() {
 @Preview(showBackground = true)
 fun PreviewPreferencesActiveLight() {
     BlinkTrackerTheme(darkTheme = false) {
-        Surface {
+        Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
             TrackingControls(
                 model = PreviewStubs.trackerActiveWithFace,
             )
@@ -156,7 +157,7 @@ fun PreviewPreferencesActiveLight() {
 @Preview(showBackground = true)
 fun PreviewPreferencesNotActiveDark() {
     BlinkTrackerTheme(darkTheme = true) {
-        Surface {
+        Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
             TrackingControls(
                 model = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
             )
@@ -168,7 +169,7 @@ fun PreviewPreferencesNotActiveDark() {
 @Preview(showBackground = true)
 fun PreviewPreferencesActiveDark() {
     BlinkTrackerTheme(darkTheme = true) {
-        Surface {
+        Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
             TrackingControls(
                 model = PreviewStubs.trackerActiveWithFace,
             )

@@ -60,7 +60,27 @@ fun BlinkRootContent(
                 camera = cameraState,
                 preferences = preferencesState,
                 tracker = trackerState,
-                modifier = modifier
+                modifier = modifier,
+                onStartClick = root.trackerComponent::onTrackingStarted,
+                onStopClick = root.trackerComponent::onTrackingStopped,
+                onMinimizeClick = {
+                    if (trackerState.isMinimized) {
+                        root.trackerComponent.onMinimizeDeactivated()
+                    } else {
+                        root.trackerComponent.onMinimizeActivated()
+                    }
+                },
+                onSettingsClick = {
+                    if (trackerState.isPreferencesPanelVisible) {
+                        root.trackerComponent.closePreferencesPanel()
+                    } else {
+                        root.trackerComponent.showPreferencesPanel()
+                    }
+                },
+                onThresholdChange = { root.preferencesComponent.onMinimalThresholdChanged(it) },
+                onLaunchMinimizedChange = { root.preferencesComponent.onLaunchMinimizedChanged(it) },
+                onNotifySoundChange = { root.preferencesComponent.onNotifySoundChanged(it) },
+                onNotifyVibroChange = { root.preferencesComponent.onNotifyVibrationChanged(it) }
             ) {
                 CameraPreviewComposable(
                     imageProcessor = processor,

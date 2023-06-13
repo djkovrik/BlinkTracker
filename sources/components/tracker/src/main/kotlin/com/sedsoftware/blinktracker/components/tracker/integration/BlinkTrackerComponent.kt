@@ -64,8 +64,12 @@ class BlinkTrackerComponent(
         store.accept(BlinkTrackerStore.Intent.FaceDataChanged(data))
     }
 
-    override fun onMinimizedStateChanged(minimized: Boolean) {
-        store.accept(BlinkTrackerStore.Intent.MinimizedStateChanged(minimized))
+    override fun onMinimizeActivated() {
+        store.accept(BlinkTrackerStore.Intent.MinimizedStateChanged(true))
+    }
+
+    override fun onMinimizeDeactivated() {
+        store.accept(BlinkTrackerStore.Intent.MinimizedStateChanged(false))
     }
 
     override fun showPreferencesPanel() {

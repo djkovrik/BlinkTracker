@@ -45,14 +45,14 @@ object PreviewStubs {
         launchMinimized = false,
     )
 
-    val prefsAllEnabled = BlinkPreferences.Model(
+    val prefsMixed = BlinkPreferences.Model(
         selectedThreshold = 16f,
-        notifySoundChecked = true,
+        notifySoundChecked = false,
         notifyVibrationChecked = true,
         launchMinimized = true,
     )
 
-    val trackerNotActiveNoFace = BlinkTracker.Model(
+    val trackerNotActiveNoFaceNoPrefs = BlinkTracker.Model(
         isTrackingActive = false,
         timerLabel = "00:00",
         blinksPerLastMinute = 0,
@@ -62,24 +62,13 @@ object PreviewStubs {
         isPreferencesPanelVisible = false,
     )
 
-    val trackerNotActiveWithFaceNoPrefs = trackerNotActiveNoFace.copy(
+    val trackerNotActiveWithFaceNoPrefs = trackerNotActiveNoFaceNoPrefs.copy(
         hasFaceDetected = true,
     )
 
-    val trackerNotActiveWithFaceAndPrefs = trackerNotActiveNoFace.copy(
+    val trackerNotActiveWithFaceAndPrefs = trackerNotActiveNoFaceNoPrefs.copy(
         hasFaceDetected = true,
         isPreferencesPanelVisible = true,
-    )
-
-
-    val trackerActiveNoFace = BlinkTracker.Model(
-        isTrackingActive = true,
-        timerLabel = "12:34",
-        blinksPerLastMinute = 12,
-        blinksTotal = 15,
-        isMinimized = false,
-        hasFaceDetected = false,
-        isPreferencesPanelVisible = false,
     )
 
     val trackerActiveWithFace = BlinkTracker.Model(
@@ -98,6 +87,6 @@ fun CameraStub() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Green)
+            .background(Color.Gray)
     )
 }

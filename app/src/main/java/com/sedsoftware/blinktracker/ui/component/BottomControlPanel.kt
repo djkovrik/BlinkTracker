@@ -36,18 +36,18 @@ fun BottomControlPanel(
 ) {
 
     val offsetAnimation: Dp by animateDpAsState(
-        targetValue = if (trackerModel.isPreferencesPanelVisible) 0.dp else 220.dp,
+        targetValue = if (trackerModel.isPreferencesPanelVisible) 0.dp else 230.dp,
         label = "offsetAnimation",
     )
 
     Card(
         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.surfaceVariant,
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.tertiaryContainer,
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp,
+            defaultElevation = 16.dp,
         ),
         modifier = modifier
             .fillMaxWidth()
@@ -80,7 +80,7 @@ fun PreviewBottomPanelCollapsedLight() {
         Surface {
             BottomControlPanel(
                 trackerModel = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
-                prefsModel = PreviewStubs.prefsAllEnabled,
+                prefsModel = PreviewStubs.prefsMixed,
             )
         }
     }
@@ -93,7 +93,7 @@ fun PreviewBottomPanelExpandedLight() {
         Surface {
             BottomControlPanel(
                 trackerModel = PreviewStubs.trackerNotActiveWithFaceAndPrefs,
-                prefsModel = PreviewStubs.prefsAllEnabled,
+                prefsModel = PreviewStubs.prefsMixed,
             )
         }
     }
@@ -106,7 +106,7 @@ fun PreviewBottomPanelCollapsedDark() {
         Surface {
             BottomControlPanel(
                 trackerModel = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
-                prefsModel = PreviewStubs.prefsAllEnabled,
+                prefsModel = PreviewStubs.prefsMixed,
             )
         }
     }
@@ -119,7 +119,7 @@ fun PreviewBottomPanelExpandedDark() {
         Surface {
             BottomControlPanel(
                 trackerModel = PreviewStubs.trackerNotActiveWithFaceAndPrefs,
-                prefsModel = PreviewStubs.prefsAllEnabled,
+                prefsModel = PreviewStubs.prefsMixed,
             )
         }
     }

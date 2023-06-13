@@ -60,7 +60,7 @@ fun PreviewPermissionsDeniedLight() {
             BlinkRootScreen(
                 camera = PreviewStubs.cameraPermissionDenied,
                 preferences = PreviewStubs.prefsAllDisabled,
-                tracker = PreviewStubs.trackerNotActiveNoFace,
+                tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
             )
         }
     }
@@ -74,7 +74,7 @@ fun PreviewPermissionsRationaleLight() {
             BlinkRootScreen(
                 camera = PreviewStubs.cameraPermissionRationale,
                 preferences = PreviewStubs.prefsAllDisabled,
-                tracker = PreviewStubs.trackerNotActiveNoFace,
+                tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
             )
         }
     }
@@ -88,7 +88,7 @@ fun PreviewPermissionsNoCameraLight() {
             BlinkRootScreen(
                 camera = PreviewStubs.cameraPermissionGrantedNoCamera,
                 preferences = PreviewStubs.prefsAllDisabled,
-                tracker = PreviewStubs.trackerNotActiveNoFace,
+                tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
             )
         }
     }
@@ -102,7 +102,7 @@ fun PreviewPermissionsDeniedDark() {
             BlinkRootScreen(
                 camera = PreviewStubs.cameraPermissionDenied,
                 preferences = PreviewStubs.prefsAllDisabled,
-                tracker = PreviewStubs.trackerNotActiveNoFace,
+                tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
             )
         }
     }
@@ -116,7 +116,7 @@ fun PreviewPermissionsRationaleDark() {
             BlinkRootScreen(
                 camera = PreviewStubs.cameraPermissionRationale,
                 preferences = PreviewStubs.prefsAllDisabled,
-                tracker = PreviewStubs.trackerNotActiveNoFace,
+                tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
             )
         }
     }
@@ -130,7 +130,7 @@ fun PreviewPermissionsNoCameraDark() {
             BlinkRootScreen(
                 camera = PreviewStubs.cameraPermissionGrantedNoCamera,
                 preferences = PreviewStubs.prefsAllDisabled,
-                tracker = PreviewStubs.trackerNotActiveNoFace,
+                tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
             )
         }
     }

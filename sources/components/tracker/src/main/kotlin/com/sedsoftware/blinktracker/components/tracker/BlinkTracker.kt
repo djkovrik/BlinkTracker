@@ -11,7 +11,8 @@ interface BlinkTracker {
     fun onTrackingStarted()
     fun onTrackingStopped()
     fun onFaceDataChanged(data: VisionFaceData)
-    fun onMinimizedStateChanged(minimized: Boolean)
+    fun onMinimizeActivated()
+    fun onMinimizeDeactivated()
     fun showPreferencesPanel()
     fun closePreferencesPanel()
 
