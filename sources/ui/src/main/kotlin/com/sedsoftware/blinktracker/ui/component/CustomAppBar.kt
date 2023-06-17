@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +34,7 @@ import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.ui.CameraStub
 import com.sedsoftware.blinktracker.ui.PreviewStubs
 import com.sedsoftware.blinktracker.ui.R
+import com.sedsoftware.blinktracker.ui.extension.withSound
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
 @Composable
@@ -83,7 +85,7 @@ fun CustomAppBar(
                 )
 
                 OutlinedIconButton(
-                    onClick = onHelpIconClick,
+                    onClick = onHelpIconClick.withSound(LocalContext.current),
                     border = BorderStroke(
                         width = 0.dp,
                         color = Color.Transparent
