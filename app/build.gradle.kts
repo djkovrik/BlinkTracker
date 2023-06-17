@@ -57,6 +57,7 @@ dependencies {
     implementation(project(":sources:ui"))
     implementation(project(":sources:components:camera"))
     implementation(project(":sources:components:preferences"))
+    implementation(project(":sources:components:statistic"))
     implementation(project(":sources:components:tracker"))
 
     implementation(platform(libs.compose.bom))
