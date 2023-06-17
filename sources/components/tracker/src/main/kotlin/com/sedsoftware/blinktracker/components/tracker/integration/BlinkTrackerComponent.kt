@@ -53,6 +53,7 @@ class BlinkTrackerComponent(
     override val initial: Model = stateToModel(BlinkTrackerStore.State())
 
     override fun onTrackingStarted() {
+        store.accept(BlinkTrackerStore.Intent.SettingsPanelClosed)
         store.accept(BlinkTrackerStore.Intent.TrackingStarted)
     }
 
