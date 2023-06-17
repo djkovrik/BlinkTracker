@@ -9,7 +9,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.sedsoftware.blinktracker"
+        applicationId = "com.sedsoftware.blinkz"
         minSdk = 24
         targetSdk = 33
         versionCode = 1000
@@ -53,34 +53,21 @@ android {
 dependencies {
     implementation(project(":sources:root"))
     implementation(project(":sources:settings"))
+    implementation(project(":sources:ui"))
     implementation(project(":sources:components:camera"))
     implementation(project(":sources:components:preferences"))
     implementation(project(":sources:components:tracker"))
 
     implementation(platform(libs.compose.bom))
-    implementation(libs.compose.icons)
-    
+
     implementation(libs.org.jetbrains.coroutines)
     implementation(libs.ark.mvikotlin.core)
     implementation(libs.ark.mvikotlin.main)
-    implementation(libs.ark.mvikotlin.extensions.coroutines)
     implementation(libs.ark.decompose.core)
-    implementation(libs.ark.decompose.extensions)
-    implementation(libs.ark.essenty)
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.datastore)
     implementation(libs.activity.compose)
-    implementation(libs.ui)
-    implementation(libs.ui.graphics)
-    implementation(libs.ui.tooling.preview)
-    implementation(libs.material3)
-    implementation(libs.camera.camera2)
-    implementation(libs.camera.lifecycle)
-    implementation(libs.camera.view)
     implementation(libs.face.detection)
     implementation(libs.timber)
-
-    debugImplementation(libs.ui.tooling)
 }

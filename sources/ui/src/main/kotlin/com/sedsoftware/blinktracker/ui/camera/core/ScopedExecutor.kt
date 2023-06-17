@@ -1,4 +1,4 @@
-package com.sedsoftware.blinktracker.camera.core
+package com.sedsoftware.blinktracker.ui.camera.core
 
 import java.util.concurrent.Executor
 import java.util.concurrent.atomic.AtomicBoolean

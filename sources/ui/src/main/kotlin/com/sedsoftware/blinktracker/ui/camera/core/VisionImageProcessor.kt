@@ -1,4 +1,4 @@
-package com.sedsoftware.blinktracker.camera.core
+package com.sedsoftware.blinktracker.ui.camera.core
 
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy

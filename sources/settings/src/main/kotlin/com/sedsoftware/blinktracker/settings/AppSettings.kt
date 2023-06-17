@@ -42,7 +42,7 @@ class AppSettings(
         setPrefsValue(notifyVibrationEnabledKey, value)
 
     override suspend fun setLaunchMinimizedEnabled(value: Boolean) =
-        setPrefsValue(notifyVibrationEnabledKey, value)
+        setPrefsValue(launchMinimizedEnabledKey, value)
 
     private fun <T> getPrefsValue(key: Preferences.Key<T>, default: T): Flow<T> =
         context.dataStore.data.map { it[key] ?: default }

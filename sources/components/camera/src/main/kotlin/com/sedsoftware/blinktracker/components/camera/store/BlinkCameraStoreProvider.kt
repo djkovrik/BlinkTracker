@@ -8,6 +8,7 @@ import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
+import com.sedsoftware.blinktracker.components.camera.model.CameraState
 import com.sedsoftware.blinktracker.components.camera.model.PermissionState
 import com.sedsoftware.blinktracker.components.camera.store.BlinkCameraStore.Intent
 import com.sedsoftware.blinktracker.components.camera.store.BlinkCameraStore.Label
@@ -36,7 +37,11 @@ internal class BlinkCameraStoreProvider(
 
                     is Msg.LensSelected -> copy(
                         lensFacing = msg.newLens,
-                        cameraAvailable = msg.newLens != CameraLens.NOT_AVAILABLE,
+                        cameraState = if (msg.newLens == CameraLens.FRONT) {
+                            CameraState.DETECTED
+                        } else {
+                            CameraState.NOT_DETECTED
+                        },
                     )
 
                 }

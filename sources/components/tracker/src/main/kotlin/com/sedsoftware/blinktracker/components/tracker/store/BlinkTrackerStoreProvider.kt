@@ -25,6 +25,7 @@ internal class BlinkTrackerStoreProvider(
     private val settings: Settings,
 ) {
 
+    @Suppress("CyclomaticComplexMethod")
     fun provide(): BlinkTrackerStore =
         object : BlinkTrackerStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
             name = "BlinkTrackerStore",
@@ -78,7 +79,7 @@ internal class BlinkTrackerStoreProvider(
                     if (state.active) {
                         val counter = state.timer
 
-                        if (counter % MEASURE_PERIOD_SEC == 0) {
+                        if (counter > 0 && counter % MEASURE_PERIOD_SEC == 0) {
                             if (state.blinkLastMinute < state.threshold) {
                                 if (state.notifyWithSound) publish(Label.SoundNotificationTriggered)
                                 if (state.notifyWithVibration) publish(Label.VibrationNotificationTriggered)
@@ -101,7 +102,7 @@ internal class BlinkTrackerStoreProvider(
                 onIntent<Intent.FaceDataChanged> {
                     dispatch(Msg.FaceDataAvailable(it.data))
 
-                    if (it.data.hasEyesData() && state.blinkPeriodEnded()) {
+                    if (state.active && it.data.hasEyesData() && state.blinkPeriodEnded()) {
                         dispatch(Msg.Blink)
                     }
                 }

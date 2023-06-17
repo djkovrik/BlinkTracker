@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
+import com.sedsoftware.blinktracker.components.camera.model.CameraState
 import com.sedsoftware.blinktracker.components.camera.model.PermissionState
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
@@ -17,25 +18,25 @@ object PreviewStubs {
     val cameraPermissionDenied = BlinkCamera.Model(
         currentPermissionState = PermissionState.DENIED,
         selectedLens = CameraLens.NOT_AVAILABLE,
-        cameraAvailable = false,
+        cameraState = CameraState.NOT_DETECTED,
     )
 
     val cameraPermissionGranted = BlinkCamera.Model(
         currentPermissionState = PermissionState.GRANTED,
         selectedLens = CameraLens.FRONT,
-        cameraAvailable = true,
+        CameraState.DETECTED,
     )
 
     val cameraPermissionGrantedNoCamera = BlinkCamera.Model(
         currentPermissionState = PermissionState.GRANTED,
         selectedLens = CameraLens.NOT_AVAILABLE,
-        cameraAvailable = false,
+        CameraState.NOT_DETECTED,
     )
 
     val cameraPermissionRationale = BlinkCamera.Model(
         currentPermissionState = PermissionState.RATIONALE,
         selectedLens = CameraLens.NOT_AVAILABLE,
-        cameraAvailable = false,
+        CameraState.NOT_DETECTED,
     )
 
     val prefsAllDisabled = BlinkPreferences.Model(
