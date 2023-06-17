@@ -65,19 +65,19 @@ fun BlinkRootScreen(
                         Card(
                             shape = RoundedCornerShape(size = 16.dp),
                             colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.surface,
-                                contentColor = MaterialTheme.colorScheme.surface,
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                contentColor = MaterialTheme.colorScheme.primaryContainer,
                             ),
                             elevation = CardDefaults.cardElevation(
                                 defaultElevation = 16.dp,
                             ),
                             modifier = Modifier
-                                .padding(horizontal = 16.dp)
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
                                 .fillMaxWidth()
                         ) {
                             Column(modifier = Modifier.padding(all = 16.dp)) {
                                 Text(
-                                    text = stringResource(id = R.string.stats),
+                                    text = stringResource(id = R.string.tracking),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.primary,
                                     fontWeight = FontWeight.Medium,
@@ -88,7 +88,7 @@ fun BlinkRootScreen(
                                     Text(
                                         text = stringResource(id = R.string.tracking_active),
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.tertiary,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                                         fontWeight = FontWeight.Medium,
                                     )
                                 } else {
@@ -103,13 +103,13 @@ fun BlinkRootScreen(
                                 Text(
                                     text = "${stringResource(id = R.string.blinks_last_minute)}: ${tracker.blinksPerLastMinute}",
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                                 )
 
                                 Text(
                                     text = "${stringResource(id = R.string.blinks_total)}: ${tracker.blinksTotal}",
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                                 )
                             }
                         }

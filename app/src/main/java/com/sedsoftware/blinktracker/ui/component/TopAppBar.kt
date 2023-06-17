@@ -56,7 +56,7 @@ fun TopAppBar(
                     .border(
                         width = 2.dp,
                         color = if (trackerModel.hasFaceDetected) {
-                            MaterialTheme.colorScheme.tertiary
+                            MaterialTheme.colorScheme.secondary
                         } else {
                             MaterialTheme.colorScheme.error
                         },
@@ -70,7 +70,7 @@ fun TopAppBar(
             Text(
                 text = trackerModel.timerLabel,
                 style = MaterialTheme.typography.displayMedium,
-                color = MaterialTheme.colorScheme.tertiary,
+                color = MaterialTheme.colorScheme.secondary,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
@@ -84,14 +84,14 @@ fun TopAppBar(
                     color = Color.Transparent
                 ),
                 colors = IconButtonDefaults.outlinedIconButtonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
                 ),
                 modifier = Modifier.padding(horizontal = 8.dp),
             ) {
                 Icon(
                     imageVector = Icons.Default.QuestionMark,
                     contentDescription = "Info",
-                    tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier
                 )
             }

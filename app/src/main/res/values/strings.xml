@@ -18,6 +18,7 @@
     <string name="face_data_detected">Face detected</string>
     <string name="face_data_not_detected">Face not detected</string>
     <string name="stats">Stats</string>
+    <string name="tracking">Tracking</string>
     <string name="tracking_active">Tracking is active</string>
     <string name="tracking_not_active">Tracking is not active</string>
 
@@ -32,6 +33,6 @@
     <string name="info2">
         Several studies have investigated the blink rate and the interval between blinks and it has been reported that
         the normal spontaneous blink rate is between 12 and 15 per minute. Other studies showed that the interval between blinks ranges
-        from 2.8 to 4 and from 2 to 10 s. what means blink rate of up to 22 blinks per minute.
+        from 2.8 to 4 and from 2 to 10 seconds what means blink rate of up to 22 blinks per minute.
     </string>
 </resources>

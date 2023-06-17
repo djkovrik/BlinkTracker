@@ -58,26 +58,26 @@ fun TrackingControls(
                     Icon(
                         imageVector = Icons.Default.Stop,
                         contentDescription = "Stop",
-                        tint = MaterialTheme.colorScheme.tertiaryContainer,
+                        tint = MaterialTheme.colorScheme.secondaryContainer,
                         modifier = Modifier
                     )
                     Text(
                         text = stringResource(id = R.string.button_stop),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.tertiaryContainer,
+                        color = MaterialTheme.colorScheme.secondaryContainer,
                         modifier = Modifier.padding(horizontal = 4.dp),
                     )
                 } else {
                     Icon(
                         imageVector = Icons.Default.PlayArrow,
                         contentDescription = "Start",
-                        tint = MaterialTheme.colorScheme.tertiaryContainer,
+                        tint = MaterialTheme.colorScheme.secondaryContainer,
                         modifier = Modifier
                     )
                     Text(
                         text = stringResource(id = R.string.button_start),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.tertiaryContainer,
+                        color = MaterialTheme.colorScheme.secondaryContainer,
                         modifier = Modifier.padding(horizontal = 4.dp),
                     )
                 }
@@ -89,20 +89,20 @@ fun TrackingControls(
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
                 border = BorderStroke(
                     width = 1.dp,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 ),
                 modifier = Modifier.padding(horizontal = 8.dp),
             ) {
                 Icon(
                     imageVector = Icons.Default.CropFree,
                     contentDescription = "Minimize",
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier
                 )
                 Text(
                     text = stringResource(id = R.string.button_minimize),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                     modifier = Modifier.padding(horizontal = 4.dp),
                 )
             }
@@ -114,7 +114,7 @@ fun TrackingControls(
             enabled = !model.isTrackingActive,
             border = BorderStroke(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.onSecondaryContainer
             ),
             modifier = Modifier
                 .padding(horizontal = 4.dp)
@@ -129,14 +129,14 @@ fun TrackingControls(
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "Settings",
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
                         modifier = Modifier
                     )
                 } else {
                     Icon(
                         imageVector = Icons.Default.Settings,
                         contentDescription = "Settings",
-                        tint = MaterialTheme.colorScheme.primary,
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
                         modifier = Modifier
                     )
                 }
@@ -149,7 +149,7 @@ fun TrackingControls(
 @Preview(showBackground = true)
 fun PreviewPreferencesNotActiveLight() {
     BlinkTrackerTheme(darkTheme = false) {
-        Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
+        Surface(color = MaterialTheme.colorScheme.secondaryContainer) {
             TrackingControls(
                 model = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
             )
@@ -161,7 +161,7 @@ fun PreviewPreferencesNotActiveLight() {
 @Preview(showBackground = true)
 fun PreviewPreferencesNotActiveOpenedLight() {
     BlinkTrackerTheme(darkTheme = false) {
-        Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
+        Surface(color = MaterialTheme.colorScheme.secondaryContainer) {
             TrackingControls(
                 model = PreviewStubs.trackerNotActiveWithFaceAndPrefs,
             )
@@ -173,7 +173,7 @@ fun PreviewPreferencesNotActiveOpenedLight() {
 @Preview(showBackground = true)
 fun PreviewPreferencesActiveLight() {
     BlinkTrackerTheme(darkTheme = false) {
-        Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
+        Surface(color = MaterialTheme.colorScheme.secondaryContainer) {
             TrackingControls(
                 model = PreviewStubs.trackerActiveWithFace,
             )
@@ -185,7 +185,7 @@ fun PreviewPreferencesActiveLight() {
 @Preview(showBackground = true)
 fun PreviewPreferencesNotActiveDark() {
     BlinkTrackerTheme(darkTheme = true) {
-        Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
+        Surface(color = MaterialTheme.colorScheme.secondaryContainer) {
             TrackingControls(
                 model = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
             )
@@ -197,7 +197,7 @@ fun PreviewPreferencesNotActiveDark() {
 @Preview(showBackground = true)
 fun PreviewPreferencesNotActiveOpenedDark() {
     BlinkTrackerTheme(darkTheme = true) {
-        Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
+        Surface(color = MaterialTheme.colorScheme.secondaryContainer) {
             TrackingControls(
                 model = PreviewStubs.trackerNotActiveWithFaceAndPrefs,
             )
@@ -209,7 +209,7 @@ fun PreviewPreferencesNotActiveOpenedDark() {
 @Preview(showBackground = true)
 fun PreviewPreferencesActiveDark() {
     BlinkTrackerTheme(darkTheme = true) {
-        Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
+        Surface(color = MaterialTheme.colorScheme.secondaryContainer) {
             TrackingControls(
                 model = PreviewStubs.trackerActiveWithFace,
             )

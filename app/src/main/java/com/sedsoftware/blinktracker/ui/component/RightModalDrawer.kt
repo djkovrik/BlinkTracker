@@ -46,7 +46,8 @@ fun RightModalDrawer(
 private fun SideDrawerContent() {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         ModalDrawerSheet(
-            drawerShape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp)
+            drawerShape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp),
+            drawerContainerColor = MaterialTheme.colorScheme.surface,
         ) {
             Column(
                 modifier = Modifier
@@ -63,14 +64,14 @@ private fun SideDrawerContent() {
                 Text(
                     text = stringResource(id = string.info1),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
                 Text(
                     text = stringResource(id = string.info2),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
         }

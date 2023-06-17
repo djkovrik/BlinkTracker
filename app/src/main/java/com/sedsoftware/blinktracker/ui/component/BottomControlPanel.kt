@@ -43,8 +43,8 @@ fun BottomControlPanel(
     Card(
         shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.tertiaryContainer,
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.secondaryContainer,
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 16.dp,
