@@ -12,7 +12,6 @@
     <string name="button_start">Старт</string>
     <string name="button_stop">Стоп</string>
     <string name="button_minimize">Свернуть</string>
-    <string name="button_settings">Настройки</string>
     <string name="no_face_detected">Не удалось обнаружить лицо для распознавания</string>
     <string name="blinks_last_minute">Морганий за последнюю минуту</string>
     <string name="blinks_total">Морганий всего</string>
@@ -20,13 +19,15 @@
     <string name="face_data_not_detected">Данные лица недоступны</string>
     <string name="info_title">Почему это важно?</string>
     <string name="stats">Данные</string>
-    <string name="tracking">Отслеживание</string>
-    <string name="active">Активно</string>
-    <string name="not_active">Неактивно</string>
+    <string name="tracking_active">Отслеживание активно</string>
+    <string name="tracking_not_active">Отслеживание не активно</string>
 
-    <string name="info">
+    <string name="info1">
         Согласно данным National Library of Medicine, нормальное моргание необходимо для правильного распределения слезной плёнки и защиты
-        поверхности глаза. Аномалии моргания могут привести к плохому распределению слезы и, следовательно, к повреждениям глазной поверхности.\n
+        поверхности глаза. Аномалии моргания могут привести к плохому распределению слезы и, следовательно, к повреждениям глазной поверхности.
+    </string>
+
+    <string name="info2">
         Несколько исследований было посвящено морганию и частоте моргания и было установлено, что нормальная частота спонтанных морганий равна
         от 12 до 15 в минуту. Ряд других исследований показали, что интервал между морганиями может составлять от 4 до 10 секунд, что означает
         частоту моргания равную 22 раза в минуту.

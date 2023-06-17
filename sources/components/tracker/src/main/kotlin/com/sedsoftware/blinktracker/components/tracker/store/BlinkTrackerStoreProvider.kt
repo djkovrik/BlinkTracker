@@ -101,7 +101,7 @@ internal class BlinkTrackerStoreProvider(
                 onIntent<Intent.FaceDataChanged> {
                     dispatch(Msg.FaceDataAvailable(it.data))
 
-                    if (it.data.hasEyesData() && state.blinkPeriodEnded()) {
+                    if (state.active && it.data.hasEyesData() && state.blinkPeriodEnded()) {
                         dispatch(Msg.Blink)
                     }
                 }

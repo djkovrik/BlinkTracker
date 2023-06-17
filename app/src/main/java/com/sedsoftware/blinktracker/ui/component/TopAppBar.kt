@@ -1,5 +1,6 @@
 package com.sedsoftware.blinktracker.ui.component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -8,13 +9,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,49 +38,25 @@ fun TopAppBar(
     cameraModel: BlinkCamera.Model,
     trackerModel: BlinkTracker.Model,
     modifier: Modifier = Modifier,
+    onHelpIconClick: () -> Unit = {},
     cameraPreview: @Composable () -> Unit = {},
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .height(96.dp)
     ) {
         if (cameraModel.cameraAvailable) {
-            Text(
-                text = trackerModel.timerLabel,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
-
-            if (trackerModel.hasFaceDetected) {
-                Text(
-                    text = stringResource(id = R.string.face_data_detected),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f),
-                )
-            } else {
-                Text(
-                    text = stringResource(id = R.string.face_data_not_detected),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.error,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f),
-                )
-            }
-
             Box(
                 modifier = Modifier
                     .aspectRatio(1f)
                     .padding(all = 16.dp)
                     .clip(shape = RoundedCornerShape(size = 8.dp))
                     .border(
-                        width = if (trackerModel.hasFaceDetected) 1.dp else 2.dp,
+                        width = 2.dp,
                         color = if (trackerModel.hasFaceDetected) {
-                            MaterialTheme.colorScheme.onSurfaceVariant
+                            MaterialTheme.colorScheme.tertiary
                         } else {
                             MaterialTheme.colorScheme.error
                         },
@@ -83,15 +66,44 @@ fun TopAppBar(
             ) {
                 cameraPreview()
             }
+
+            Text(
+                text = trackerModel.timerLabel,
+                style = MaterialTheme.typography.displayMedium,
+                color = MaterialTheme.colorScheme.tertiary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .weight(1f),
+            )
+
+            OutlinedIconButton(
+                onClick = onHelpIconClick,
+                border = BorderStroke(
+                    width = 0.dp,
+                    color = Color.Transparent
+                ),
+                colors = IconButtonDefaults.outlinedIconButtonColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                ),
+                modifier = Modifier.padding(horizontal = 8.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.QuestionMark,
+                    contentDescription = "Info",
+                    tint = MaterialTheme.colorScheme.onTertiaryContainer,
+                    modifier = Modifier
+                )
+            }
         } else {
             Text(
                 text = stringResource(id = R.string.camera_not_detected_short),
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.error,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Left,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
+                    .padding(start = 16.dp),
             )
         }
     }

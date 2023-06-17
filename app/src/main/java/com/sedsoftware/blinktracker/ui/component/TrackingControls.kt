@@ -15,6 +15,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,7 +43,7 @@ fun TrackingControls(
             Button(
                 onClick = if (model.isTrackingActive) onStopClick else onStartClick,
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                modifier = Modifier.padding(horizontal = 4.dp),
+                modifier = Modifier.padding(horizontal = 8.dp),
             ) {
                 if (model.isTrackingActive) {
                     Icon(
@@ -53,7 +54,7 @@ fun TrackingControls(
                     )
                     Text(
                         text = stringResource(id = R.string.button_stop),
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.tertiaryContainer,
                         modifier = Modifier.padding(horizontal = 4.dp),
                     )
@@ -66,7 +67,7 @@ fun TrackingControls(
                     )
                     Text(
                         text = stringResource(id = R.string.button_start),
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.tertiaryContainer,
                         modifier = Modifier.padding(horizontal = 4.dp),
                     )
@@ -81,7 +82,7 @@ fun TrackingControls(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.primary
                 ),
-                modifier = Modifier.padding(horizontal = 4.dp),
+                modifier = Modifier.padding(horizontal = 8.dp),
             ) {
                 Icon(
                     imageVector = Icons.Default.CropFree,
@@ -91,7 +92,7 @@ fun TrackingControls(
                 )
                 Text(
                     text = stringResource(id = R.string.button_minimize),
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(horizontal = 4.dp),
                 )
@@ -99,10 +100,9 @@ fun TrackingControls(
         }
 
         // Settings
-        OutlinedButton(
+        OutlinedIconButton(
             onClick = onSettingsClick,
             enabled = !model.isTrackingActive,
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
             border = BorderStroke(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.primary
@@ -118,12 +118,6 @@ fun TrackingControls(
                 contentDescription = "Settings",
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
-            )
-            Text(
-                text = stringResource(id = R.string.button_settings),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(horizontal = 4.dp),
             )
         }
     }
