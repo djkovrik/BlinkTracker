@@ -24,8 +24,8 @@ import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.ui.camera.CameraPreviewComposable
 import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
+import com.sedsoftware.blinktracker.ui.component.CustomAppBar
 import com.sedsoftware.blinktracker.ui.component.RightModalDrawer
-import com.sedsoftware.blinktracker.ui.component.TopAppBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -64,7 +64,7 @@ fun BlinkRootContent(
                 SnackbarHost(hostState = snackbarHostState)
             },
             topBar = {
-                TopAppBar(
+                CustomAppBar(
                     cameraModel = cameraState,
                     trackerModel = trackerState,
                     modifier = modifier,

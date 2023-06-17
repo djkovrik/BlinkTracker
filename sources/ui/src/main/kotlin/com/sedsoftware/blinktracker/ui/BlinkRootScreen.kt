@@ -118,10 +118,10 @@ private fun BaseContentScreen(
                     contentColor = MaterialTheme.colorScheme.primaryContainer,
                 ),
                 elevation = CardDefaults.cardElevation(
-                    defaultElevation = 16.dp,
+                    defaultElevation = 8.dp,
                 ),
                 modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .padding(all = 16.dp)
                     .fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(all = 16.dp)) {

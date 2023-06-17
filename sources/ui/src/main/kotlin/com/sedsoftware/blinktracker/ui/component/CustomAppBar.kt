@@ -36,7 +36,7 @@ import com.sedsoftware.blinktracker.ui.R
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
 @Composable
-fun TopAppBar(
+fun CustomAppBar(
     cameraModel: BlinkCamera.Model,
     trackerModel: BlinkTracker.Model,
     modifier: Modifier = Modifier,
@@ -47,8 +47,8 @@ fun TopAppBar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .height(96.dp)
-            .background(MaterialTheme.colorScheme.surface)
+            .height(height = 96.dp)
+            .background(color = MaterialTheme.colorScheme.surface)
     ) {
 
         when (cameraModel.cameraState) {
@@ -59,7 +59,7 @@ fun TopAppBar(
                         .padding(all = 16.dp)
                         .clip(shape = RoundedCornerShape(size = 8.dp))
                         .border(
-                            width = 2.dp,
+                            width = 3.dp,
                             color = if (trackerModel.hasFaceDetected) {
                                 MaterialTheme.colorScheme.secondary
                             } else {
@@ -124,7 +124,7 @@ fun TopAppBar(
 fun AppBarNoCameraLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
-            TopAppBar(
+            CustomAppBar(
                 cameraModel = PreviewStubs.cameraPermissionGranted.copy(
                     cameraState = CameraState.NOT_DETECTED
                 ),
@@ -141,7 +141,7 @@ fun AppBarNoCameraLight() {
 fun AppBarNoCameraDark() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
-            TopAppBar(
+            CustomAppBar(
                 cameraModel = PreviewStubs.cameraPermissionGranted.copy(
                     cameraState = CameraState.NOT_DETECTED
                 ),
@@ -158,7 +158,7 @@ fun AppBarNoCameraDark() {
 fun AppBarNotActiveLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
-            TopAppBar(
+            CustomAppBar(
                 cameraModel = PreviewStubs.cameraPermissionGranted,
                 trackerModel = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
             ) {
@@ -173,7 +173,7 @@ fun AppBarNotActiveLight() {
 fun AppBarActiveLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
-            TopAppBar(
+            CustomAppBar(
                 cameraModel = PreviewStubs.cameraPermissionGranted,
                 trackerModel = PreviewStubs.trackerActiveWithFace,
             )
@@ -186,7 +186,7 @@ fun AppBarActiveLight() {
 fun AppBarNotActiveDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
-            TopAppBar(
+            CustomAppBar(
                 cameraModel = PreviewStubs.cameraPermissionGranted,
                 trackerModel = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
             ) {
@@ -201,7 +201,7 @@ fun AppBarNotActiveDark() {
 fun AppBarActiveDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
-            TopAppBar(
+            CustomAppBar(
                 cameraModel = PreviewStubs.cameraPermissionGranted,
                 trackerModel = PreviewStubs.trackerActiveWithFace,
             ) {
