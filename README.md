@@ -7,10 +7,8 @@ Tracks how many times you blink per minute and notifies you if it's below define
 - [x] Stores, controllers and logic
 - [x] Setup Vision
 - [x] Blinks detector
-- [ ] UI module
+- [x] UI module
 - [ ] Picture in Picture
-- [ ] Animate everything
-- [ ] Icon
 - [ ] PlayMarket publish
 
 ### Resources used
