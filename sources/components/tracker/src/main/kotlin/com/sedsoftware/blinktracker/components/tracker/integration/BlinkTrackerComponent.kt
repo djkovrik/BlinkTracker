@@ -1,6 +1,7 @@
 package com.sedsoftware.blinktracker.components.tracker.integration
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
@@ -11,7 +12,11 @@ import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStoreProvider
 import com.sedsoftware.blinktracker.settings.Settings
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
@@ -30,22 +35,28 @@ class BlinkTrackerComponent(
             ).provide()
         }
 
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+
     init {
-        store.labels.onEach { label ->
-            when (label) {
-                is BlinkTrackerStore.Label.ErrorCaught -> {
-                    output(BlinkTracker.Output.ErrorCaught(label.throwable))
-                }
+        store.labels
+            .onEach { label ->
+                when (label) {
+                    is BlinkTrackerStore.Label.ErrorCaught -> {
+                        output(BlinkTracker.Output.ErrorCaught(label.throwable))
+                    }
 
-                is BlinkTrackerStore.Label.SoundNotificationTriggered -> {
-                    output(BlinkTracker.Output.SoundNotificationTriggered)
-                }
+                    is BlinkTrackerStore.Label.SoundNotificationTriggered -> {
+                        output(BlinkTracker.Output.SoundNotificationTriggered)
+                    }
 
-                is BlinkTrackerStore.Label.VibrationNotificationTriggered -> {
-                    output(BlinkTracker.Output.VibroNotificationTriggered)
+                    is BlinkTrackerStore.Label.VibrationNotificationTriggered -> {
+                        output(BlinkTracker.Output.VibroNotificationTriggered)
+                    }
                 }
             }
-        }
+            .launchIn(scope)
+
+        lifecycle.doOnDestroy(scope::cancel)
     }
 
     override val models: Flow<Model> = store.states.map { stateToModel(it) }

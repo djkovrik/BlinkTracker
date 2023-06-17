@@ -78,7 +78,7 @@ internal class BlinkTrackerStoreProvider(
                     if (state.active) {
                         val counter = state.timer
 
-                        if (counter % MEASURE_PERIOD_SEC == 0) {
+                        if (counter > 0 && counter % MEASURE_PERIOD_SEC == 0) {
                             if (state.blinkLastMinute < state.threshold) {
                                 if (state.notifyWithSound) publish(Label.SoundNotificationTriggered)
                                 if (state.notifyWithVibration) publish(Label.VibrationNotificationTriggered)

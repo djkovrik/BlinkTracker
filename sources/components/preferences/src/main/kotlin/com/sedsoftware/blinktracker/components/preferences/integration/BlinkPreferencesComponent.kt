@@ -1,6 +1,7 @@
 package com.sedsoftware.blinktracker.components.preferences.integration
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
@@ -10,7 +11,11 @@ import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences.Mode
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStoreProvider
 import com.sedsoftware.blinktracker.settings.Settings
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
@@ -29,14 +34,20 @@ class BlinkPreferencesComponent(
             ).provide()
         }
 
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+
     init {
-        store.labels.onEach { label ->
-            when (label) {
-                is BlinkPreferencesStore.Label.ErrorCaught -> {
-                    output(BlinkPreferences.Output.ErrorCaught(label.throwable))
+        store.labels
+            .onEach { label ->
+                when (label) {
+                    is BlinkPreferencesStore.Label.ErrorCaught -> {
+                        output(BlinkPreferences.Output.ErrorCaught(label.throwable))
+                    }
                 }
             }
-        }
+            .launchIn(scope)
+
+        lifecycle.doOnDestroy(scope::cancel)
     }
 
     override val models: Flow<Model> = store.states.map { stateToModel(it) }
