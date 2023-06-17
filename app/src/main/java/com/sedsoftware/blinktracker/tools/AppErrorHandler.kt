@@ -16,6 +16,7 @@ class AppErrorHandler(
 
     override fun consume(throwable: Throwable) {
         // TODO split by throwable type
+        context
         _messages.value = "Unknown error"
     }
 }
