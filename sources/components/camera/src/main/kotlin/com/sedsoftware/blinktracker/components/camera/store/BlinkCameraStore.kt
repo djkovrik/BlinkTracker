@@ -2,6 +2,7 @@ package com.sedsoftware.blinktracker.components.camera.store
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
+import com.sedsoftware.blinktracker.components.camera.model.CameraState
 import com.sedsoftware.blinktracker.components.camera.model.PermissionState
 import com.sedsoftware.blinktracker.components.camera.store.BlinkCameraStore.Intent
 import com.sedsoftware.blinktracker.components.camera.store.BlinkCameraStore.Label
@@ -19,7 +20,7 @@ internal interface BlinkCameraStore : Store<Intent, State, Label> {
     data class State(
         val permissionState: PermissionState = PermissionState.NOT_ASKED,
         val lensFacing: CameraLens = CameraLens.NOT_AVAILABLE,
-        val cameraAvailable: Boolean = false,
+        val cameraState: CameraState = CameraState.NOT_CHECKED,
     )
 
     class Label

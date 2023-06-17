@@ -1,4 +1,4 @@
-package com.sedsoftware.blinktracker.camera
+package com.sedsoftware.blinktracker.ui.camera
 
 import android.content.Context
 import android.hardware.camera2.CameraAccessException

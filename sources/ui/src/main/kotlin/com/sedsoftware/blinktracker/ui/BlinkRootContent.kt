@@ -18,12 +18,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import com.sedsoftware.blinktracker.camera.CameraPreviewComposable
-import com.sedsoftware.blinktracker.camera.core.VisionImageProcessor
 import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.root.BlinkRoot
+import com.sedsoftware.blinktracker.ui.camera.CameraPreviewComposable
+import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 import com.sedsoftware.blinktracker.ui.component.RightModalDrawer
 import com.sedsoftware.blinktracker.ui.component.TopAppBar
 import kotlinx.coroutines.CoroutineScope

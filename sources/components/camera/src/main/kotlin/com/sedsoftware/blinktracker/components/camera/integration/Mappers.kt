@@ -8,6 +8,6 @@ internal val stateToModel: (State) -> Model =
         Model(
             currentPermissionState = it.permissionState,
             selectedLens = it.lensFacing,
-            cameraAvailable = it.cameraAvailable,
+            cameraState = it.cameraState,
         )
     }

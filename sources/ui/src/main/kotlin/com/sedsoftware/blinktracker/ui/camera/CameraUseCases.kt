@@ -1,4 +1,4 @@
-package com.sedsoftware.blinktracker.camera
+package com.sedsoftware.blinktracker.ui.camera
 
 import android.content.Context
 import android.util.Size
@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.google.mlkit.common.MlKitException
-import com.sedsoftware.blinktracker.camera.core.VisionImageProcessor
+import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 import kotlinx.coroutines.launch
 import timber.log.Timber
 

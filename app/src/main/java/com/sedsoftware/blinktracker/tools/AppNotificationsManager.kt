@@ -38,7 +38,11 @@ class AppNotificationsManager(
     }
 
     override fun notifyWithVibro() {
-        vibrator?.vibrate(VibrationEffect.createOneShot(VIBRATION_DURATION, VibrationEffect.DEFAULT_AMPLITUDE))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator?.vibrate(VibrationEffect.createOneShot(VIBRATION_DURATION, VibrationEffect.DEFAULT_AMPLITUDE))
+        } else {
+            vibrator?.vibrate(VIBRATION_DURATION)
+        }
     }
 
     private companion object {

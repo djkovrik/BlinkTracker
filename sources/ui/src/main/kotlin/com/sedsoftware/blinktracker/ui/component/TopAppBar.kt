@@ -1,6 +1,7 @@
 package com.sedsoftware.blinktracker.ui.component
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -26,11 +27,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sedsoftware.blinktracker.R
 import com.sedsoftware.blinktracker.components.camera.BlinkCamera
+import com.sedsoftware.blinktracker.components.camera.model.CameraState
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.ui.CameraStub
 import com.sedsoftware.blinktracker.ui.PreviewStubs
+import com.sedsoftware.blinktracker.ui.R
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
 @Composable
@@ -46,65 +48,73 @@ fun TopAppBar(
         modifier = modifier
             .fillMaxWidth()
             .height(96.dp)
+            .background(MaterialTheme.colorScheme.surface)
     ) {
-        if (cameraModel.cameraAvailable) {
-            Box(
-                modifier = Modifier
-                    .aspectRatio(1f)
-                    .padding(all = 16.dp)
-                    .clip(shape = RoundedCornerShape(size = 8.dp))
-                    .border(
-                        width = 2.dp,
-                        color = if (trackerModel.hasFaceDetected) {
-                            MaterialTheme.colorScheme.secondary
-                        } else {
-                            MaterialTheme.colorScheme.error
-                        },
-                        shape = RoundedCornerShape(size = 8.dp),
-                    )
 
-            ) {
-                cameraPreview()
+        when (cameraModel.cameraState) {
+            CameraState.DETECTED -> {
+                Box(
+                    modifier = Modifier
+                        .aspectRatio(1f)
+                        .padding(all = 16.dp)
+                        .clip(shape = RoundedCornerShape(size = 8.dp))
+                        .border(
+                            width = 2.dp,
+                            color = if (trackerModel.hasFaceDetected) {
+                                MaterialTheme.colorScheme.secondary
+                            } else {
+                                MaterialTheme.colorScheme.error
+                            },
+                            shape = RoundedCornerShape(size = 8.dp),
+                        )
+
+                ) {
+                    cameraPreview()
+                }
+
+                Text(
+                    text = trackerModel.timerLabel,
+                    style = MaterialTheme.typography.displayMedium,
+                    color = MaterialTheme.colorScheme.secondary,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .weight(1f),
+                )
+
+                OutlinedIconButton(
+                    onClick = onHelpIconClick,
+                    border = BorderStroke(
+                        width = 0.dp,
+                        color = Color.Transparent
+                    ),
+                    colors = IconButtonDefaults.outlinedIconButtonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    ),
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.QuestionMark,
+                        contentDescription = "Info",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier
+                    )
+                }
             }
 
-            Text(
-                text = trackerModel.timerLabel,
-                style = MaterialTheme.typography.displayMedium,
-                color = MaterialTheme.colorScheme.secondary,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .weight(1f),
-            )
-
-            OutlinedIconButton(
-                onClick = onHelpIconClick,
-                border = BorderStroke(
-                    width = 0.dp,
-                    color = Color.Transparent
-                ),
-                colors = IconButtonDefaults.outlinedIconButtonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                ),
-                modifier = Modifier.padding(horizontal = 8.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.QuestionMark,
-                    contentDescription = "Info",
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
+            CameraState.NOT_DETECTED -> {
+                Text(
+                    text = stringResource(id = R.string.camera_not_detected_short),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = TextAlign.Left,
                     modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp),
                 )
             }
-        } else {
-            Text(
-                text = stringResource(id = R.string.camera_not_detected_short),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.error,
-                textAlign = TextAlign.Left,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp),
-            )
+
+            else -> {}
         }
     }
 }
@@ -116,7 +126,7 @@ fun AppBarNoCameraLight() {
         Surface {
             TopAppBar(
                 cameraModel = PreviewStubs.cameraPermissionGranted.copy(
-                    cameraAvailable = false
+                    cameraState = CameraState.NOT_DETECTED
                 ),
                 trackerModel = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
             ) {
@@ -133,7 +143,7 @@ fun AppBarNoCameraDark() {
         Surface {
             TopAppBar(
                 cameraModel = PreviewStubs.cameraPermissionGranted.copy(
-                    cameraAvailable = false
+                    cameraState = CameraState.NOT_DETECTED
                 ),
                 trackerModel = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
             ) {

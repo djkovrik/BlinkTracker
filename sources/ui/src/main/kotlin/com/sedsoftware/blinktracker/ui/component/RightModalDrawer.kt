@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.sedsoftware.blinktracker.R.string
+import com.sedsoftware.blinktracker.ui.R
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
 @Composable
@@ -55,21 +55,21 @@ private fun SideDrawerContent() {
                     .padding(all = 16.dp)
             ) {
                 Text(
-                    text = stringResource(id = string.info_title),
+                    text = stringResource(id = R.string.info_title),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
                 )
 
                 Text(
-                    text = stringResource(id = string.info1),
+                    text = stringResource(id = R.string.info1),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
                 Text(
-                    text = stringResource(id = string.info2),
+                    text = stringResource(id = R.string.info2),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                 )

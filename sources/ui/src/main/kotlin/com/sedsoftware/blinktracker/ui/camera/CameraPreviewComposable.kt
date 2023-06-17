@@ -1,4 +1,4 @@
-package com.sedsoftware.blinktracker.camera
+package com.sedsoftware.blinktracker.ui.camera
 
 import android.view.ViewGroup
 import androidx.camera.core.CameraSelector
@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.lifecycleScope
-import com.sedsoftware.blinktracker.camera.core.VisionImageProcessor
+import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
 import com.sedsoftware.blinktracker.components.camera.model.isNotValid
 import kotlinx.coroutines.launch

@@ -1,7 +1,6 @@
 package com.sedsoftware.blinktracker.tools
 
 import android.content.Context
-import com.sedsoftware.blinktracker.R
 import com.sedsoftware.blinktracker.root.integration.ErrorHandler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,6 +16,6 @@ class AppErrorHandler(
 
     override fun consume(throwable: Throwable) {
         // TODO split by throwable type
-        _messages.value = context.getString(R.string.unknown_error)
+        _messages.value = "Unknown error"
     }
 }
