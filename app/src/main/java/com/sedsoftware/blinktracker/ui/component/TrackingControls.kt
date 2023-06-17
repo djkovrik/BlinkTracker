@@ -1,13 +1,18 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.sedsoftware.blinktracker.ui.component
 
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CropFree
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Stop
@@ -20,6 +25,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,7 +49,10 @@ fun TrackingControls(
             Button(
                 onClick = if (model.isTrackingActive) onStopClick else onStartClick,
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
-                modifier = Modifier.padding(horizontal = 8.dp),
+                modifier = Modifier
+                    .defaultMinSize(minWidth = 120.dp)
+                    .padding(horizontal = 8.dp)
+                ,
             ) {
                 if (model.isTrackingActive) {
                     Icon(
@@ -107,18 +116,31 @@ fun TrackingControls(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.primary
             ),
-            modifier = Modifier.padding(horizontal = 4.dp),
+            modifier = Modifier
+                .padding(horizontal = 4.dp)
+                .alpha(alpha = if (model.isTrackingActive) 0.4f else 1f)
+            ,
         ) {
-            Icon(
-                imageVector = if (model.isPreferencesPanelVisible) {
-                    Icons.Default.KeyboardArrowDown
+            Crossfade(
+                label = "Settings icon",
+                targetState = model.isPreferencesPanelVisible,
+            ) { panelVisible ->
+                if (panelVisible) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Settings",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                    )
                 } else {
-                    Icons.Default.Settings
-                },
-                contentDescription = "Settings",
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier
-            )
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = "Settings",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                    )
+                }
+            }
         }
     }
 }
@@ -130,6 +152,18 @@ fun PreviewPreferencesNotActiveLight() {
         Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
             TrackingControls(
                 model = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
+            )
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewPreferencesNotActiveOpenedLight() {
+    BlinkTrackerTheme(darkTheme = false) {
+        Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
+            TrackingControls(
+                model = PreviewStubs.trackerNotActiveWithFaceAndPrefs,
             )
         }
     }
@@ -154,6 +188,18 @@ fun PreviewPreferencesNotActiveDark() {
         Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
             TrackingControls(
                 model = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
+            )
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewPreferencesNotActiveOpenedDark() {
+    BlinkTrackerTheme(darkTheme = true) {
+        Surface(color = MaterialTheme.colorScheme.tertiaryContainer) {
+            TrackingControls(
+                model = PreviewStubs.trackerNotActiveWithFaceAndPrefs,
             )
         }
     }

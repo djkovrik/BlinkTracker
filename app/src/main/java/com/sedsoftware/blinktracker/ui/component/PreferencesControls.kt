@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -125,8 +126,9 @@ private fun PrefsOptionSlider(
 
         Slider(
             value = value,
-            valueRange = 1f..25f,
+            valueRange = 5f..30f,
             onValueChange = onValueChanged,
+            modifier = Modifier.padding(horizontal = 8.dp)
         )
     }
 }
