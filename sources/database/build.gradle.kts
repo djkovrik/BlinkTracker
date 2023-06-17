@@ -2,10 +2,11 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    id("kotlin-kapt")
 }
 
 android {
-    namespace = "com.sedsoftware.blinktracker.components.preferences"
+    namespace = "com.sedsoftware.blinktracker.database"
     compileSdk = 33
 
     defaultConfig {
@@ -21,12 +22,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":sources:settings"))
-
     implementation(libs.org.jetbrains.coroutines)
-    implementation(libs.ark.mvikotlin.core)
-    implementation(libs.ark.mvikotlin.main)
-    implementation(libs.ark.mvikotlin.extensions.coroutines)
-    implementation(libs.ark.decompose.core)
-    implementation(libs.ark.essenty)
+    implementation(libs.org.jetbrains.datetime)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    kapt(libs.room.compiler)
 }

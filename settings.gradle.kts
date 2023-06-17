@@ -19,6 +19,7 @@ rootProject.name = "BlinkTracker"
 include(":app")
 include(":sources:root")
 include(":sources:settings")
+include(":sources:database")
 include(":sources:ui")
 include(":sources:components:camera")
 include(":sources:components:preferences")
