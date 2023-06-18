@@ -45,8 +45,10 @@ internal class BlinkStatisticStoreProvider(
                     launch(getExceptionHandler(this)) {
                         repo.observe().collect { items ->
                             val mapped = mapItems(items)
-                            dispatch(Msg.RecordsUpdated(mapped))
-                            dispatch(Msg.AverageRateChanged(mapped.getAverage().roundTo(AVERAGE_PRECISION)))
+                            val filtered = mapped.filter { it.dateTime.date == today }
+                            val average = filtered.getAverage().roundTo(AVERAGE_PRECISION)
+                            dispatch(Msg.RecordsUpdated(filtered))
+                            dispatch(Msg.AverageRateChanged(average))
                         }
                     }
                 }
@@ -60,7 +62,7 @@ internal class BlinkStatisticStoreProvider(
             reducer = { msg ->
                 when (msg) {
                     is Msg.RecordsUpdated -> copy(
-                        records = msg.records.filter { it.dateTime.date == today },
+                        records = msg.records,
                         statsChecked = true,
                         placeholderVisible = msg.records.isEmpty(),
                     )
