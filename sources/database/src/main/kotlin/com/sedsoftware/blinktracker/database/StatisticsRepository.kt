@@ -10,9 +10,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock.System
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 interface StatisticsRepository {
-    suspend fun insert(record: StatRecord)
+    suspend fun insert(count: Int)
     suspend fun observe(): Flow<List<StatRecord>>
 }
 
@@ -30,9 +33,9 @@ class StatisticsRepositoryImpl(
         db.getBlinkTrackerDao()
     }
 
-    override suspend fun insert(record: StatRecord) =
+    override suspend fun insert(count: Int) =
         withContext(Dispatchers.IO) {
-            dao.insert(mapStatRecord(record))
+            dao.insert(mapStatRecord(count))
         }
 
     override suspend fun observe(): Flow<List<StatRecord>> =
@@ -40,8 +43,8 @@ class StatisticsRepositoryImpl(
             dao.get().map(::mapDbRecord)
         }
 
-    private fun mapStatRecord(record: StatRecord): BlinksRecordDbModel =
-        BlinksRecordDbModel(blinks = record.blinks, date = record.date)
+    private fun mapStatRecord(count: Int): BlinksRecordDbModel =
+        BlinksRecordDbModel(blinks = count, date = System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
 
     private fun mapDbRecord(records: List<BlinksRecordDbModel>): List<StatRecord> =
         records.map {

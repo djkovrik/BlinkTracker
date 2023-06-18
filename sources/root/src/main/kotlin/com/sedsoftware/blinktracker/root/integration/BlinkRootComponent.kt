@@ -81,6 +81,8 @@ class BlinkRootComponent internal constructor(
 
             is BlinkTracker.Output.ErrorCaught ->
                 errorHandler.consume(output.throwable)
+
+            is BlinkTracker.Output.BlinkedPerMinute -> TODO()
         }
     }
 

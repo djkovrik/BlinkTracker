@@ -84,6 +84,7 @@ internal class BlinkTrackerStoreProvider(
                                 if (state.notifyWithSound) publish(Label.SoundNotificationTriggered)
                                 if (state.notifyWithVibration) publish(Label.VibrationNotificationTriggered)
                             }
+                            publish(Label.BlinksPerMinuteAvailable(counter))
                             dispatch(Msg.ResetMinute)
                         }
 

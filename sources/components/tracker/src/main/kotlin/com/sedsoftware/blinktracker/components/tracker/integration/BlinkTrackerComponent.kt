@@ -52,6 +52,10 @@ class BlinkTrackerComponent(
                     is BlinkTrackerStore.Label.VibrationNotificationTriggered -> {
                         output(BlinkTracker.Output.VibroNotificationTriggered)
                     }
+
+                    is BlinkTrackerStore.Label.BlinksPerMinuteAvailable -> {
+                        output(BlinkTracker.Output.BlinkedPerMinute(label.value))
+                    }
                 }
             }
             .launchIn(scope)

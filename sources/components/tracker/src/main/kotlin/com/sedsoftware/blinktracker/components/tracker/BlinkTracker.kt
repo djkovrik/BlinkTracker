@@ -30,5 +30,6 @@ interface BlinkTracker {
         object SoundNotificationTriggered : Output()
         object VibroNotificationTriggered : Output()
         data class ErrorCaught(val throwable: Throwable) : Output()
+        data class BlinkedPerMinute(val value: Int) : Output()
     }
 }
