@@ -5,10 +5,8 @@ import androidx.room.Room
 import com.sedsoftware.blinktracker.database.dao.BlinkTrackerDao
 import com.sedsoftware.blinktracker.database.db.BlinkTrackerDatabase
 import com.sedsoftware.blinktracker.database.model.BlinksRecordDbModel
-import com.sedsoftware.blinktracker.database.model.StatRecord
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock.System
 import kotlinx.datetime.TimeZone
@@ -16,7 +14,7 @@ import kotlinx.datetime.toLocalDateTime
 
 interface StatisticsRepository {
     suspend fun insert(count: Int)
-    suspend fun observe(): Flow<List<StatRecord>>
+    suspend fun observe(): Flow<List<BlinksRecordDbModel>>
 }
 
 class StatisticsRepositoryImpl(
@@ -38,19 +36,12 @@ class StatisticsRepositoryImpl(
             dao.insert(mapStatRecord(count))
         }
 
-    override suspend fun observe(): Flow<List<StatRecord>> =
+    override suspend fun observe(): Flow<List<BlinksRecordDbModel>> =
         withContext(Dispatchers.IO) {
-            dao.get().map(::mapDbRecord)
+            dao.get()
         }
 
     private fun mapStatRecord(count: Int): BlinksRecordDbModel =
         BlinksRecordDbModel(blinks = count, date = System.now().toLocalDateTime(TimeZone.currentSystemDefault()))
 
-    private fun mapDbRecord(records: List<BlinksRecordDbModel>): List<StatRecord> =
-        records.map {
-            StatRecord(
-                blinks = it.blinks,
-                date = it.date,
-            )
-        }
 }

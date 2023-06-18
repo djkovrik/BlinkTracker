@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.compose.icons)
 
     implementation(libs.org.jetbrains.coroutines)
+    implementation(libs.org.jetbrains.datetime)
 
     implementation(libs.ui)
     implementation(libs.ui.graphics)
@@ -48,6 +49,9 @@ dependencies {
     implementation(libs.camera.view)
     implementation(libs.face.detection)
     implementation(libs.timber)
+
+    implementation(libs.vico.core)
+    implementation(libs.vico.compose)
 
     debugImplementation(libs.ui.tooling)
 }

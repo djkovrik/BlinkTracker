@@ -21,6 +21,7 @@ espresso-core = "3.5.1"
 appcompat = "1.6.1"
 material = "1.9.0"
 timber = "5.0.1"
+vico = "1.6.6"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -55,6 +56,8 @@ espresso-core = { group = "androidx.test.espresso", name = "espresso-core", vers
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+vico-core = { group = "com.patrykandpatrick.vico", name = "core", version.ref = "vico" }
+vico-compose = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }

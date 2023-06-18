@@ -1,7 +1,9 @@
 package com.sedsoftware.blinktracker.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,18 +24,20 @@ import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.camera.model.CameraState
 import com.sedsoftware.blinktracker.components.camera.model.PermissionState
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
+import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.ui.R.drawable
-import com.sedsoftware.blinktracker.ui.R.string
 import com.sedsoftware.blinktracker.ui.component.BottomControlPanel
 import com.sedsoftware.blinktracker.ui.component.FullScreenMessageInfo
+import com.sedsoftware.blinktracker.ui.component.StatsPanel
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
 @Composable
 fun BlinkRootScreen(
     camera: BlinkCamera.Model,
-    preferences: BlinkPreferences.Model,
     tracker: BlinkTracker.Model,
+    preferences: BlinkPreferences.Model,
+    stats: BlinkStatistic.Model,
     modifier: Modifier = Modifier,
     onStartClick: () -> Unit = {},
     onStopClick: () -> Unit = {},
@@ -48,14 +52,14 @@ fun BlinkRootScreen(
     when (camera.currentPermissionState) {
         PermissionState.DENIED ->
             FullScreenMessageInfo(
-                messageRes = string.permissions_declined_info,
+                messageRes = R.string.permissions_declined_info,
                 iconRes = drawable.ic_selfie,
                 modifier = modifier,
             )
 
         PermissionState.RATIONALE ->
             FullScreenMessageInfo(
-                messageRes = string.permissions_rationale_info,
+                messageRes = R.string.permissions_rationale_info,
                 iconRes = drawable.ic_permission,
                 modifier = modifier,
             )
@@ -67,6 +71,7 @@ fun BlinkRootScreen(
                         modifier = modifier,
                         tracker = tracker,
                         preferences = preferences,
+                        stats = stats,
                         onStartClick = onStartClick,
                         onStopClick = onStopClick,
                         onMinimizeClick = onMinimizeClick,
@@ -80,7 +85,7 @@ fun BlinkRootScreen(
 
                 CameraState.NOT_DETECTED -> {
                     FullScreenMessageInfo(
-                        messageRes = string.camera_not_detected,
+                        messageRes = R.string.camera_not_detected,
                         iconRes = drawable.ic_no_camera,
                         modifier = modifier,
                     )
@@ -100,6 +105,7 @@ private fun BaseContentScreen(
     modifier: Modifier,
     tracker: BlinkTracker.Model,
     preferences: BlinkPreferences.Model,
+    stats: BlinkStatistic.Model,
     onStartClick: () -> Unit,
     onStopClick: () -> Unit,
     onMinimizeClick: () -> Unit,
@@ -126,7 +132,7 @@ private fun BaseContentScreen(
             ) {
                 Column(modifier = Modifier.padding(all = 16.dp)) {
                     Text(
-                        text = stringResource(id = string.tracking),
+                        text = stringResource(id = R.string.tracking),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Medium,
@@ -135,14 +141,14 @@ private fun BaseContentScreen(
 
                     if (tracker.isTrackingActive) {
                         Text(
-                            text = stringResource(id = string.tracking_active),
+                            text = stringResource(id = R.string.tracking_active),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                             fontWeight = FontWeight.Medium,
                         )
                     } else {
                         Text(
-                            text = stringResource(id = string.tracking_not_active),
+                            text = stringResource(id = R.string.tracking_not_active),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.error,
                             fontWeight = FontWeight.Medium,
@@ -150,15 +156,36 @@ private fun BaseContentScreen(
                     }
 
                     Text(
-                        text = "${stringResource(id = string.blinks_last_minute)}: ${tracker.blinksPerLastMinute}",
+                        text = "${stringResource(id = R.string.blinks_last_minute)}: ${tracker.blinksPerLastMinute}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
 
                     Text(
-                        text = "${stringResource(id = string.blinks_total)}: ${tracker.blinksTotal}",
+                        text = "${stringResource(id = R.string.blinks_total)}: ${tracker.blinksTotal}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
+                }
+            }
+
+            AnimatedVisibility(visible = !tracker.isPreferencesPanelVisible) {
+                Card(
+                    shape = RoundedCornerShape(size = 16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.secondaryContainer,
+                    ),
+                    elevation = CardDefaults.cardElevation(
+                        defaultElevation = 8.dp,
+                    ),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                ) {
+                    StatsPanel(
+                        model = stats,
+                        modifier = modifier.aspectRatio(ratio = 4f / 3f),
                     )
                 }
             }
@@ -189,6 +216,7 @@ fun BlinkRootScreenPreviewNotActiveNoFaceNoPrefs() {
                 camera = PreviewStubs.cameraPermissionGranted,
                 preferences = PreviewStubs.prefsMixed,
                 tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
+                stats = PreviewStubs.statsFull,
             )
         }
     }
@@ -203,6 +231,7 @@ fun BlinkRootScreenPreviewNotActiveWithFaceNoPrefs() {
                 camera = PreviewStubs.cameraPermissionGranted,
                 preferences = PreviewStubs.prefsMixed,
                 tracker = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
+                stats = PreviewStubs.statsFull,
             )
         }
     }
@@ -217,6 +246,7 @@ fun BlinkRootScreenPreviewNotActiveWithFaceWithPrefs() {
                 camera = PreviewStubs.cameraPermissionGranted,
                 preferences = PreviewStubs.prefsMixed,
                 tracker = PreviewStubs.trackerNotActiveWithFaceAndPrefs,
+                stats = PreviewStubs.statsFull,
             )
         }
     }
@@ -231,6 +261,7 @@ fun BlinkRootScreenPreviewActive() {
                 camera = PreviewStubs.cameraPermissionGranted,
                 preferences = PreviewStubs.prefsMixed,
                 tracker = PreviewStubs.trackerActiveWithFace,
+                stats = PreviewStubs.statsFull,
             )
         }
     }
@@ -246,6 +277,7 @@ fun BlinkRootScreenPreviewNotActiveNoFaceNoPrefsDark() {
                 camera = PreviewStubs.cameraPermissionGranted,
                 preferences = PreviewStubs.prefsMixed,
                 tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
+                stats = PreviewStubs.statsFull,
             )
         }
     }
@@ -260,6 +292,7 @@ fun BlinkRootScreenPreviewNotActiveWithFaceNoPrefsDark() {
                 camera = PreviewStubs.cameraPermissionGranted,
                 preferences = PreviewStubs.prefsMixed,
                 tracker = PreviewStubs.trackerNotActiveWithFaceNoPrefs,
+                stats = PreviewStubs.statsFull,
             )
         }
     }
@@ -274,6 +307,7 @@ fun BlinkRootScreenPreviewNotActiveWithFaceWithPrefsDark() {
                 camera = PreviewStubs.cameraPermissionGranted,
                 preferences = PreviewStubs.prefsMixed,
                 tracker = PreviewStubs.trackerNotActiveWithFaceAndPrefs,
+                stats = PreviewStubs.statsFull,
             )
         }
     }
@@ -288,6 +322,7 @@ fun BlinkRootScreenPreviewActiveDark() {
                 camera = PreviewStubs.cameraPermissionGranted,
                 preferences = PreviewStubs.prefsMixed,
                 tracker = PreviewStubs.trackerActiveWithFace,
+                stats = PreviewStubs.statsFull,
             )
         }
     }

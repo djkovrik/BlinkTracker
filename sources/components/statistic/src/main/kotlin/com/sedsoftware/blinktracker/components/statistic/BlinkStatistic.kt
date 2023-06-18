@@ -1,6 +1,6 @@
 package com.sedsoftware.blinktracker.components.statistic
 
-import com.sedsoftware.blinktracker.database.model.StatRecord
+import com.sedsoftware.blinktracker.components.statistic.model.StatRecord
 import kotlinx.coroutines.flow.Flow
 
 interface BlinkStatistic {

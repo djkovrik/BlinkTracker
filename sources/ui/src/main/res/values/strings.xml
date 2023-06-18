@@ -33,4 +33,9 @@
         the normal spontaneous blink rate is between 12 and 15 per minute. Other studies showed that the interval between blinks ranges
         from 2.8 to 4 and from 2 to 10 seconds what means blink rate of up to 22 blinks per minute.
     </string>
+
+    <string name="loading">Loading…</string>
+    <string name="stats_placeholder">No stats for today yet</string>
+    <string name="rate">Today\'s blink rate</string>
+    <string name="blinks_axis">Blinks</string>
 </resources>
