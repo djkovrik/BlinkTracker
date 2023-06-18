@@ -7,8 +7,11 @@ import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.camera.integration.BlinkCameraComponent
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
 import com.sedsoftware.blinktracker.components.preferences.integration.BlinkPreferencesComponent
+import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
+import com.sedsoftware.blinktracker.components.statistic.integration.BlinkStatisticComponent
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.components.tracker.integration.BlinkTrackerComponent
+import com.sedsoftware.blinktracker.database.StatisticsRepository
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.settings.Settings
 
@@ -19,6 +22,7 @@ class BlinkRootComponent internal constructor(
     private val blinkCamera: (ComponentContext) -> BlinkCamera,
     private val blinkPreferences: (ComponentContext, (BlinkPreferences.Output) -> Unit) -> BlinkPreferences,
     private val blinkTracker: (ComponentContext, (BlinkTracker.Output) -> Unit) -> BlinkTracker,
+    private val blinkStatistic: (ComponentContext, (BlinkStatistic.Output) -> Unit) -> BlinkStatistic,
 ) : BlinkRoot, ComponentContext by componentContext {
 
     constructor(
@@ -27,6 +31,7 @@ class BlinkRootComponent internal constructor(
         errorHandler: ErrorHandler,
         notificationsManager: NotificationsManager,
         settings: Settings,
+        repo: StatisticsRepository,
     ) : this(
         componentContext = componentContext,
         errorHandler = errorHandler,
@@ -52,6 +57,14 @@ class BlinkRootComponent internal constructor(
                 settings = settings,
                 output = output,
             )
+        },
+        blinkStatistic = { childContext: ComponentContext, output: (BlinkStatistic.Output) -> Unit ->
+            BlinkStatisticComponent(
+                componentContext = childContext,
+                storeFactory = storeFactory,
+                repo = repo,
+                output = output,
+            )
         }
     )
 
@@ -63,6 +76,9 @@ class BlinkRootComponent internal constructor(
 
     override val trackerComponent: BlinkTracker =
         blinkTracker(componentContext.childContext(key = COMPONENT_TRACKER), ::onTrackerOutput)
+
+    override val statsComponent: BlinkStatistic =
+        blinkStatistic(componentContext.childContext(key = COMPONENT_STATISTIC), ::onStatisticOutput)
 
     private fun onPreferencesOutput(output: BlinkPreferences.Output) {
         when (output) {
@@ -82,7 +98,15 @@ class BlinkRootComponent internal constructor(
             is BlinkTracker.Output.ErrorCaught ->
                 errorHandler.consume(output.throwable)
 
-            is BlinkTracker.Output.BlinkedPerMinute -> TODO()
+            is BlinkTracker.Output.BlinkedPerMinute ->
+                statsComponent.onNewBlinksValue(output.value)
+        }
+    }
+
+    private fun onStatisticOutput(output: BlinkStatistic.Output) {
+        when (output) {
+            is BlinkStatistic.Output.ErrorCaught ->
+                errorHandler.consume(output.throwable)
         }
     }
 
@@ -90,5 +114,6 @@ class BlinkRootComponent internal constructor(
         const val COMPONENT_CAMERA = "camera"
         const val COMPONENT_PREFERENCES = "preferences"
         const val COMPONENT_TRACKER = "tracker"
+        const val COMPONENT_STATISTIC = "statistic"
     }
 }

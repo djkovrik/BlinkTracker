@@ -22,8 +22,10 @@ android {
 
 dependencies {
     implementation(project(":sources:settings"))
+    implementation(project(":sources:database"))
     implementation(project(":sources:components:camera"))
     implementation(project(":sources:components:preferences"))
+    implementation(project(":sources:components:statistic"))
     implementation(project(":sources:components:tracker"))
 
     implementation(libs.org.jetbrains.coroutines)
