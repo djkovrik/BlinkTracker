@@ -173,8 +173,8 @@ private fun BaseContentScreen(
                 Card(
                     shape = RoundedCornerShape(size = 16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.secondaryContainer,
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.primaryContainer,
                     ),
                     elevation = CardDefaults.cardElevation(
                         defaultElevation = 8.dp,
@@ -185,7 +185,7 @@ private fun BaseContentScreen(
                 ) {
                     StatsPanel(
                         model = stats,
-                        modifier = modifier.aspectRatio(ratio = 4f / 3f),
+                        modifier = modifier.aspectRatio(ratio = 5f / 4f),
                     )
                 }
             }

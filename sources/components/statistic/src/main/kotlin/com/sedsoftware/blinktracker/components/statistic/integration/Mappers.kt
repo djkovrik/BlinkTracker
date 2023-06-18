@@ -8,7 +8,9 @@ internal val stateToModel: (State) -> Model =
         Model(
             records = it.records,
             checked = it.statsChecked,
-            rate = it.averageRate,
+            average = it.averageRate,
+            min = it.blinksMin,
+            max = it.blinksMax,
             showPlaceholder = it.placeholderVisible,
         )
     }

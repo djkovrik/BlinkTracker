@@ -13,7 +13,7 @@ class CustomChartEntry(
 
 fun StatRecord.toChartEntry(index: Int): ChartEntry =
     CustomChartEntry(
-        date = dateTime.time.toString(),
+        date = dateTime.time.toString().substringBeforeLast(":"),
         x = index.toFloat(),
         y = blinks.toFloat(),
     )

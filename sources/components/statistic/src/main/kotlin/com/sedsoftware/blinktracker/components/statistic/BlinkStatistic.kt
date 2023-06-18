@@ -12,7 +12,9 @@ interface BlinkStatistic {
 
     data class Model(
         val records: List<StatRecord>,
-        val rate: Float,
+        val average: Float,
+        val min: Int,
+        val max: Int,
         val checked: Boolean,
         val showPlaceholder: Boolean,
     )

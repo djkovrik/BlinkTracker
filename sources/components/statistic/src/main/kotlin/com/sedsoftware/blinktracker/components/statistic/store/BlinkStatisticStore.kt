@@ -15,6 +15,8 @@ internal interface BlinkStatisticStore : Store<Intent, State, Label> {
     data class State(
         val records: List<StatRecord> = emptyList(),
         val averageRate: Float = 0.0f,
+        val blinksMin: Int = 0,
+        val blinksMax: Int = 0,
         val statsChecked: Boolean = false,
         val placeholderVisible: Boolean = false,
     )

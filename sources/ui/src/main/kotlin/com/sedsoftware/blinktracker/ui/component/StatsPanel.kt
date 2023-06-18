@@ -34,7 +34,7 @@ fun StatsPanel(
                 Text(
                     text = stringResource(id = R.string.loading),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(all = 32.dp),
                 )
@@ -49,7 +49,7 @@ fun StatsPanel(
                 Text(
                     text = stringResource(id = R.string.stats_placeholder),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(all = 32.dp),
                 )
@@ -58,7 +58,9 @@ fun StatsPanel(
 
         else -> {
             StatsPanelDetails(
-                rate = model.rate,
+                min = model.min,
+                max = model.max,
+                average = model.average,
                 entries = model.records.toChartEntries(),
                 modifier = modifier,
             )
@@ -70,7 +72,7 @@ fun StatsPanel(
 @Preview(showBackground = true)
 fun PreviewStatsLoadingLight() {
     BlinkTrackerTheme(darkTheme = false) {
-        Surface(color = MaterialTheme.colorScheme.secondaryContainer) {
+        Surface(color = MaterialTheme.colorScheme.primaryContainer) {
             StatsPanel(
                 model = PreviewStubs.statsEmptyNotChecked,
             )
@@ -82,7 +84,7 @@ fun PreviewStatsLoadingLight() {
 @Preview(showBackground = true)
 fun PreviewStatsLoadedLight() {
     BlinkTrackerTheme(darkTheme = false) {
-        Surface(color = MaterialTheme.colorScheme.secondaryContainer) {
+        Surface(color = MaterialTheme.colorScheme.primaryContainer) {
             StatsPanel(
                 model = PreviewStubs.statsEmptyChecked,
             )
@@ -94,7 +96,7 @@ fun PreviewStatsLoadedLight() {
 @Preview(showBackground = true)
 fun PreviewStatsLoadingDark() {
     BlinkTrackerTheme(darkTheme = true) {
-        Surface(color = MaterialTheme.colorScheme.secondaryContainer) {
+        Surface(color = MaterialTheme.colorScheme.primaryContainer) {
             StatsPanel(
                 model = PreviewStubs.statsEmptyNotChecked,
             )
@@ -106,7 +108,7 @@ fun PreviewStatsLoadingDark() {
 @Preview(showBackground = true)
 fun PreviewStatsLoadedDark() {
     BlinkTrackerTheme(darkTheme = true) {
-        Surface(color = MaterialTheme.colorScheme.secondaryContainer) {
+        Surface(color = MaterialTheme.colorScheme.primaryContainer) {
             StatsPanel(
                 model = PreviewStubs.statsEmptyChecked,
             )

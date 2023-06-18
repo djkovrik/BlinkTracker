@@ -107,20 +107,26 @@ object PreviewStubs {
 
     val statsEmptyNotChecked = BlinkStatistic.Model(
         records = emptyList(),
-        rate = 0f,
+        average = 0f,
+        min = 0,
+        max = 0,
         checked = false,
         showPlaceholder = false,
     )
 
     val statsEmptyChecked = BlinkStatistic.Model(
         records = emptyList(),
-        rate = 0f,
+        average = 0f,
+        min = 0,
+        max = 0,
         checked = true,
         showPlaceholder = true,
     )
 
     val statsOneRecord = BlinkStatistic.Model(
-        rate = 12f,
+        average = 12f,
+        min = 12,
+        max = 15,
         checked = true,
         showPlaceholder = false,
         records = dummyRecords.take(1)
@@ -128,7 +134,7 @@ object PreviewStubs {
 
     val statsFull = statsOneRecord.copy(
         records = dummyRecords,
-        rate = 12.34f,
+        average = 12.34f,
     )
 }
 

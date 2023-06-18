@@ -76,7 +76,7 @@ fun CustomAppBar(
 
                 Text(
                     text = trackerModel.timerLabel,
-                    style = MaterialTheme.typography.displayMedium,
+                    style = MaterialTheme.typography.displayLarge,
                     color = MaterialTheme.colorScheme.secondary,
                     textAlign = TextAlign.Center,
                     modifier = Modifier

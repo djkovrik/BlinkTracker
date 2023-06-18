@@ -47,8 +47,11 @@ internal class BlinkStatisticStoreProvider(
                             val mapped = mapItems(items)
                             val filtered = mapped.filter { it.dateTime.date == today }
                             val average = filtered.getAverage().roundTo(AVERAGE_PRECISION)
+                            val min = filtered.minBy { it.blinks }
+                            val max = filtered.maxBy { it.blinks }
                             dispatch(Msg.RecordsUpdated(filtered))
                             dispatch(Msg.AverageRateChanged(average))
+                            dispatch(Msg.MinMaxUpdated(min.blinks, max.blinks))
                         }
                     }
                 }
@@ -70,6 +73,11 @@ internal class BlinkStatisticStoreProvider(
                     is Msg.AverageRateChanged -> copy(
                         averageRate = msg.rate,
                     )
+
+                    is Msg.MinMaxUpdated -> copy(
+                        blinksMin = msg.min,
+                        blinksMax = msg.max,
+                    )
                 }
             }
         ) {}
@@ -81,6 +89,7 @@ internal class BlinkStatisticStoreProvider(
     private sealed interface Msg {
         data class RecordsUpdated(val records: List<StatRecord>) : Msg
         data class AverageRateChanged(val rate: Float) : Msg
+        data class MinMaxUpdated(val min: Int, val max: Int) : Msg
     }
 
     private fun mapItems(items: List<BlinksRecordDbModel>): List<StatRecord> =
@@ -96,6 +105,7 @@ internal class BlinkStatisticStoreProvider(
             scope.publish(ErrorCaught(throwable))
         }
 
+    @Suppress("MagicNumber")
     private fun Float.roundTo(decimals: Int): Float {
         var multiplier = 1.0f
         repeat(decimals) { multiplier *= 10f }
