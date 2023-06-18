@@ -61,6 +61,7 @@ fun PreviewPermissionsDeniedLight() {
                 camera = PreviewStubs.cameraPermissionDenied,
                 preferences = PreviewStubs.prefsAllDisabled,
                 tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
+                stats = PreviewStubs.statsFull,
             )
         }
     }
@@ -75,6 +76,7 @@ fun PreviewPermissionsRationaleLight() {
                 camera = PreviewStubs.cameraPermissionRationale,
                 preferences = PreviewStubs.prefsAllDisabled,
                 tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
+                stats = PreviewStubs.statsFull,
             )
         }
     }
@@ -89,6 +91,7 @@ fun PreviewPermissionsNoCameraLight() {
                 camera = PreviewStubs.cameraPermissionGrantedNoCamera,
                 preferences = PreviewStubs.prefsAllDisabled,
                 tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
+                stats = PreviewStubs.statsFull,
             )
         }
     }
@@ -103,6 +106,7 @@ fun PreviewPermissionsDeniedDark() {
                 camera = PreviewStubs.cameraPermissionDenied,
                 preferences = PreviewStubs.prefsAllDisabled,
                 tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
+                stats = PreviewStubs.statsFull,
             )
         }
     }
@@ -117,6 +121,7 @@ fun PreviewPermissionsRationaleDark() {
                 camera = PreviewStubs.cameraPermissionRationale,
                 preferences = PreviewStubs.prefsAllDisabled,
                 tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
+                stats = PreviewStubs.statsFull,
             )
         }
     }
@@ -131,6 +136,7 @@ fun PreviewPermissionsNoCameraDark() {
                 camera = PreviewStubs.cameraPermissionGrantedNoCamera,
                 preferences = PreviewStubs.prefsAllDisabled,
                 tracker = PreviewStubs.trackerNotActiveNoFaceNoPrefs,
+                stats = PreviewStubs.statsFull,
             )
         }
     }

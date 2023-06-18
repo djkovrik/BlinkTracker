@@ -26,12 +26,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.ui.PreviewStubs
 import com.sedsoftware.blinktracker.ui.R
+import com.sedsoftware.blinktracker.ui.extension.withSound
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
 @Composable
@@ -47,7 +49,11 @@ fun TrackingControls(
         // Start/Stop
         Row(modifier = Modifier.weight(1f)) {
             Button(
-                onClick = if (model.isTrackingActive) onStopClick else onStartClick,
+                onClick = if (model.isTrackingActive) {
+                    onStopClick.withSound(LocalContext.current)
+                } else {
+                    onStartClick.withSound(LocalContext.current)
+                },
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
                 modifier = Modifier
                     .defaultMinSize(minWidth = 120.dp)
@@ -85,7 +91,7 @@ fun TrackingControls(
 
             // Minimize
             OutlinedButton(
-                onClick = onMinimizeClick,
+                onClick = onMinimizeClick.withSound(LocalContext.current),
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
                 border = BorderStroke(
                     width = 1.dp,
@@ -110,7 +116,7 @@ fun TrackingControls(
 
         // Settings
         OutlinedIconButton(
-            onClick = onSettingsClick,
+            onClick = onSettingsClick.withSound(LocalContext.current),
             enabled = !model.isTrackingActive,
             border = BorderStroke(
                 width = 1.dp,

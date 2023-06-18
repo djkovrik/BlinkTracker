@@ -37,5 +37,6 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
         object SoundNotificationTriggered : Label()
         object VibrationNotificationTriggered : Label()
         data class ErrorCaught(val throwable: Throwable) : Label()
+        data class BlinksPerMinuteAvailable(val value: Int) : Label()
     }
 }

@@ -11,7 +11,10 @@ import com.sedsoftware.blinktracker.components.camera.model.CameraLens
 import com.sedsoftware.blinktracker.components.camera.model.CameraState
 import com.sedsoftware.blinktracker.components.camera.model.PermissionState
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
+import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
+import com.sedsoftware.blinktracker.components.statistic.model.StatRecord
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
+import kotlinx.datetime.LocalDateTime
 
 @Suppress("MemberVisibilityCanBePrivate")
 object PreviewStubs {
@@ -80,6 +83,58 @@ object PreviewStubs {
         isMinimized = false,
         hasFaceDetected = true,
         isPreferencesPanelVisible = false,
+    )
+
+    private val dummyRecords = listOf(
+        StatRecord(blinks = 14, dateTime = LocalDateTime(2023, 6, 13, 12, 34)),
+        StatRecord(blinks = 12, dateTime = LocalDateTime(2023, 6, 13, 12, 35)),
+        StatRecord(blinks = 18, dateTime = LocalDateTime(2023, 6, 13, 12, 36)),
+        StatRecord(blinks = 21, dateTime = LocalDateTime(2023, 6, 13, 12, 37)),
+        StatRecord(blinks = 12, dateTime = LocalDateTime(2023, 6, 13, 12, 38)),
+        StatRecord(blinks = 13, dateTime = LocalDateTime(2023, 6, 13, 12, 39)),
+        StatRecord(blinks = 13, dateTime = LocalDateTime(2023, 6, 13, 12, 40)),
+        StatRecord(blinks = 17, dateTime = LocalDateTime(2023, 6, 13, 13, 11)),
+        StatRecord(blinks = 16, dateTime = LocalDateTime(2023, 6, 13, 12, 12)),
+        StatRecord(blinks = 10, dateTime = LocalDateTime(2023, 6, 13, 12, 13)),
+        StatRecord(blinks = 18, dateTime = LocalDateTime(2023, 6, 13, 12, 14)),
+        StatRecord(blinks = 17, dateTime = LocalDateTime(2023, 6, 13, 12, 15)),
+        StatRecord(blinks = 18, dateTime = LocalDateTime(2023, 6, 14, 15, 21)),
+        StatRecord(blinks = 16, dateTime = LocalDateTime(2023, 6, 13, 12, 22)),
+        StatRecord(blinks = 15, dateTime = LocalDateTime(2023, 6, 13, 12, 23)),
+        StatRecord(blinks = 14, dateTime = LocalDateTime(2023, 6, 13, 12, 24)),
+        StatRecord(blinks = 13, dateTime = LocalDateTime(2023, 6, 13, 12, 25)),
+    )
+
+    val statsEmptyNotChecked = BlinkStatistic.Model(
+        records = emptyList(),
+        average = 0f,
+        min = 0,
+        max = 0,
+        checked = false,
+        showPlaceholder = false,
+    )
+
+    val statsEmptyChecked = BlinkStatistic.Model(
+        records = emptyList(),
+        average = 0f,
+        min = 0,
+        max = 0,
+        checked = true,
+        showPlaceholder = true,
+    )
+
+    val statsOneRecord = BlinkStatistic.Model(
+        average = 12f,
+        min = 12,
+        max = 15,
+        checked = true,
+        showPlaceholder = false,
+        records = dummyRecords.take(1)
+    )
+
+    val statsFull = statsOneRecord.copy(
+        records = dummyRecords,
+        average = 12.34f,
     )
 }
 

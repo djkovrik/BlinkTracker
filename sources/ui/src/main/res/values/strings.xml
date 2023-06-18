@@ -11,14 +11,15 @@
     <string name="button_stop">Stop</string>
     <string name="button_minimize">Minimize</string>
     <string name="no_face_detected">No face detected for blinks recognition</string>
-    <string name="blinks_last_minute">Blinks per last minute</string>
-    <string name="blinks_total">Blinks total</string>
+    <string name="blinks_last_minute">Per last minute</string>
+    <string name="blinks_total">Total</string>
     <string name="face_data_detected">Face detected</string>
     <string name="face_data_not_detected">Face not detected</string>
     <string name="stats">Stats</string>
-    <string name="tracking">Tracking</string>
+    <string name="tracking">Blink tracking</string>
     <string name="tracking_active">Tracking is active</string>
     <string name="tracking_not_active">Tracking is not active</string>
+    <string name="today">Today\'s statistics</string>
 
     <string name="info_title">Why it is important?</string>
 
@@ -33,4 +34,11 @@
         the normal spontaneous blink rate is between 12 and 15 per minute. Other studies showed that the interval between blinks ranges
         from 2.8 to 4 and from 2 to 10 seconds what means blink rate of up to 22 blinks per minute.
     </string>
+
+    <string name="loading">Loading…</string>
+    <string name="stats_placeholder">No stats for today yet</string>
+    <string name="min">Min</string>
+    <string name="max">Max</string>
+    <string name="average">Average</string>
+    <string name="blinks_axis">Blinks</string>
 </resources>

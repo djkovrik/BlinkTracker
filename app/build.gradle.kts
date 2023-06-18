@@ -9,7 +9,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.sedsoftware.blinkz"
+        applicationId = "com.sedsoftware.blinktracker"
         minSdk = 24
         targetSdk = 33
         versionCode = 1000
@@ -28,17 +28,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
+        kotlinCompilerExtensionVersion = "1.4.7"
     }
     packaging {
         resources {
@@ -53,14 +53,17 @@ android {
 dependencies {
     implementation(project(":sources:root"))
     implementation(project(":sources:settings"))
+    implementation(project(":sources:database"))
     implementation(project(":sources:ui"))
     implementation(project(":sources:components:camera"))
     implementation(project(":sources:components:preferences"))
+    implementation(project(":sources:components:statistic"))
     implementation(project(":sources:components:tracker"))
 
     implementation(platform(libs.compose.bom))
 
     implementation(libs.org.jetbrains.coroutines)
+    implementation(libs.org.jetbrains.datetime)
     implementation(libs.ark.mvikotlin.core)
     implementation(libs.ark.mvikotlin.main)
     implementation(libs.ark.decompose.core)

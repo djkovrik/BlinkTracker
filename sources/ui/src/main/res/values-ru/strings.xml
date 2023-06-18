@@ -12,15 +12,16 @@
     <string name="button_stop">Стоп</string>
     <string name="button_minimize">Свернуть</string>
     <string name="no_face_detected">Не удалось обнаружить лицо для распознавания</string>
-    <string name="blinks_last_minute">Морганий за последнюю минуту</string>
-    <string name="blinks_total">Морганий всего</string>
+    <string name="blinks_last_minute">За последнюю минуту</string>
+    <string name="blinks_total">Всего</string>
     <string name="face_data_detected">Данные лица доступны</string>
     <string name="face_data_not_detected">Данные лица недоступны</string>
     <string name="info_title">Почему это важно?</string>
     <string name="stats">Статистика</string>
-    <string name="tracking">Отслеживание</string>
+    <string name="tracking">Отслеживание морганий</string>
     <string name="tracking_active">Отслеживание активно</string>
     <string name="tracking_not_active">Отслеживание не активно</string>
+    <string name="today">Статистика за сегодня</string>
 
     <string name="info1">
         Согласно данным National Library of Medicine, нормальное моргание необходимо для правильного распределения слезной плёнки и защиты
@@ -32,4 +33,11 @@
         от 12 до 15 в минуту. Ряд других исследований показали, что интервал между морганиями может составлять от 2.8 до 4 или от 2 до 10 секунд,
         что означает среднюю частоту моргания равную 22 раза в минуту.
     </string>
+
+    <string name="loading">Загрузка…</string>
+    <string name="stats_placeholder">На сегодня еще нет статистики</string>
+    <string name="min">Мин.</string>
+    <string name="max">Макс.</string>
+    <string name="average">Среднее</string>
+    <string name="blinks_axis">Моргания</string>
 </resources>

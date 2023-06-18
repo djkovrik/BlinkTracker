@@ -20,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
+import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.ui.camera.CameraPreviewComposable
@@ -43,6 +44,9 @@ fun BlinkRootContent(
 
     val trackerState: BlinkTracker.Model by root.trackerComponent.models
         .collectAsState(initial = root.trackerComponent.initial)
+
+    val statsState: BlinkStatistic.Model by root.statsComponent.models
+        .collectAsState(initial = root.statsComponent.initial)
 
     val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 
@@ -92,6 +96,7 @@ fun BlinkRootContent(
                     camera = cameraState,
                     preferences = preferencesState,
                     tracker = trackerState,
+                    stats = statsState,
                     modifier = modifier,
                     onStartClick = root.trackerComponent::onTrackingStarted,
                     onStopClick = root.trackerComponent::onTrackingStopped,

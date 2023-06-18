@@ -4,6 +4,7 @@ import android.content.Context
 import com.sedsoftware.blinktracker.root.integration.ErrorHandler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import timber.log.Timber
 
 class AppErrorHandler(
     private val context: Context,
@@ -18,5 +19,6 @@ class AppErrorHandler(
         // TODO split by throwable type
         context
         _messages.value = "Unknown error"
+        Timber.e("Blink tracker error: ${throwable.message}", throwable)
     }
 }
