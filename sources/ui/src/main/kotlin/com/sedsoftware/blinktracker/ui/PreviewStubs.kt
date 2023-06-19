@@ -85,6 +85,10 @@ object PreviewStubs {
         isPreferencesPanelVisible = false,
     )
 
+    val trackerActiveWithNoFace = trackerActiveWithFace.copy(
+        hasFaceDetected = false,
+    )
+
     private val dummyRecords = listOf(
         StatRecord(blinks = 14, dateTime = LocalDateTime(2023, 6, 13, 12, 34)),
         StatRecord(blinks = 12, dateTime = LocalDateTime(2023, 6, 13, 12, 35)),

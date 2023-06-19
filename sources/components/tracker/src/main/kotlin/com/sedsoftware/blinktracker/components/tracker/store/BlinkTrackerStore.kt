@@ -14,8 +14,8 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
         object TrackingStopped : Intent()
         data class FaceDataChanged(val data: VisionFaceData) : Intent()
         data class MinimizedStateChanged(val minimized: Boolean) : Intent()
-        object SettingsPanelRequested : Intent()
-        object SettingsPanelClosed : Intent()
+        object SettingsPanelToggle : Intent()
+        object LaunchPip : Intent()
     }
 
     data class State(

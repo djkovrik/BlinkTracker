@@ -46,12 +46,14 @@ internal class BlinkStatisticStoreProvider(
                         repo.observe().collect { items ->
                             val mapped = mapItems(items)
                             val filtered = mapped.filter { it.dateTime.date == today }
-                            val average = filtered.getAverage().roundTo(AVERAGE_PRECISION)
-                            val min = filtered.minBy { it.blinks }
-                            val max = filtered.maxBy { it.blinks }
-                            dispatch(Msg.RecordsUpdated(filtered))
-                            dispatch(Msg.AverageRateChanged(average))
-                            dispatch(Msg.MinMaxUpdated(min.blinks, max.blinks))
+                            if (filtered.isNotEmpty()) {
+                                val average = filtered.getAverage().roundTo(AVERAGE_PRECISION)
+                                val min = filtered.minBy { it.blinks }
+                                val max = filtered.maxBy { it.blinks }
+                                dispatch(Msg.RecordsUpdated(filtered))
+                                dispatch(Msg.AverageRateChanged(average))
+                                dispatch(Msg.MinMaxUpdated(min.blinks, max.blinks))
+                            }
                         }
                     }
                 }

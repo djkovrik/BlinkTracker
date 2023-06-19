@@ -12,17 +12,20 @@ import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Intent
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Label
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.State
+import com.sedsoftware.blinktracker.components.tracker.tools.PictureInPictureLauncher
 import com.sedsoftware.blinktracker.settings.Settings
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock.System
+import java.lang.ref.WeakReference
 import kotlin.time.Duration.Companion.milliseconds
 
 internal class BlinkTrackerStoreProvider(
     private val storeFactory: StoreFactory,
     private val settings: Settings,
+    private val pipLauncher: WeakReference<PictureInPictureLauncher>,
 ) {
 
     @Suppress("CyclomaticComplexMethod")
@@ -94,6 +97,10 @@ internal class BlinkTrackerStoreProvider(
 
                 onIntent<Intent.TrackingStarted> {
                     dispatch(Msg.TrackerStateChangedStarted(true))
+                    dispatch(Msg.SettingsVisibilityChanged(false))
+                    if (state.shouldLaunchMinimized) {
+                        pipLauncher.get()?.launchPictureInPicture()
+                    }
                 }
 
                 onIntent<Intent.TrackingStopped> {
@@ -108,16 +115,16 @@ internal class BlinkTrackerStoreProvider(
                     }
                 }
 
-                onIntent<Intent.SettingsPanelRequested> {
-                    dispatch(Msg.SettingsVisibilityChanged(true))
-                }
-
-                onIntent<Intent.SettingsPanelClosed> {
-                    dispatch(Msg.SettingsVisibilityChanged(false))
+                onIntent<Intent.SettingsPanelToggle> {
+                    dispatch(Msg.SettingsVisibilityChanged(!state.preferencesPanelVisible))
                 }
 
                 onIntent<Intent.MinimizedStateChanged> {
                     dispatch(Msg.MinimizedStateChanged(it.minimized))
+                }
+
+                onIntent<Intent.LaunchPip> {
+                    pipLauncher.get()?.launchPictureInPicture()
                 }
             },
             reducer = { msg ->

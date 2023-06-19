@@ -1,8 +1,12 @@
 package com.sedsoftware.blinktracker
 
 import android.Manifest
+import android.app.PictureInPictureParams
 import android.content.pm.PackageManager
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
+import android.util.Rational
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,6 +16,7 @@ import com.arkivanov.decompose.defaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
+import com.sedsoftware.blinktracker.components.tracker.tools.PictureInPictureLauncher
 import com.sedsoftware.blinktracker.database.StatisticsRepositoryImpl
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.root.integration.BlinkRootComponent
@@ -25,7 +30,7 @@ import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 import kotlinx.coroutines.launch
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), PictureInPictureLauncher {
 
     private var _imageProcessor: VisionImageProcessor? = null
 
@@ -70,6 +75,7 @@ class MainActivity : ComponentActivity() {
             notificationsManager = AppNotificationsManager(this),
             settings = AppSettings(applicationContext),
             repo = StatisticsRepositoryImpl(applicationContext),
+            pipLauncher = this,
         )
 
         lifecycleScope.launch {
@@ -97,6 +103,15 @@ class MainActivity : ComponentActivity() {
         _imageProcessor = null
     }
 
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        root.trackerComponent.onPictureInPictureChanged(enabled = isInPictureInPictureMode)
+    }
+
+    override fun launchPictureInPicture() {
+        enterPictureInPictureMode(getPictureInPictureParams())
+    }
+
     private fun checkCameraPermissions() {
         when {
             ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
@@ -120,5 +135,19 @@ class MainActivity : ComponentActivity() {
         } else {
             root.cameraComponent.onCurrentLensChanged(CameraLens.NOT_AVAILABLE)
         }
+    }
+
+    private fun getPictureInPictureParams(): PictureInPictureParams {
+        val params = PictureInPictureParams.Builder()
+            .setAspectRatio(Rational(3, 4))
+            .apply {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    setAutoEnterEnabled(false)
+                    setSeamlessResizeEnabled(false)
+                }
+            }
+            .build()
+        setPictureInPictureParams(params)
+        return params
     }
 }
