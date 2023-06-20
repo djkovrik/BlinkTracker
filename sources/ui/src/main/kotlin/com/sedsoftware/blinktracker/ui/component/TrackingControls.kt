@@ -92,12 +92,16 @@ fun TrackingControls(
             // Minimize
             OutlinedButton(
                 onClick = onMinimizeClick.withSound(LocalContext.current),
+                enabled = model.isTrackingActive,
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
                 border = BorderStroke(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 ),
-                modifier = Modifier.padding(horizontal = 8.dp),
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .alpha(alpha = if (model.isTrackingActive) 1.0f else 0.4f)
+                ,
             ) {
                 Icon(
                     imageVector = Icons.Default.CropFree,
