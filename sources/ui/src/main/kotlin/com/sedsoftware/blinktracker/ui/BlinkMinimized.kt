@@ -31,9 +31,9 @@ fun BlinkMinimized(
             .aspectRatio(ratio = Constants.PIP_RATIO_WIDTH.toFloat() / Constants.PIP_RATIO_HEIGHT.toFloat())
             .background(
                 color = if (model.hasFaceDetected) {
-                    MaterialTheme.colorScheme.primary
+                    MaterialTheme.colorScheme.primaryContainer
                 } else {
-                    MaterialTheme.colorScheme.error
+                    MaterialTheme.colorScheme.errorContainer
                 }
             )
             .fillMaxSize()
@@ -42,7 +42,11 @@ fun BlinkMinimized(
             Text(
                 text = model.timerLabel,
                 style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = if (model.hasFaceDetected) {
+                    MaterialTheme.colorScheme.onPrimaryContainer
+                } else {
+                    MaterialTheme.colorScheme.onErrorContainer
+                },
                 textAlign = TextAlign.Center,
                 modifier = modifier
                     .padding(horizontal = 32.dp, vertical = 8.dp)
@@ -52,7 +56,11 @@ fun BlinkMinimized(
             Text(
                 text = model.blinksPerLastMinute.toString(),
                 style = MaterialTheme.typography.displayMedium,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = if (model.hasFaceDetected) {
+                    MaterialTheme.colorScheme.onPrimaryContainer
+                } else {
+                    MaterialTheme.colorScheme.onErrorContainer
+                },
                 textAlign = TextAlign.Center,
                 modifier = modifier
                     .padding(horizontal = 32.dp, vertical = 8.dp)
@@ -76,11 +84,11 @@ fun BlinkMinimizedPreviewWithFaceLight() {
 
 @Composable
 @Preview(showBackground = true, widthDp = 150, heightDp = 200)
-fun BlinkMinimizedPreviewWithNoFaceLight() {
-    BlinkTrackerTheme(darkTheme = false) {
+fun BlinkMinimizedPreviewWithFaceDark() {
+    BlinkTrackerTheme(darkTheme = true) {
         Surface {
             BlinkMinimized(
-                model = PreviewStubs.trackerActiveWithNoFace,
+                model = PreviewStubs.trackerActiveWithFace,
             )
         }
     }
@@ -88,11 +96,11 @@ fun BlinkMinimizedPreviewWithNoFaceLight() {
 
 @Composable
 @Preview(showBackground = true, widthDp = 150, heightDp = 200)
-fun BlinkMinimizedPreviewWithFaceDark() {
-    BlinkTrackerTheme(darkTheme = true) {
+fun BlinkMinimizedPreviewWithNoFaceLight() {
+    BlinkTrackerTheme(darkTheme = false) {
         Surface {
             BlinkMinimized(
-                model = PreviewStubs.trackerActiveWithFace,
+                model = PreviewStubs.trackerActiveWithNoFace,
             )
         }
     }

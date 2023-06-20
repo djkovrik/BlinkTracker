@@ -25,6 +25,7 @@ import com.sedsoftware.blinktracker.settings.AppSettings
 import com.sedsoftware.blinktracker.tools.AppErrorHandler
 import com.sedsoftware.blinktracker.tools.AppNotificationsManager
 import com.sedsoftware.blinktracker.ui.BlinkRootContent
+import com.sedsoftware.blinktracker.ui.Constants
 import com.sedsoftware.blinktracker.ui.camera.core.FaceDetectorProcessor
 import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
@@ -139,7 +140,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
 
     private fun getPictureInPictureParams(): PictureInPictureParams {
         val params = PictureInPictureParams.Builder()
-            .setAspectRatio(Rational(3, 4))
+            .setAspectRatio(Rational(Constants.PIP_RATIO_WIDTH, Constants.PIP_RATIO_HEIGHT))
             .apply {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     setAutoEnterEnabled(false)
