@@ -4,13 +4,15 @@
 
 ## Blinkz - A Simple Blink Tracker
 
-Tracks how many times you blink per minute and notifies you if it's below defined threshold. Inspired by [Divide-By-0 App Ideas List](https://github.com/Divide-By-0/ideas-for-projects-people-would-use/)
+Tracks how many times you blink per minute and notifies you if it's below defined threshold. 
+Inspired by [Divide-By-0 App Ideas List](https://github.com/Divide-By-0/ideas-for-projects-people-would-use/).
 
 
 ### Used libraries
 * [MVIKotlin](https://github.com/arkivanov/MVIKotlin/)
 * [Decompose](https://github.com/arkivanov/Decompose/)
 * [MLKit Face Detection](https://developers.google.com/ml-kit/vision/face-detection/android?hl=en)
+* [Vico](https://github.com/patrykandpatrick/vico/)
 
 ### Used resources
 
