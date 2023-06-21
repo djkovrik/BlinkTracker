@@ -11,10 +11,9 @@ interface BlinkTracker {
     fun onTrackingStarted()
     fun onTrackingStopped()
     fun onFaceDataChanged(data: VisionFaceData)
-    fun onMinimizeActivated()
-    fun onMinimizeDeactivated()
-    fun showPreferencesPanel()
-    fun closePreferencesPanel()
+    fun onPreferencesPanelToggle()
+    fun onMinimizeRequested()
+    fun onPictureInPictureChanged(enabled: Boolean)
 
     data class Model(
         val isTrackingActive: Boolean,

@@ -59,67 +59,62 @@ fun BlinkRootContent(
     val scope: CoroutineScope = rememberCoroutineScope()
     val drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
 
-    RightModalDrawer(
-        drawerState = drawerState,
-    ) {
-        Scaffold(
-            modifier = modifier,
-            snackbarHost = {
-                SnackbarHost(hostState = snackbarHostState)
-            },
-            topBar = {
-                CustomAppBar(
-                    cameraModel = cameraState,
-                    trackerModel = trackerState,
-                    modifier = modifier,
-                    onHelpIconClick = {
-                        scope.launch {
-                            drawerState.open()
+    if (!trackerState.isMinimized) {
+        RightModalDrawer(
+            drawerState = drawerState,
+        ) {
+            Scaffold(
+                modifier = modifier,
+                snackbarHost = {
+                    SnackbarHost(hostState = snackbarHostState)
+                },
+                topBar = {
+                    CustomAppBar(
+                        cameraModel = cameraState,
+                        trackerModel = trackerState,
+                        modifier = modifier,
+                        onHelpIconClick = {
+                            scope.launch {
+                                drawerState.open()
+                            }
                         }
+                    ) {
+                        CameraPreviewComposable(
+                            imageProcessor = processor,
+                            lensFacing = cameraState.selectedLens,
+                            modifier = modifier.fillMaxSize(),
+                        )
                     }
+                },
+            ) { contentPadding: PaddingValues ->
+                Surface(
+                    color = MaterialTheme.colorScheme.surface,
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(contentPadding),
                 ) {
-                    CameraPreviewComposable(
-                        imageProcessor = processor,
-                        lensFacing = cameraState.selectedLens,
-                        modifier = modifier.fillMaxSize(),
+                    BlinkRootScreen(
+                        camera = cameraState,
+                        preferences = preferencesState,
+                        tracker = trackerState,
+                        stats = statsState,
+                        modifier = modifier,
+                        onStartClick = root.trackerComponent::onTrackingStarted,
+                        onStopClick = root.trackerComponent::onTrackingStopped,
+                        onMinimizeClick = root.trackerComponent::onMinimizeRequested,
+                        onSettingsClick = root.trackerComponent::onPreferencesPanelToggle,
+                        onThresholdChange = root.preferencesComponent::onMinimalThresholdChanged,
+                        onLaunchMinimizedChange = root.preferencesComponent::onLaunchMinimizedChanged,
+                        onNotifySoundChange = root.preferencesComponent::onNotifySoundChanged,
+                        onNotifyVibroChange = root.preferencesComponent::onNotifyVibrationChanged
                     )
                 }
-            },
-        ) { contentPadding: PaddingValues ->
-            Surface(
-                color = MaterialTheme.colorScheme.surface,
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(contentPadding),
-            ) {
-                BlinkRootScreen(
-                    camera = cameraState,
-                    preferences = preferencesState,
-                    tracker = trackerState,
-                    stats = statsState,
-                    modifier = modifier,
-                    onStartClick = root.trackerComponent::onTrackingStarted,
-                    onStopClick = root.trackerComponent::onTrackingStopped,
-                    onMinimizeClick = {
-                        if (trackerState.isMinimized) {
-                            root.trackerComponent.onMinimizeDeactivated()
-                        } else {
-                            root.trackerComponent.onMinimizeActivated()
-                        }
-                    },
-                    onSettingsClick = {
-                        if (trackerState.isPreferencesPanelVisible) {
-                            root.trackerComponent.closePreferencesPanel()
-                        } else {
-                            root.trackerComponent.showPreferencesPanel()
-                        }
-                    },
-                    onThresholdChange = { root.preferencesComponent.onMinimalThresholdChanged(it) },
-                    onLaunchMinimizedChange = { root.preferencesComponent.onLaunchMinimizedChanged(it) },
-                    onNotifySoundChange = { root.preferencesComponent.onNotifySoundChanged(it) },
-                    onNotifyVibroChange = { root.preferencesComponent.onNotifyVibrationChanged(it) }
-                )
             }
         }
+    } else {
+        BlinkMinimized(
+            model = trackerState,
+            modifier = modifier,
+        )
     }
 }

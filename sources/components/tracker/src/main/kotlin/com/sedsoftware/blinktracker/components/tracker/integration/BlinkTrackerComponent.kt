@@ -11,6 +11,7 @@ import com.sedsoftware.blinktracker.components.tracker.BlinkTracker.Model
 import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStoreProvider
+import com.sedsoftware.blinktracker.components.tracker.tools.PictureInPictureLauncher
 import com.sedsoftware.blinktracker.settings.Settings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,11 +20,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import java.lang.ref.WeakReference
 
 class BlinkTrackerComponent(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,
     private val settings: Settings,
+    private val pipLauncher: WeakReference<PictureInPictureLauncher>,
     private val output: (BlinkTracker.Output) -> Unit,
 ) : BlinkTracker, ComponentContext by componentContext {
 
@@ -32,6 +35,7 @@ class BlinkTrackerComponent(
             BlinkTrackerStoreProvider(
                 storeFactory = storeFactory,
                 settings = settings,
+                pipLauncher = pipLauncher,
             ).provide()
         }
 
@@ -68,7 +72,6 @@ class BlinkTrackerComponent(
     override val initial: Model = stateToModel(BlinkTrackerStore.State())
 
     override fun onTrackingStarted() {
-        store.accept(BlinkTrackerStore.Intent.SettingsPanelClosed)
         store.accept(BlinkTrackerStore.Intent.TrackingStarted)
     }
 
@@ -80,19 +83,15 @@ class BlinkTrackerComponent(
         store.accept(BlinkTrackerStore.Intent.FaceDataChanged(data))
     }
 
-    override fun onMinimizeActivated() {
-        store.accept(BlinkTrackerStore.Intent.MinimizedStateChanged(true))
+    override fun onPreferencesPanelToggle() {
+        store.accept(BlinkTrackerStore.Intent.SettingsPanelToggle)
     }
 
-    override fun onMinimizeDeactivated() {
-        store.accept(BlinkTrackerStore.Intent.MinimizedStateChanged(false))
+    override fun onMinimizeRequested() {
+        store.accept(BlinkTrackerStore.Intent.LaunchPip)
     }
 
-    override fun showPreferencesPanel() {
-        store.accept(BlinkTrackerStore.Intent.SettingsPanelRequested)
-    }
-
-    override fun closePreferencesPanel() {
-        store.accept(BlinkTrackerStore.Intent.SettingsPanelClosed)
+    override fun onPictureInPictureChanged(enabled: Boolean) {
+        store.accept(BlinkTrackerStore.Intent.MinimizedStateChanged(enabled))
     }
 }

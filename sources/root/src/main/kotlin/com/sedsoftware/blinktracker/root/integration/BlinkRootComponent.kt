@@ -11,9 +11,11 @@ import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
 import com.sedsoftware.blinktracker.components.statistic.integration.BlinkStatisticComponent
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.components.tracker.integration.BlinkTrackerComponent
+import com.sedsoftware.blinktracker.components.tracker.tools.PictureInPictureLauncher
 import com.sedsoftware.blinktracker.database.StatisticsRepository
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.settings.Settings
+import java.lang.ref.WeakReference
 
 class BlinkRootComponent internal constructor(
     componentContext: ComponentContext,
@@ -32,6 +34,7 @@ class BlinkRootComponent internal constructor(
         notificationsManager: NotificationsManager,
         settings: Settings,
         repo: StatisticsRepository,
+        pipLauncher: PictureInPictureLauncher,
     ) : this(
         componentContext = componentContext,
         errorHandler = errorHandler,
@@ -55,6 +58,7 @@ class BlinkRootComponent internal constructor(
                 componentContext = childContext,
                 storeFactory = storeFactory,
                 settings = settings,
+                pipLauncher = WeakReference(pipLauncher),
                 output = output,
             )
         },

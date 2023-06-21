@@ -80,7 +80,7 @@ private fun PrefsOptionSwitch(
         Text(
             text = stringResource(id = labelRes),
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .weight(1f)
                 .align(Alignment.CenterVertically),
@@ -120,7 +120,7 @@ private fun PrefsOptionSlider(
         Text(
             text = "${stringResource(id = labelRes)}: ${value.toInt()}",
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier,
         )
 

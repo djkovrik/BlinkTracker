@@ -46,12 +46,16 @@ internal class BlinkStatisticStoreProvider(
                         repo.observe().collect { items ->
                             val mapped = mapItems(items)
                             val filtered = mapped.filter { it.dateTime.date == today }
-                            val average = filtered.getAverage().roundTo(AVERAGE_PRECISION)
-                            val min = filtered.minBy { it.blinks }
-                            val max = filtered.maxBy { it.blinks }
-                            dispatch(Msg.RecordsUpdated(filtered))
-                            dispatch(Msg.AverageRateChanged(average))
-                            dispatch(Msg.MinMaxUpdated(min.blinks, max.blinks))
+                            if (filtered.isNotEmpty()) {
+                                val average = filtered.getAverage().roundTo(AVERAGE_PRECISION)
+                                val min = filtered.minBy { it.blinks }
+                                val max = filtered.maxBy { it.blinks }
+                                dispatch(Msg.RecordsUpdated(filtered))
+                                dispatch(Msg.AverageRateChanged(average))
+                                dispatch(Msg.MinMaxUpdated(min.blinks, max.blinks))
+                            } else {
+                                dispatch(Msg.NoStatsYet)
+                            }
                         }
                     }
                 }
@@ -67,7 +71,7 @@ internal class BlinkStatisticStoreProvider(
                     is Msg.RecordsUpdated -> copy(
                         records = msg.records,
                         statsChecked = true,
-                        placeholderVisible = msg.records.isEmpty(),
+                        placeholderVisible = false,
                     )
 
                     is Msg.AverageRateChanged -> copy(
@@ -77,6 +81,11 @@ internal class BlinkStatisticStoreProvider(
                     is Msg.MinMaxUpdated -> copy(
                         blinksMin = msg.min,
                         blinksMax = msg.max,
+                    )
+
+                    is Msg.NoStatsYet -> copy(
+                        statsChecked = true,
+                        placeholderVisible = true,
                     )
                 }
             }
@@ -90,6 +99,7 @@ internal class BlinkStatisticStoreProvider(
         data class RecordsUpdated(val records: List<StatRecord>) : Msg
         data class AverageRateChanged(val rate: Float) : Msg
         data class MinMaxUpdated(val min: Int, val max: Int) : Msg
+        object NoStatsYet : Msg
     }
 
     private fun mapItems(items: List<BlinksRecordDbModel>): List<StatRecord> =

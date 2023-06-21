@@ -64,14 +64,14 @@ private fun SideDrawerContent() {
                 Text(
                     text = stringResource(id = R.string.info1),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
                 Text(
                     text = stringResource(id = R.string.info2),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
