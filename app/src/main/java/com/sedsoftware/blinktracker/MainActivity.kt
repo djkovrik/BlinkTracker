@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.Rational
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,6 +31,7 @@ import com.sedsoftware.blinktracker.ui.camera.core.FaceDetectorProcessor
 import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainActivity : ComponentActivity(), PictureInPictureLauncher {
 
@@ -57,6 +59,8 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        enableKeepScreenOn(true)
 
         val errorHandler: ErrorHandler = AppErrorHandler(this)
 
@@ -102,6 +106,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         _root = null
         _imageProcessor?.run { this.stop() }
         _imageProcessor = null
+        enableKeepScreenOn(false)
     }
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
@@ -151,4 +156,14 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         setPictureInPictureParams(params)
         return params
     }
+
+    private fun enableKeepScreenOn(enabled: Boolean) {
+        if (enabled) {
+            this.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        } else {
+            this.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
+        Timber.i("Screen always awake - $enabled")
+    }
+
 }
