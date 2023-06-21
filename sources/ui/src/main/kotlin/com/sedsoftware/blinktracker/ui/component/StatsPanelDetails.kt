@@ -99,7 +99,7 @@ private val startAxisFormatter = AxisValueFormatter<Vertical.Start> { value, _ -
 }
 
 private val bottomAxisFormatter = AxisValueFormatter<Horizontal.Bottom> { value, chartValues ->
-    (chartValues.chartEntryModel.entries.first().getOrNull(value.toInt()) as? CustomChartEntry)
+    (chartValues.chartEntryModel.entries.firstOrNull()?.getOrNull(value.toInt()) as? CustomChartEntry)
         ?.date
         .orEmpty()
 }
