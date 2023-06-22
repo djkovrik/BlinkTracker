@@ -2,6 +2,9 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.google.play.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.perf)
 }
 
 android {
@@ -12,7 +15,7 @@ android {
         applicationId = "com.sedsoftware.blinktracker"
         minSdk = 26
         targetSdk = 33
-        versionCode = 1000
+        versionCode = 100000
         versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -61,6 +64,7 @@ dependencies {
     implementation(project(":sources:components:tracker"))
 
     implementation(platform(libs.compose.bom))
+    implementation(platform(libs.firebase.bom))
 
     implementation(libs.org.jetbrains.coroutines)
     implementation(libs.org.jetbrains.datetime)
@@ -73,4 +77,8 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.face.detection)
     implementation(libs.timber)
+
+    implementation("com.google.firebase:firebase-perf-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
 }

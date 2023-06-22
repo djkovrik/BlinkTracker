@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "355240910526",
+    "project_id": "blinkz-a7043",
+    "storage_bucket": "blinkz-a7043.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:355240910526:android:801856f09fe695413288ef",
+        "android_client_info": {
+          "package_name": "com.sedsoftware.blinktracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "355240910526-vp166mjav2kba0uls2hjs2pans4qn5p2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFASC5B24HIzJyNUwWq_TKIUhcUy4z_pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "355240910526-vp166mjav2kba0uls2hjs2pans4qn5p2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
