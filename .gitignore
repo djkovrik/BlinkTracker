@@ -15,3 +15,4 @@
 local.properties
 /.idea/
 /detekt/reports/detekt.html
+/app/release.jks

@@ -1,3 +1,9 @@
+
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.io.FileInputStream
+import java.io.InputStreamReader
+import java.util.Properties
+
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.application)
@@ -7,6 +13,8 @@ plugins {
     alias(libs.plugins.firebase.perf)
 }
 
+val useReleaseKeystore = rootProject.file("app/release.jks").exists()
+
 android {
     namespace = "com.sedsoftware.blinktracker"
     compileSdk = 33
@@ -15,18 +23,35 @@ android {
         applicationId = "com.sedsoftware.blinktracker"
         minSdk = 26
         targetSdk = 33
-        versionCode = 100000
-        versionName = "1.0.0"
+        versionCode = 100001
+        versionName = "1.0.1"
+        setProperty("archivesBaseName", applicationId)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
     }
-
+    signingConfigs {
+        create("release") {
+            if (useReleaseKeystore) {
+                storeFile = rootProject.file("app/release.jks")
+                keyAlias = "blinkz"
+                keyPassword = gradleLocalProperties(rootDir).getProperty("releaseKeyPwd")
+                storePassword = gradleLocalProperties(rootDir).getProperty("releaseKeystorePwd")
+            }
+        }
+    }
     buildTypes {
+        debug {
+            signingConfig = signingConfigs["debug"]
+            versionNameSuffix = "-debug"
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
         release {
-            isMinifyEnabled = false
+            signingConfig = signingConfigs[if (useReleaseKeystore) "release" else "debug"]
+            isShrinkResources = true
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -81,4 +106,16 @@ dependencies {
     implementation("com.google.firebase:firebase-perf-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
+}
+
+fun Project.getLocalProperty(key: String, file: String = "local.properties"): String {
+    val properties = Properties()
+    val localProperties = File(file)
+    if (localProperties.isFile) {
+        InputStreamReader(FileInputStream(localProperties), Charsets.UTF_8).use { reader ->
+            properties.load(reader)
+        }
+    } else error("File from not found")
+
+    return properties.getProperty(key).toString()
 }
