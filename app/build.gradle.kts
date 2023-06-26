@@ -23,8 +23,8 @@ android {
         applicationId = "com.sedsoftware.blinktracker"
         minSdk = 26
         targetSdk = 33
-        versionCode = 100001
-        versionName = "1.0.1"
+        versionCode = 100100
+        versionName = "1.1.0"
         setProperty("archivesBaseName", applicationId)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
