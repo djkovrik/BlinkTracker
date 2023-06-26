@@ -97,7 +97,6 @@ internal class BlinkTrackerStoreProvider(
 
                 onIntent<Intent.TrackingStarted> {
                     dispatch(Msg.TrackerStateChangedStarted(true))
-                    dispatch(Msg.SettingsVisibilityChanged(false))
                     if (state.shouldLaunchMinimized) {
                         pipLauncher.get()?.launchPictureInPicture()
                     }
@@ -113,10 +112,6 @@ internal class BlinkTrackerStoreProvider(
                     if (state.active && it.data.hasEyesData() && state.blinkPeriodEnded()) {
                         dispatch(Msg.Blink)
                     }
-                }
-
-                onIntent<Intent.SettingsPanelToggle> {
-                    dispatch(Msg.SettingsVisibilityChanged(!state.preferencesPanelVisible))
                 }
 
                 onIntent<Intent.MinimizedStateChanged> {
@@ -167,10 +162,6 @@ internal class BlinkTrackerStoreProvider(
                         blinkLastMinute = 0
                     )
 
-                    is Msg.SettingsVisibilityChanged -> copy(
-                        preferencesPanelVisible = msg.visible
-                    )
-
                     is Msg.MinimizedStateChanged -> copy(
                         minimized = msg.minimized
                     )
@@ -196,7 +187,6 @@ internal class BlinkTrackerStoreProvider(
         data class Tick(val seconds: Int) : Msg
         object Blink : Msg
         object ResetMinute : Msg
-        data class SettingsVisibilityChanged(val visible: Boolean) : Msg
         data class MinimizedStateChanged(val minimized: Boolean) : Msg
     }
 

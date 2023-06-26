@@ -2,11 +2,10 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    alias(libs.plugins.org.jetbrains.kotlin.parcelize)
 }
 
 android {
-    namespace = "com.sedsoftware.blinktracker.root"
+    namespace = "com.sedsoftware.blinktracker.components.home"
     compileSdk = 33
 
     defaultConfig {
@@ -22,18 +21,19 @@ android {
 }
 
 dependencies {
-    implementation(project(":sources:settings"))
     implementation(project(":sources:database"))
-    implementation(project(":sources:components:home"))
+    implementation(project(":sources:settings"))
     implementation(project(":sources:components:camera"))
-    implementation(project(":sources:components:preferences"))
     implementation(project(":sources:components:statistic"))
     implementation(project(":sources:components:tracker"))
 
     implementation(libs.org.jetbrains.coroutines)
+    implementation(libs.org.jetbrains.datetime)
     implementation(libs.ark.mvikotlin.core)
     implementation(libs.ark.mvikotlin.main)
+    implementation(libs.ark.decompose.core)
     implementation(libs.ark.mvikotlin.extensions.coroutines)
     implementation(libs.ark.decompose.core)
+    implementation(libs.ark.decompose.extensions)
     implementation(libs.ark.essenty)
 }

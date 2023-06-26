@@ -12,7 +12,6 @@ internal val stateToModel: (State) -> Model =
             blinksTotal = it.blinksTotal,
             isMinimized = it.minimized,
             hasFaceDetected = it.faceDetected,
-            isPreferencesPanelVisible = it.preferencesPanelVisible,
         )
     }
 

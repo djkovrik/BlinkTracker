@@ -1,30 +1,35 @@
 package com.sedsoftware.blinktracker.root.integration
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.childContext
+import com.arkivanov.decompose.router.stack.ChildStack
+import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.items
+import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.value.Value
+import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.sedsoftware.blinktracker.components.camera.BlinkCamera
-import com.sedsoftware.blinktracker.components.camera.integration.BlinkCameraComponent
+import com.sedsoftware.blinktracker.components.camera.model.CameraLens
+import com.sedsoftware.blinktracker.components.home.BlinkHome
+import com.sedsoftware.blinktracker.components.home.integration.BlinkHomeComponent
+import com.sedsoftware.blinktracker.components.home.integration.ErrorHandler
+import com.sedsoftware.blinktracker.components.home.integration.NotificationsManager
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
 import com.sedsoftware.blinktracker.components.preferences.integration.BlinkPreferencesComponent
-import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
-import com.sedsoftware.blinktracker.components.statistic.integration.BlinkStatisticComponent
-import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
-import com.sedsoftware.blinktracker.components.tracker.integration.BlinkTrackerComponent
+import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.tools.PictureInPictureLauncher
 import com.sedsoftware.blinktracker.database.StatisticsRepository
 import com.sedsoftware.blinktracker.root.BlinkRoot
+import com.sedsoftware.blinktracker.root.BlinkRoot.Child
 import com.sedsoftware.blinktracker.settings.Settings
-import java.lang.ref.WeakReference
+import kotlinx.parcelize.Parcelize
 
 class BlinkRootComponent internal constructor(
     componentContext: ComponentContext,
-    override val errorHandler: ErrorHandler,
-    override val notificationsManager: NotificationsManager,
-    private val blinkCamera: (ComponentContext) -> BlinkCamera,
+    private val errorHandler: ErrorHandler,
     private val blinkPreferences: (ComponentContext, (BlinkPreferences.Output) -> Unit) -> BlinkPreferences,
-    private val blinkTracker: (ComponentContext, (BlinkTracker.Output) -> Unit) -> BlinkTracker,
-    private val blinkStatistic: (ComponentContext, (BlinkStatistic.Output) -> Unit) -> BlinkStatistic,
+    private val blinkHome: (ComponentContext) -> BlinkHome
 ) : BlinkRoot, ComponentContext by componentContext {
 
     constructor(
@@ -38,13 +43,6 @@ class BlinkRootComponent internal constructor(
     ) : this(
         componentContext = componentContext,
         errorHandler = errorHandler,
-        notificationsManager = notificationsManager,
-        blinkCamera = { childContext: ComponentContext ->
-            BlinkCameraComponent(
-                componentContext = childContext,
-                storeFactory = storeFactory,
-            )
-        },
         blinkPreferences = { childContext: ComponentContext, output: (BlinkPreferences.Output) -> Unit ->
             BlinkPreferencesComponent(
                 componentContext = childContext,
@@ -53,36 +51,71 @@ class BlinkRootComponent internal constructor(
                 output = output,
             )
         },
-        blinkTracker = { childContext: ComponentContext, output: (BlinkTracker.Output) -> Unit ->
-            BlinkTrackerComponent(
+        blinkHome = { childContext: ComponentContext ->
+            BlinkHomeComponent(
                 componentContext = childContext,
                 storeFactory = storeFactory,
+                errorHandler = errorHandler,
+                notificationsManager = notificationsManager,
                 settings = settings,
-                pipLauncher = WeakReference(pipLauncher),
-                output = output,
-            )
-        },
-        blinkStatistic = { childContext: ComponentContext, output: (BlinkStatistic.Output) -> Unit ->
-            BlinkStatisticComponent(
-                componentContext = childContext,
-                storeFactory = storeFactory,
                 repo = repo,
-                output = output,
+                pipLauncher = pipLauncher,
             )
         }
     )
 
-    override val cameraComponent: BlinkCamera =
-        blinkCamera(componentContext.childContext(key = COMPONENT_CAMERA))
+    private val navigation: StackNavigation<Configuration> = StackNavigation()
 
-    override val preferencesComponent: BlinkPreferences =
-        blinkPreferences(componentContext.childContext(key = COMPONENT_PREFERENCES), ::onPreferencesOutput)
+    private val stack: Value<ChildStack<Configuration, Child>> =
+        childStack(
+            source = navigation,
+            initialConfiguration = Configuration.Home,
+            handleBackButton = true,
+            childFactory = ::createChild
+        )
 
-    override val trackerComponent: BlinkTracker =
-        blinkTracker(componentContext.childContext(key = COMPONENT_TRACKER), ::onTrackerOutput)
+    private val home: BlinkHome
+        get() = findChild<Child.Home>().component
 
-    override val statsComponent: BlinkStatistic =
-        blinkStatistic(componentContext.childContext(key = COMPONENT_STATISTIC), ::onStatisticOutput)
+    override val childStack: Value<ChildStack<*, Child>> = stack
+
+    override fun openPreferencesScreen() {
+        navigation.push(Configuration.Preferences)
+    }
+
+    override fun closePreferencesScreen() {
+        navigation.pop()
+    }
+
+    override fun onFaceDataChanged(data: VisionFaceData) {
+        home.trackerComponent.onFaceDataChanged(data)
+    }
+
+    override fun onPictureInPictureChanged(enabled: Boolean) {
+        home.trackerComponent.onPictureInPictureChanged(enabled)
+    }
+
+    override fun onPermissionGranted() {
+        home.cameraComponent.onPermissionGranted()
+    }
+
+    override fun onPermissionDenied() {
+        home.cameraComponent.onPermissionDenied()
+    }
+
+    override fun onPermissionRationale() {
+        home.cameraComponent.onPermissionRationale()
+    }
+
+    override fun onCurrentLensChanged(lens: CameraLens) {
+        home.cameraComponent.onCurrentLensChanged(lens)
+    }
+
+    private fun createChild(configuration: Configuration, componentContext: ComponentContext): Child =
+        when (configuration) {
+            is Configuration.Home -> Child.Home(blinkHome(componentContext))
+            is Configuration.Preferences -> Child.Preferences(blinkPreferences(componentContext, ::onPreferencesOutput))
+        }
 
     private fun onPreferencesOutput(output: BlinkPreferences.Output) {
         when (output) {
@@ -91,33 +124,15 @@ class BlinkRootComponent internal constructor(
         }
     }
 
-    private fun onTrackerOutput(output: BlinkTracker.Output) {
-        when (output) {
-            is BlinkTracker.Output.SoundNotificationTriggered ->
-                notificationsManager.notifyWithSound()
+    private inline fun <reified T : Child> findChild(): T =
+        stack.items.find { it.instance is T }?.instance as? T
+            ?: error("Failed to find child")
 
-            is BlinkTracker.Output.VibroNotificationTriggered ->
-                notificationsManager.notifyWithVibro()
+    private sealed interface Configuration : Parcelable {
+        @Parcelize
+        object Home : Configuration
 
-            is BlinkTracker.Output.ErrorCaught ->
-                errorHandler.consume(output.throwable)
-
-            is BlinkTracker.Output.BlinkedPerMinute ->
-                statsComponent.onNewBlinksValue(output.value)
-        }
-    }
-
-    private fun onStatisticOutput(output: BlinkStatistic.Output) {
-        when (output) {
-            is BlinkStatistic.Output.ErrorCaught ->
-                errorHandler.consume(output.throwable)
-        }
-    }
-
-    private companion object {
-        const val COMPONENT_CAMERA = "camera"
-        const val COMPONENT_PREFERENCES = "preferences"
-        const val COMPONENT_TRACKER = "tracker"
-        const val COMPONENT_STATISTIC = "statistic"
+        @Parcelize
+        object Preferences : Configuration
     }
 }

@@ -1,4 +1,4 @@
-package com.sedsoftware.blinktracker.ui
+package com.sedsoftware.blinktracker.ui.preview
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -63,7 +63,6 @@ object PreviewStubs {
         blinksTotal = 0,
         isMinimized = false,
         hasFaceDetected = false,
-        isPreferencesPanelVisible = false,
     )
 
     val trackerNotActiveWithFaceNoPrefs = trackerNotActiveNoFaceNoPrefs.copy(
@@ -72,7 +71,6 @@ object PreviewStubs {
 
     val trackerNotActiveWithFaceAndPrefs = trackerNotActiveNoFaceNoPrefs.copy(
         hasFaceDetected = true,
-        isPreferencesPanelVisible = true,
     )
 
     val trackerActiveWithFace = BlinkTracker.Model(
@@ -82,7 +80,6 @@ object PreviewStubs {
         blinksTotal = 15,
         isMinimized = false,
         hasFaceDetected = true,
-        isPreferencesPanelVisible = false,
     )
 
     val trackerActiveWithNoFace = trackerActiveWithFace.copy(

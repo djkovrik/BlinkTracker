@@ -14,7 +14,6 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
         object TrackingStopped : Intent()
         data class FaceDataChanged(val data: VisionFaceData) : Intent()
         data class MinimizedStateChanged(val minimized: Boolean) : Intent()
-        object SettingsPanelToggle : Intent()
         object LaunchPip : Intent()
     }
 
@@ -30,7 +29,6 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
         val notifyWithVibration: Boolean = false,
         val shouldLaunchMinimized: Boolean = false,
         val lastBlink: Instant = Instant.DISTANT_PAST,
-        val preferencesPanelVisible: Boolean = false,
     )
 
     sealed class Label {

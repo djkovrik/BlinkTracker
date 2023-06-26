@@ -29,6 +29,7 @@ android {
 dependencies {
     implementation(project(":sources:root"))
     implementation(project(":sources:settings"))
+    implementation(project(":sources:components:home"))
     implementation(project(":sources:components:camera"))
     implementation(project(":sources:components:preferences"))
     implementation(project(":sources:components:statistic"))
@@ -40,6 +41,8 @@ dependencies {
     implementation(libs.org.jetbrains.coroutines)
     implementation(libs.org.jetbrains.datetime)
 
+    implementation(libs.ark.decompose.core)
+    implementation(libs.ark.decompose.extensions)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)

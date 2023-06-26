@@ -3,6 +3,7 @@
 plugins {
     alias(libs.plugins.com.android.application) apply false
     alias(libs.plugins.org.jetbrains.kotlin.android) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.parcelize) apply false
     alias(libs.plugins.com.android.library) apply false
     alias(libs.plugins.google.play.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false

@@ -1,4 +1,4 @@
-package com.sedsoftware.blinktracker.root.integration
+package com.sedsoftware.blinktracker.components.home.integration
 
 interface NotificationsManager {
     fun notifyWithSound()

@@ -1,17 +1,27 @@
 package com.sedsoftware.blinktracker.root
 
-import com.sedsoftware.blinktracker.components.camera.BlinkCamera
+import com.arkivanov.decompose.router.stack.ChildStack
+import com.arkivanov.decompose.value.Value
+import com.sedsoftware.blinktracker.components.camera.model.CameraLens
+import com.sedsoftware.blinktracker.components.home.BlinkHome
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
-import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
-import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
-import com.sedsoftware.blinktracker.root.integration.ErrorHandler
-import com.sedsoftware.blinktracker.root.integration.NotificationsManager
+import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 
 interface BlinkRoot {
-    val errorHandler: ErrorHandler
-    val notificationsManager: NotificationsManager
-    val cameraComponent: BlinkCamera
-    val preferencesComponent: BlinkPreferences
-    val trackerComponent: BlinkTracker
-    val statsComponent: BlinkStatistic
+
+    val childStack: Value<ChildStack<*, Child>>
+
+    fun openPreferencesScreen()
+    fun closePreferencesScreen()
+    fun onFaceDataChanged(data: VisionFaceData)
+    fun onPictureInPictureChanged(enabled: Boolean)
+    fun onPermissionGranted()
+    fun onPermissionDenied()
+    fun onPermissionRationale()
+    fun onCurrentLensChanged(lens: CameraLens)
+
+    sealed class Child {
+        data class Home(val component: BlinkHome) : Child()
+        data class Preferences(val component: BlinkPreferences) : Child()
+    }
 }
