@@ -41,7 +41,8 @@ fun TrackingControls(
     onMinimizeClick: () -> Unit = {},
 ) {
 
-    val minButtonWidth: Dp = 130.dp
+    val minButtonWidth: Dp = 150.dp
+    val minButtonHeight: Dp = 50.dp
 
     Row(
         horizontalArrangement = Arrangement.Center,
@@ -54,10 +55,10 @@ fun TrackingControls(
             } else {
                 onStartClick.withSound(LocalContext.current)
             },
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+            contentPadding = PaddingValues(all = 8.dp),
             modifier = Modifier
                 .padding(horizontal = 8.dp)
-                .defaultMinSize(minWidth = minButtonWidth),
+                .defaultMinSize(minWidth = minButtonWidth, minHeight = minButtonHeight),
         ) {
             if (model.isTrackingActive) {
                 Icon(
@@ -92,14 +93,14 @@ fun TrackingControls(
         OutlinedButton(
             onClick = onMinimizeClick.withSound(LocalContext.current),
             enabled = model.isTrackingActive,
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+            contentPadding = PaddingValues(all = 8.dp),
             border = BorderStroke(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             ),
             modifier = Modifier
                 .padding(horizontal = 8.dp)
-                .defaultMinSize(minWidth = minButtonWidth)
+                .defaultMinSize(minWidth = minButtonWidth, minHeight = minButtonHeight)
                 .alpha(alpha = if (model.isTrackingActive) 1.0f else 0.4f)
         ) {
             Icon(
