@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -31,10 +32,10 @@ import androidx.compose.ui.unit.dp
 import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.camera.model.CameraState
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
-import com.sedsoftware.blinktracker.ui.CameraStub
-import com.sedsoftware.blinktracker.ui.PreviewStubs
 import com.sedsoftware.blinktracker.ui.R
 import com.sedsoftware.blinktracker.ui.extension.withSound
+import com.sedsoftware.blinktracker.ui.preview.CameraStub
+import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
 @Composable
@@ -43,6 +44,7 @@ fun CustomAppBar(
     trackerModel: BlinkTracker.Model,
     modifier: Modifier = Modifier,
     onHelpIconClick: () -> Unit = {},
+    onPreferencesIconClick: () -> Unit = {},
     cameraPreview: @Composable () -> Unit = {},
 ) {
     Row(
@@ -83,7 +85,26 @@ fun CustomAppBar(
                         .padding(horizontal = 16.dp)
                         .weight(1f),
                 )
-
+                // Prefs
+                OutlinedIconButton(
+                    onClick = onPreferencesIconClick.withSound(LocalContext.current),
+                    border = BorderStroke(
+                        width = 0.dp,
+                        color = Color.Transparent
+                    ),
+                    colors = IconButtonDefaults.outlinedIconButtonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    ),
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = "Settings",
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier
+                    )
+                }
+                // Help
                 OutlinedIconButton(
                     onClick = onHelpIconClick.withSound(LocalContext.current),
                     border = BorderStroke(
@@ -93,7 +114,7 @@ fun CustomAppBar(
                     colors = IconButtonDefaults.outlinedIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                     ),
-                    modifier = Modifier.padding(horizontal = 8.dp),
+                    modifier = Modifier.padding(end = 8.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.QuestionMark,

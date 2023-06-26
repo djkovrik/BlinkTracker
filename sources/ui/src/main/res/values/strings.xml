@@ -41,4 +41,5 @@
     <string name="max">Max</string>
     <string name="average">Average</string>
     <string name="blinks_axis">Blinks</string>
+    <string name="settings">Settings</string>
 </resources>

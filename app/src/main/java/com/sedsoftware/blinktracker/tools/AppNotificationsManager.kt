@@ -6,7 +6,7 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
-import com.sedsoftware.blinktracker.root.integration.NotificationsManager
+import com.sedsoftware.blinktracker.components.home.integration.NotificationsManager
 import timber.log.Timber
 
 @Suppress("DEPRECATION")

@@ -83,6 +83,7 @@ dependencies {
     implementation(project(":sources:settings"))
     implementation(project(":sources:database"))
     implementation(project(":sources:ui"))
+    implementation(project(":sources:components:home"))
     implementation(project(":sources:components:camera"))
     implementation(project(":sources:components:preferences"))
     implementation(project(":sources:components:statistic"))

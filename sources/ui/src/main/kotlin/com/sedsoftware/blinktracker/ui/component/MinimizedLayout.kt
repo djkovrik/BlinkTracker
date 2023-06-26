@@ -1,4 +1,4 @@
-package com.sedsoftware.blinktracker.ui
+package com.sedsoftware.blinktracker.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,14 +17,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
+import com.sedsoftware.blinktracker.ui.Constants
+import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
 @Composable
-fun BlinkMinimized(
+fun MainScreenMinimized(
     model: BlinkTracker.Model,
     modifier: Modifier = Modifier,
 ) {
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -75,7 +76,7 @@ fun BlinkMinimized(
 fun BlinkMinimizedPreviewWithFaceLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
-            BlinkMinimized(
+            MainScreenMinimized(
                 model = PreviewStubs.trackerActiveWithFace,
             )
         }
@@ -87,7 +88,7 @@ fun BlinkMinimizedPreviewWithFaceLight() {
 fun BlinkMinimizedPreviewWithFaceDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
-            BlinkMinimized(
+            MainScreenMinimized(
                 model = PreviewStubs.trackerActiveWithFace,
             )
         }
@@ -99,7 +100,7 @@ fun BlinkMinimizedPreviewWithFaceDark() {
 fun BlinkMinimizedPreviewWithNoFaceLight() {
     BlinkTrackerTheme(darkTheme = false) {
         Surface {
-            BlinkMinimized(
+            MainScreenMinimized(
                 model = PreviewStubs.trackerActiveWithNoFace,
             )
         }
@@ -111,7 +112,7 @@ fun BlinkMinimizedPreviewWithNoFaceLight() {
 fun BlinkMinimizedPreviewWithNoFaceDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
-            BlinkMinimized(
+            MainScreenMinimized(
                 model = PreviewStubs.trackerActiveWithNoFace,
             )
         }

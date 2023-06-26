@@ -40,4 +40,5 @@
     <string name="max">Макс.</string>
     <string name="average">Среднее</string>
     <string name="blinks_axis">Моргания</string>
+    <string name="settings">Настройки</string>
 </resources>

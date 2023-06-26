@@ -17,11 +17,11 @@ import com.arkivanov.decompose.defaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
+import com.sedsoftware.blinktracker.components.home.integration.ErrorHandler
 import com.sedsoftware.blinktracker.components.tracker.tools.PictureInPictureLauncher
 import com.sedsoftware.blinktracker.database.StatisticsRepositoryImpl
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.root.integration.BlinkRootComponent
-import com.sedsoftware.blinktracker.root.integration.ErrorHandler
 import com.sedsoftware.blinktracker.settings.AppSettings
 import com.sedsoftware.blinktracker.tools.AppErrorHandler
 import com.sedsoftware.blinktracker.tools.AppNotificationsManager
@@ -50,10 +50,10 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                root.cameraComponent.onPermissionGranted()
+                root.onPermissionGranted()
                 checkIfCamerasAvailable()
             } else {
-                root.cameraComponent.onPermissionDenied()
+                root.onPermissionDenied()
             }
         }
 
@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
 
         lifecycleScope.launch {
             imageProcessor.faceData.collect {
-                root.trackerComponent.onFaceDataChanged(it)
+                root.onFaceDataChanged(it)
             }
         }
 
@@ -111,7 +111,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
-        root.trackerComponent.onPictureInPictureChanged(enabled = isInPictureInPictureMode)
+        root.onPictureInPictureChanged(enabled = isInPictureInPictureMode)
     }
 
     override fun launchPictureInPicture() {
@@ -121,12 +121,12 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
     private fun checkCameraPermissions() {
         when {
             ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
-                root.cameraComponent.onPermissionGranted()
+                root.onPermissionGranted()
                 checkIfCamerasAvailable()
             }
 
             shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
-                root.cameraComponent.onPermissionRationale()
+                root.onPermissionRationale()
             }
 
             else -> {
@@ -137,9 +137,9 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
 
     private fun checkIfCamerasAvailable() {
         if (applicationContext.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT)) {
-            root.cameraComponent.onCurrentLensChanged(CameraLens.FRONT)
+            root.onCurrentLensChanged(CameraLens.FRONT)
         } else {
-            root.cameraComponent.onCurrentLensChanged(CameraLens.NOT_AVAILABLE)
+            root.onCurrentLensChanged(CameraLens.NOT_AVAILABLE)
         }
     }
 
@@ -165,5 +165,4 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         }
         Timber.i("Screen always awake - $enabled")
     }
-
 }

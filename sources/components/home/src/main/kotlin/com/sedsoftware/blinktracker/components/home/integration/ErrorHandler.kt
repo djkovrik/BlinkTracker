@@ -1,4 +1,4 @@
-package com.sedsoftware.blinktracker.root.integration
+package com.sedsoftware.blinktracker.components.home.integration
 
 import kotlinx.coroutines.flow.Flow
 

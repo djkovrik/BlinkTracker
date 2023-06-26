@@ -83,10 +83,6 @@ class BlinkTrackerComponent(
         store.accept(BlinkTrackerStore.Intent.FaceDataChanged(data))
     }
 
-    override fun onPreferencesPanelToggle() {
-        store.accept(BlinkTrackerStore.Intent.SettingsPanelToggle)
-    }
-
     override fun onMinimizeRequested() {
         store.accept(BlinkTrackerStore.Intent.LaunchPip)
     }
