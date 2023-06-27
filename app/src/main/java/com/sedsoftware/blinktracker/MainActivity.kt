@@ -165,4 +165,5 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         }
         Timber.i("Screen always awake - $enabled")
     }
+
 }
