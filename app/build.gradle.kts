@@ -23,8 +23,8 @@ android {
         applicationId = "com.sedsoftware.blinktracker"
         minSdk = 26
         targetSdk = 33
-        versionCode = 100001
-        versionName = "1.0.1"
+        versionCode = 100101
+        versionName = "1.1.1"
         setProperty("archivesBaseName", applicationId)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -49,7 +49,9 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
         release {
-            signingConfig = signingConfigs[if (useReleaseKeystore) "release" else "debug"]
+            if (useReleaseKeystore) {
+                signingConfig = signingConfigs["release"]
+            }
             isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
