@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -14,7 +13,18 @@ class AppSettings(
     private val context: Context,
 ) : Settings {
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+    internal object Store {
+        private var datastore: DataStore<Preferences>? = null
+
+        fun get(context: Context): DataStore<Preferences> {
+            if (datastore == null) {
+                datastore = context.dataStore
+            }
+
+            return datastore!!
+        }
+    }
+
     private val perMinuteThresholdKey: Preferences.Key<Float> = floatPreferencesKey("per_minute_threshold")
     private val notifySoundEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("notify_sound_enabled")
     private val notifyVibrationEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("notify_vibration_enabled")
@@ -45,10 +55,10 @@ class AppSettings(
         setPrefsValue(launchMinimizedEnabledKey, value)
 
     private fun <T> getPrefsValue(key: Preferences.Key<T>, default: T): Flow<T> =
-        context.dataStore.data.map { it[key] ?: default }
+        Store.get(context).data.map { it[key] ?: default }
 
     private suspend fun <T> setPrefsValue(key: Preferences.Key<T>, value: T) {
-        context.dataStore.edit { settings ->
+        Store.get(context).edit { settings ->
             settings[key] = value
         }
     }
