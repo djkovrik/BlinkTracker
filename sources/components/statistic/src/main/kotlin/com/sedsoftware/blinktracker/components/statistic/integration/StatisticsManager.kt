@@ -1,5 +1,7 @@
 package com.sedsoftware.blinktracker.components.statistic.integration
 
+import com.patrykandpatrick.vico.core.extension.sumOf
+import com.sedsoftware.blinktracker.components.statistic.model.CustomChartEntry
 import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
 import com.sedsoftware.blinktracker.components.statistic.model.DisplayedStats
 import com.sedsoftware.blinktracker.database.StatisticsRepository
@@ -9,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import kotlin.math.round
 
 internal interface StatisticsManager {
     val stats: StateFlow<DisplayedStats>
@@ -45,9 +46,41 @@ internal class StatisticsManagerImpl(
     }
 
     private suspend fun consumeStatFlows(entries: List<BlinksRecordDbModel>, period: DisplayedPeriod) {
+        if (entries.isEmpty()) {
+            _stats.emit(DisplayedStats.Empty)
+            return
+        }
+
+        val stats = generateStatsBundle(entries, period)
+        val mapped = DisplayedStats.Content(
+            min = stats.minOf { it.blinksForPeriod },
+            max = stats.maxOf { it.blinksForPeriod },
+            average = stats.sumOf { it.blinksForPeriod } / stats.size,
+            period = period,
+            records = stats.mapIndexed { index, record ->
+                CustomChartEntry(
+                    label = record.label,
+                    x = index.toFloat(),
+                    y = record.blinksForPeriod,
+                )
+            }
+        )
+
+        _stats.emit(mapped)
+    }
+
+    private fun generateStatsBundle(entries: List<BlinksRecordDbModel>, period: DisplayedPeriod): List<PeriodStatsBundle> {
+        val result = mutableListOf<PeriodStatsBundle>()
         when (period) {
             DisplayedPeriod.MINUTE -> {
-
+                entries.takeLast(DisplayedPeriod.MINUTE.takeLast).forEach { entry ->
+                    result.add(
+                        PeriodStatsBundle(
+                            blinksForPeriod = entry.blinks.toFloat(),
+                            label = entry.date.time.toString().substringBeforeLast(":")
+                        )
+                    )
+                }
             }
 
             DisplayedPeriod.QUARTER_HOUR -> {
@@ -71,13 +104,7 @@ internal class StatisticsManagerImpl(
             }
         }
 
-        _stats.emit(DisplayedStats.Empty)
-    }
-
-    private fun Float.roundTo(decimals: Int): Float {
-        var multiplier = 1.0f
-        repeat(decimals) { multiplier *= 10f }
-        return round(this * multiplier) / multiplier
+        return result
     }
 }
 

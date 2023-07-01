@@ -14,8 +14,8 @@ interface BlinkStatistic {
     data class Model(
         val isLoading: Boolean,
         val isEmpty: Boolean,
-        val min: Int,
-        val max: Int,
+        val min: Float,
+        val max: Float,
         val average: Float,
         val records: List<ChartEntry>,
         val period: DisplayedPeriod,

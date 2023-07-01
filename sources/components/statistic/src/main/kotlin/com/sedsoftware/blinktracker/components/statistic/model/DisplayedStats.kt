@@ -8,8 +8,8 @@ sealed class DisplayedStats {
     object Loading : DisplayedStats()
 
     data class Content(
-        val min: Int,
-        val max: Int,
+        val min: Float,
+        val max: Float,
         val average: Float,
         val records: List<ChartEntry>,
         val period: DisplayedPeriod,

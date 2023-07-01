@@ -27,6 +27,7 @@ import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
 import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.edges.rememberFadingEdges
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
+import com.patrykandpatrick.vico.compose.chart.scroll.rememberChartScrollSpec
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.axis.AxisPosition.Horizontal
 import com.patrykandpatrick.vico.core.axis.AxisPosition.Vertical
@@ -35,9 +36,10 @@ import com.patrykandpatrick.vico.core.axis.vertical.VerticalAxis.HorizontalLabel
 import com.patrykandpatrick.vico.core.chart.line.LineChart.PointPosition.Start
 import com.patrykandpatrick.vico.core.entry.ChartEntry
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
+import com.patrykandpatrick.vico.core.scroll.AutoScrollCondition
+import com.patrykandpatrick.vico.core.scroll.InitialScroll
 import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
 import com.sedsoftware.blinktracker.components.statistic.model.CustomChartEntry
-import com.sedsoftware.blinktracker.ui.R.string
 import com.sedsoftware.blinktracker.ui.component.rememberChartStyle
 import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
@@ -78,7 +80,7 @@ private fun StatsPanelCard(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Text(
-                        text = stringResource(id = string.loading),
+                        text = stringResource(id = R.string.loading),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         textAlign = TextAlign.Center,
@@ -93,7 +95,7 @@ private fun StatsPanelCard(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     Text(
-                        text = stringResource(id = string.stats_placeholder),
+                        text = stringResource(id = R.string.stats_placeholder),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         textAlign = TextAlign.Center,
@@ -116,8 +118,8 @@ private fun StatsPanelCard(
 
 @Composable
 private fun StatsPanelDetails(
-    min: Int,
-    max: Int,
+    min: Float,
+    max: Float,
     average: Float,
     entries: List<ChartEntry>,
 ) {
@@ -132,7 +134,7 @@ private fun StatsPanelDetails(
 
     Column {
         Text(
-            text = stringResource(id = string.today),
+            text = stringResource(id = R.string.your_stats),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Medium,
@@ -158,6 +160,11 @@ private fun StatsPanelDetails(
                         labelRotationDegrees = -90f,
                     ),
                     fadingEdges = rememberFadingEdges(),
+                    chartScrollSpec = rememberChartScrollSpec(
+                        isScrollEnabled = true,
+                        initialScroll = InitialScroll.End,
+                        autoScrollCondition = AutoScrollCondition.OnModelSizeIncreased,
+                    ),
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 0.dp)
                         .fillMaxSize(),
@@ -166,9 +173,9 @@ private fun StatsPanelDetails(
         }
 
         Text(
-            text = "${stringResource(id = string.min)}: $min | " +
-                "${stringResource(id = string.max)}: $max | " +
-                "${stringResource(id = string.average)}: $average",
+            text = "${stringResource(id = R.string.min)}: $min | " +
+                "${stringResource(id = R.string.max)}: $max | " +
+                "${stringResource(id = R.string.average)}: $average",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier.padding(all = 16.dp)

@@ -109,8 +109,8 @@ object PreviewStubs {
         records = emptyList(),
         period = DisplayedPeriod.MINUTE,
         average = 0f,
-        min = 0,
-        max = 0,
+        min = 0f,
+        max = 0f,
         isLoading = true,
         isEmpty = false,
     )
@@ -119,8 +119,8 @@ object PreviewStubs {
         records = emptyList(),
         period = DisplayedPeriod.MINUTE,
         average = 0f,
-        min = 0,
-        max = 0,
+        min = 0f,
+        max = 0f,
         isLoading = false,
         isEmpty = true,
     )
