@@ -40,6 +40,8 @@ import com.patrykandpatrick.vico.core.scroll.AutoScrollCondition
 import com.patrykandpatrick.vico.core.scroll.InitialScroll
 import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
 import com.sedsoftware.blinktracker.components.statistic.model.CustomChartEntry
+import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
+import com.sedsoftware.blinktracker.ui.component.PeriodChips
 import com.sedsoftware.blinktracker.ui.component.rememberChartStyle
 import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
@@ -48,11 +50,13 @@ import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 fun BlinkStatisticContent(
     state: BlinkStatistic.Model,
     modifier: Modifier = Modifier,
+    onChipSelect: (DisplayedPeriod) -> Unit = {},
 ) {
 
     StatsPanelCard(
         model = state,
         modifier = modifier,
+        onChipSelect = onChipSelect,
     )
 }
 
@@ -60,6 +64,7 @@ fun BlinkStatisticContent(
 private fun StatsPanelCard(
     model: BlinkStatistic.Model,
     modifier: Modifier = Modifier,
+    onChipSelect: (DisplayedPeriod) -> Unit = {},
 ) {
     Card(
         shape = RoundedCornerShape(size = 16.dp),
@@ -109,7 +114,9 @@ private fun StatsPanelCard(
                     min = model.min,
                     max = model.max,
                     average = model.average,
+                    period = model.period,
                     entries = model.records,
+                    onChipSelect = onChipSelect,
                 )
             }
         }
@@ -121,7 +128,9 @@ private fun StatsPanelDetails(
     min: Float,
     max: Float,
     average: Float,
+    period: DisplayedPeriod,
     entries: List<ChartEntry>,
+    onChipSelect: (DisplayedPeriod) -> Unit = {},
 ) {
     val color1: Color = MaterialTheme.colorScheme.primary
     val color2: Color = MaterialTheme.colorScheme.secondary
@@ -138,7 +147,7 @@ private fun StatsPanelDetails(
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp)
         )
 
         Box(
@@ -172,13 +181,19 @@ private fun StatsPanelDetails(
             }
         }
 
+        PeriodChips(
+            period = period,
+            modifier = Modifier.padding(horizontal = 8.dp),
+            onSelect = onChipSelect,
+        )
+
         Text(
             text = "${stringResource(id = R.string.min)}: $min | " +
                 "${stringResource(id = R.string.max)}: $max | " +
                 "${stringResource(id = R.string.average)}: $average",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.tertiary,
-            modifier = Modifier.padding(all = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
         )
     }
 }
@@ -240,7 +255,7 @@ private fun PreviewStatsLoadedDark() {
         }
     }
 }
-/*
+
 @Composable
 @Preview(showBackground = true, widthDp = 400, heightDp = 300)
 private fun PreviewStatsContentLight() {
@@ -264,4 +279,3 @@ private fun PreviewStatsContentDark() {
         }
     }
 }
-*/

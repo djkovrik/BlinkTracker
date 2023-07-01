@@ -41,4 +41,11 @@
     <string name="average">Среднее</string>
     <string name="blinks_axis">Моргания</string>
     <string name="settings">Настройки</string>
+
+    <string name="m1">1мин</string>
+    <string name="m15">15мин</string>
+    <string name="h1">1ч</string>
+    <string name="h6">6ч</string>
+    <string name="d1">1д</string>
+    <string name="d30">30дн</string>
 </resources>
