@@ -29,18 +29,18 @@ class BlinkCameraComponent(
     override val initial: Model = stateToModel(BlinkCameraStore.State())
 
     override fun onPermissionGranted() {
-        store.accept(BlinkCameraStore.Intent.PermissionGranted)
+        store.accept(BlinkCameraStore.Intent.OnPermissionGrant)
     }
 
     override fun onPermissionDenied() {
-        store.accept(BlinkCameraStore.Intent.PermissionDenied)
+        store.accept(BlinkCameraStore.Intent.OnPermissionDeny)
     }
 
     override fun onPermissionRationale() {
-        store.accept(BlinkCameraStore.Intent.PermissionRationale)
+        store.accept(BlinkCameraStore.Intent.OnPermissionRationale)
     }
 
     override fun onCurrentLensChanged(lens: CameraLens) {
-        store.accept(BlinkCameraStore.Intent.LensChanged(lens))
+        store.accept(BlinkCameraStore.Intent.OnLensChange(lens))
     }
 }

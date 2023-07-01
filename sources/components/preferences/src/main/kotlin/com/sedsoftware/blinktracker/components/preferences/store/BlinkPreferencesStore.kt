@@ -8,10 +8,10 @@ import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreference
 internal interface BlinkPreferencesStore : Store<Intent, State, Label> {
 
     sealed class Intent {
-        data class MinimalThresholdChanged(val value: Float) : Intent()
-        data class NotifySoundChanged(val value: Boolean) : Intent()
-        data class NotifyVibrationChanged(val value: Boolean) : Intent()
-        data class LaunchMinimizedChanged(val value: Boolean) : Intent()
+        data class OnMinimalThresholdChange(val value: Float) : Intent()
+        data class OnNotifySoundChange(val value: Boolean) : Intent()
+        data class OnNotifyVibrationChange(val value: Boolean) : Intent()
+        data class OnLaunchMinimizedChange(val value: Boolean) : Intent()
     }
 
     data class State(

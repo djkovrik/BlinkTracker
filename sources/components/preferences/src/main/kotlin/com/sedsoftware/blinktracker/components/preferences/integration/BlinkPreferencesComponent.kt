@@ -55,18 +55,18 @@ class BlinkPreferencesComponent(
     override val initial: Model = stateToModel(BlinkPreferencesStore.State())
 
     override fun onMinimalThresholdChanged(value: Float) {
-        store.accept(BlinkPreferencesStore.Intent.MinimalThresholdChanged(value))
+        store.accept(BlinkPreferencesStore.Intent.OnMinimalThresholdChange(value))
     }
 
     override fun onNotifySoundChanged(value: Boolean) {
-        store.accept(BlinkPreferencesStore.Intent.NotifySoundChanged(value))
+        store.accept(BlinkPreferencesStore.Intent.OnNotifySoundChange(value))
     }
 
     override fun onNotifyVibrationChanged(value: Boolean) {
-        store.accept(BlinkPreferencesStore.Intent.NotifyVibrationChanged(value))
+        store.accept(BlinkPreferencesStore.Intent.OnNotifyVibrationChange(value))
     }
 
     override fun onLaunchMinimizedChanged(value: Boolean) {
-        store.accept(BlinkPreferencesStore.Intent.LaunchMinimizedChanged(value))
+        store.accept(BlinkPreferencesStore.Intent.OnLaunchMinimizedChange(value))
     }
 }

@@ -59,25 +59,25 @@ internal class BlinkPreferencesStoreProvider(
                     }
                 }
 
-                onIntent<Intent.MinimalThresholdChanged> {
+                onIntent<Intent.OnMinimalThresholdChange> {
                     launch(getExceptionHandler(this)) {
                         settings.setPerMinuteThreshold(it.value)
                     }
                 }
 
-                onIntent<Intent.NotifySoundChanged> {
+                onIntent<Intent.OnNotifySoundChange> {
                     launch(getExceptionHandler(this)) {
                         settings.setNotifySoundEnabled(it.value)
                     }
                 }
 
-                onIntent<Intent.NotifyVibrationChanged> {
+                onIntent<Intent.OnNotifyVibrationChange> {
                     launch(getExceptionHandler(this)) {
                         settings.setNotifyVibrationEnabled(it.value)
                     }
                 }
 
-                onIntent<Intent.LaunchMinimizedChanged> {
+                onIntent<Intent.OnLaunchMinimizedChange> {
                     launch(getExceptionHandler(this)) {
                         settings.setLaunchMinimizedEnabled(it.value)
                     }

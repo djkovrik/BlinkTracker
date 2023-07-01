@@ -95,14 +95,14 @@ internal class BlinkTrackerStoreProvider(
                     }
                 }
 
-                onIntent<Intent.TrackingStarted> {
+                onIntent<Intent.OnTrackingStart> {
                     dispatch(Msg.TrackerStateChangedStarted(true))
                     if (state.shouldLaunchMinimized) {
                         pipLauncher.get()?.launchPictureInPicture()
                     }
                 }
 
-                onIntent<Intent.TrackingStopped> {
+                onIntent<Intent.OnTrackingStop> {
                     dispatch(Msg.TrackerStateChangedStarted(false))
                 }
 
@@ -118,7 +118,7 @@ internal class BlinkTrackerStoreProvider(
                     dispatch(Msg.MinimizedStateChanged(it.minimized))
                 }
 
-                onIntent<Intent.LaunchPip> {
+                onIntent<Intent.OnLaunchPip> {
                     pipLauncher.get()?.launchPictureInPicture()
                 }
             },
