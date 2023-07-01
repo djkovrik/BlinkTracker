@@ -35,6 +35,7 @@ import com.sedsoftware.blinktracker.components.camera.model.CameraState
 import com.sedsoftware.blinktracker.components.camera.model.PermissionState
 import com.sedsoftware.blinktracker.components.home.BlinkHome
 import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
+import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.ui.R.drawable
 import com.sedsoftware.blinktracker.ui.camera.CameraPreviewComposable
@@ -80,7 +81,8 @@ fun BlinkHomeContent(
         onStartClick = component.trackerComponent::onTrackingStarted,
         onStopClick = component.trackerComponent::onTrackingStopped,
         onMinimizeClick = component.trackerComponent::onMinimizeRequested,
-        onPreferencesClicked = onPreferencesClicked,
+        onChipClick = component.statsComponent::onPeriodChipSelect,
+        onPreferencesClick = onPreferencesClicked,
     ) {
         CameraPreviewComposable(
             imageProcessor = processor,
@@ -100,7 +102,8 @@ private fun BlinkHomeScreen(
     onStartClick: () -> Unit = {},
     onStopClick: () -> Unit = {},
     onMinimizeClick: () -> Unit = {},
-    onPreferencesClicked: () -> Unit = {},
+    onChipClick: (DisplayedPeriod) -> Unit = {},
+    onPreferencesClick: () -> Unit = {},
     cameraPreview: @Composable () -> Unit = {},
 ) {
 
@@ -122,7 +125,7 @@ private fun BlinkHomeScreen(
                         trackerModel = tracker,
                         modifier = modifier,
                         onHelpIconClick = { scope.launch { drawerState.open() } },
-                        onPreferencesIconClick = onPreferencesClicked,
+                        onPreferencesIconClick = onPreferencesClick,
                     ) {
                         cameraPreview()
                     }
@@ -142,6 +145,7 @@ private fun BlinkHomeScreen(
                         onStartClick = onStartClick,
                         onStopClick = onStopClick,
                         onMinimizeClick = onMinimizeClick,
+                        onChipClick = onChipClick,
                     )
                 }
             }
@@ -163,6 +167,7 @@ private fun MainScreenActive(
     onStartClick: () -> Unit = {},
     onStopClick: () -> Unit = {},
     onMinimizeClick: () -> Unit = {},
+    onChipClick: (DisplayedPeriod) -> Unit = {},
 ) {
 
     when (camera.currentPermissionState) {
@@ -242,6 +247,7 @@ private fun MainScreenActive(
                                 modifier = modifier
                                     .aspectRatio(ratio = 5f / 4f)
                                     .padding(horizontal = 16.dp),
+                                onChipClick = onChipClick,
                             )
 
                             TrackingControls(

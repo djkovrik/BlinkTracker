@@ -35,7 +35,7 @@
     </string>
 
     <string name="loading">Загрузка…</string>
-    <string name="stats_placeholder">На сегодня еще нет статистики</string>
+    <string name="stats_placeholder">Для данного периода еще нет статистики</string>
     <string name="min">Мин.</string>
     <string name="max">Макс.</string>
     <string name="average">Среднее</string>

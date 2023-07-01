@@ -36,7 +36,7 @@
     </string>
 
     <string name="loading">Loading…</string>
-    <string name="stats_placeholder">No stats for today yet</string>
+    <string name="stats_placeholder">No stats for this period yet</string>
     <string name="min">Min</string>
     <string name="max">Max</string>
     <string name="average">Average</string>

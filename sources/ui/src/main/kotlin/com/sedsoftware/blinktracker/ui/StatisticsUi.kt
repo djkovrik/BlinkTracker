@@ -1,5 +1,6 @@
 package com.sedsoftware.blinktracker.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,7 +38,7 @@ import com.patrykandpatrick.vico.core.chart.line.LineChart.PointPosition.Start
 import com.patrykandpatrick.vico.core.entry.ChartEntry
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
 import com.patrykandpatrick.vico.core.scroll.AutoScrollCondition
-import com.patrykandpatrick.vico.core.scroll.InitialScroll
+import com.patrykandpatrick.vico.core.scroll.InitialScroll.End
 import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
 import com.sedsoftware.blinktracker.components.statistic.model.CustomChartEntry
 import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
@@ -50,13 +51,13 @@ import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 fun BlinkStatisticContent(
     state: BlinkStatistic.Model,
     modifier: Modifier = Modifier,
-    onChipSelect: (DisplayedPeriod) -> Unit = {},
+    onChipClick: (DisplayedPeriod) -> Unit = {},
 ) {
 
     StatsPanelCard(
         model = state,
         modifier = modifier,
-        onChipSelect = onChipSelect,
+        onChipClick = onChipClick,
     )
 }
 
@@ -64,7 +65,7 @@ fun BlinkStatisticContent(
 private fun StatsPanelCard(
     model: BlinkStatistic.Model,
     modifier: Modifier = Modifier,
-    onChipSelect: (DisplayedPeriod) -> Unit = {},
+    onChipClick: (DisplayedPeriod) -> Unit = {},
 ) {
     Card(
         shape = RoundedCornerShape(size = 16.dp),
@@ -78,50 +79,19 @@ private fun StatsPanelCard(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        when {
-            model.isLoading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.loading),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(all = 32.dp),
-                    )
-                }
-            }
-
-            model.isEmpty -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.stats_placeholder),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(all = 32.dp),
-                    )
-                }
-            }
-
-            else -> {
-                StatsPanelDetails(
-                    min = model.min,
-                    max = model.max,
-                    average = model.average,
-                    period = model.period,
-                    entries = model.records,
-                    onChipSelect = onChipSelect,
-                )
-            }
-        }
+        StatsPanelDetails(
+            min = model.min,
+            max = model.max,
+            average = model.average,
+            period = model.period,
+            entries = model.records,
+            isLoading = model.isLoading,
+            isEmpty = model.isEmpty,
+            onChipSelect = onChipClick,
+        )
     }
 }
+
 
 @Composable
 private fun StatsPanelDetails(
@@ -130,6 +100,8 @@ private fun StatsPanelDetails(
     average: Float,
     period: DisplayedPeriod,
     entries: List<ChartEntry>,
+    isLoading: Boolean,
+    isEmpty: Boolean,
     onChipSelect: (DisplayedPeriod) -> Unit = {},
 ) {
     val color1: Color = MaterialTheme.colorScheme.primary
@@ -150,51 +122,90 @@ private fun StatsPanelDetails(
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp)
         )
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f)
-        ) {
-            ProvideChartStyle(rememberChartStyle(chartColors)) {
-                Chart(
-                    chart = lineChart(pointPosition = Start),
-                    chartModelProducer = chartEntryModelProducer,
-                    startAxis = startAxis(
-                        guideline = null,
-                        horizontalLabelPosition = Outside,
-                        valueFormatter = startAxisFormatter,
-                    ),
-                    bottomAxis = bottomAxis(
-                        valueFormatter = bottomAxisFormatter,
-                        labelRotationDegrees = -90f,
-                    ),
-                    fadingEdges = rememberFadingEdges(),
-                    chartScrollSpec = rememberChartScrollSpec(
-                        isScrollEnabled = true,
-                        initialScroll = InitialScroll.End,
-                        autoScrollCondition = AutoScrollCondition.OnModelSizeIncreased,
-                    ),
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 0.dp)
-                        .fillMaxSize(),
-                )
+        Box(modifier = Modifier.weight(1f)) {
+            when {
+                isLoading -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.loading),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(all = 32.dp),
+                        )
+                    }
+                }
+
+                isEmpty -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.stats_placeholder),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(all = 32.dp),
+                        )
+                    }
+                }
+
+                else -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        ProvideChartStyle(rememberChartStyle(chartColors)) {
+                            Chart(
+                                chart = lineChart(pointPosition = Start),
+                                chartModelProducer = chartEntryModelProducer,
+                                startAxis = startAxis(
+                                    guideline = null,
+                                    horizontalLabelPosition = Outside,
+                                    valueFormatter = startAxisFormatter,
+                                ),
+                                bottomAxis = bottomAxis(
+                                    valueFormatter = bottomAxisFormatter,
+                                    labelRotationDegrees = -90f,
+                                ),
+                                fadingEdges = rememberFadingEdges(),
+                                chartScrollSpec = rememberChartScrollSpec(
+                                    isScrollEnabled = true,
+                                    initialScroll = End,
+                                    autoScrollCondition = AutoScrollCondition.OnModelSizeIncreased,
+                                ),
+                                modifier = Modifier
+                                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 0.dp)
+                                    .fillMaxSize(),
+                            )
+                        }
+                    }
+                }
             }
         }
 
-        PeriodChips(
-            period = period,
-            modifier = Modifier.padding(horizontal = 8.dp),
-            onSelect = onChipSelect,
-        )
+        AnimatedVisibility(visible = !isLoading) {
+            PeriodChips(
+                period = period,
+                modifier = Modifier.padding(horizontal = 8.dp),
+                onSelect = onChipSelect,
+            )
+        }
 
-        Text(
-            text = "${stringResource(id = R.string.min)}: $min | " +
-                "${stringResource(id = R.string.max)}: $max | " +
-                "${stringResource(id = R.string.average)}: $average",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.tertiary,
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
-        )
+        AnimatedVisibility(visible = !isLoading && !isEmpty,) {
+            Text(
+                text = "${stringResource(id = R.string.min)}: $min | " +
+                    "${stringResource(id = R.string.max)}: $max | " +
+                    "${stringResource(id = R.string.average)}: $average",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.tertiary,
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
+            )
+        }
     }
 }
 

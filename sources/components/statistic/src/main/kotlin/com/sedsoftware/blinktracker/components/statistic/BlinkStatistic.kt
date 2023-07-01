@@ -10,6 +10,7 @@ interface BlinkStatistic {
     val initial: Model
 
     fun onNewBlinksValue(value: Int)
+    fun onPeriodChipSelect(value: DisplayedPeriod)
 
     data class Model(
         val isLoading: Boolean,

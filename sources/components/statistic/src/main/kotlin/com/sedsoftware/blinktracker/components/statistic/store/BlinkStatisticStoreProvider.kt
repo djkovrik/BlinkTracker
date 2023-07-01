@@ -9,6 +9,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.blinktracker.components.statistic.integration.StatisticsManager
+import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
 import com.sedsoftware.blinktracker.components.statistic.model.DisplayedStats
 import com.sedsoftware.blinktracker.components.statistic.store.BlinkStatisticStore.Intent
 import com.sedsoftware.blinktracker.components.statistic.store.BlinkStatisticStore.Label
@@ -48,12 +49,17 @@ internal class BlinkStatisticStoreProvider(
 
                 onIntent<Intent.OnNewPeriod> {
                     launch(getExceptionHandler(this)) {
+                        dispatch(Msg.PeriodUpdated(it.value))
                         manager.switchPeriod(it.value)
                     }
                 }
             },
             reducer = { msg ->
                 when (msg) {
+                    is Msg.PeriodUpdated -> copy(
+                        period = msg.newPeriod
+                    )
+
                     is Msg.StatsUpdated -> copy(
                         stats = msg.newStats
                     )
@@ -66,6 +72,7 @@ internal class BlinkStatisticStoreProvider(
     }
 
     private sealed interface Msg {
+        data class PeriodUpdated(val newPeriod: DisplayedPeriod) : Msg
         data class StatsUpdated(val newStats: DisplayedStats) : Msg
     }
 

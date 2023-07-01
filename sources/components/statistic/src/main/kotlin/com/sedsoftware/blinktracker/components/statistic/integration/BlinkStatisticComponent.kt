@@ -8,6 +8,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import com.arkivanov.mvikotlin.extensions.coroutines.states
 import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
 import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic.Model
+import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
 import com.sedsoftware.blinktracker.components.statistic.store.BlinkStatisticStore
 import com.sedsoftware.blinktracker.components.statistic.store.BlinkStatisticStoreProvider
 import com.sedsoftware.blinktracker.database.StatisticsRepository
@@ -56,5 +57,9 @@ class BlinkStatisticComponent(
 
     override fun onNewBlinksValue(value: Int) {
         store.accept(BlinkStatisticStore.Intent.OnNewBlink(value))
+    }
+
+    override fun onPeriodChipSelect(value: DisplayedPeriod) {
+        store.accept(BlinkStatisticStore.Intent.OnNewPeriod(value))
     }
 }

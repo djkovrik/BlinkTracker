@@ -12,6 +12,5 @@ sealed class DisplayedStats {
         val max: Float,
         val average: Float,
         val records: List<ChartEntry>,
-        val period: DisplayedPeriod,
     ) : DisplayedStats()
 }

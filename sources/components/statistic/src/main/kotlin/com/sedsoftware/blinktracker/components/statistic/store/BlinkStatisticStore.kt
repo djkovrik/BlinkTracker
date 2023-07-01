@@ -15,6 +15,7 @@ internal interface BlinkStatisticStore : Store<Intent, State, Label> {
     }
 
     data class State(
+        val period: DisplayedPeriod = DisplayedPeriod.MINUTE,
         val stats: DisplayedStats = DisplayedStats.Loading
     )
 

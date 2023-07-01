@@ -46,17 +46,17 @@ internal class StatisticsManagerImpl(
     }
 
     private suspend fun consumeStatFlows(entries: List<BlinksRecordDbModel>, period: DisplayedPeriod) {
-        if (entries.isEmpty()) {
+        val stats = generateStatsBundle(entries, period)
+
+        if (entries.isEmpty() || stats.isEmpty()) {
             _stats.emit(DisplayedStats.Empty)
             return
         }
 
-        val stats = generateStatsBundle(entries, period)
         val mapped = DisplayedStats.Content(
             min = stats.minOf { it.blinksForPeriod },
             max = stats.maxOf { it.blinksForPeriod },
             average = stats.sumOf { it.blinksForPeriod } / stats.size,
-            period = period,
             records = stats.mapIndexed { index, record ->
                 CustomChartEntry(
                     label = record.label,

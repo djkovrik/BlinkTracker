@@ -27,7 +27,7 @@ internal val stateToModel: (State) -> Model =
                     max = 0f,
                     average = 0f,
                     records = emptyList(),
-                    period = DisplayedPeriod.MINUTE,
+                    period = it.period,
                     isLoading = false,
                     isEmpty = true,
                 )
@@ -39,7 +39,7 @@ internal val stateToModel: (State) -> Model =
                     max = it.stats.max.roundTo(1),
                     average = it.stats.average.roundTo(1),
                     records = it.stats.records,
-                    period = it.stats.period,
+                    period = it.period,
                     isLoading = false,
                     isEmpty = false,
                 )
