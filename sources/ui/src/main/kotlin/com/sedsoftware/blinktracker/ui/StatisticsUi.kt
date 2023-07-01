@@ -36,10 +36,9 @@ import com.patrykandpatrick.vico.core.chart.line.LineChart.PointPosition.Start
 import com.patrykandpatrick.vico.core.entry.ChartEntry
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
 import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
+import com.sedsoftware.blinktracker.components.statistic.model.CustomChartEntry
 import com.sedsoftware.blinktracker.ui.R.string
 import com.sedsoftware.blinktracker.ui.component.rememberChartStyle
-import com.sedsoftware.blinktracker.ui.model.CustomChartEntry
-import com.sedsoftware.blinktracker.ui.model.toChartEntries
 import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
@@ -73,7 +72,7 @@ private fun StatsPanelCard(
             .fillMaxWidth()
     ) {
         when {
-            !model.checked -> {
+            model.isLoading -> {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
@@ -88,7 +87,7 @@ private fun StatsPanelCard(
                 }
             }
 
-            model.checked && model.showPlaceholder -> {
+            model.isEmpty -> {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
@@ -108,7 +107,7 @@ private fun StatsPanelCard(
                     min = model.min,
                     max = model.max,
                     average = model.average,
-                    entries = model.records.toChartEntries(),
+                    entries = model.records,
                 )
             }
         }
@@ -183,7 +182,7 @@ private val startAxisFormatter = AxisValueFormatter<Vertical.Start> { value, _ -
 
 private val bottomAxisFormatter = AxisValueFormatter<Horizontal.Bottom> { value, chartValues ->
     (chartValues.chartEntryModel.entries.firstOrNull()?.getOrNull(value.toInt()) as? CustomChartEntry)
-        ?.date
+        ?.label
         .orEmpty()
 }
 
@@ -234,7 +233,7 @@ private fun PreviewStatsLoadedDark() {
         }
     }
 }
-
+/*
 @Composable
 @Preview(showBackground = true, widthDp = 400, heightDp = 300)
 private fun PreviewStatsContentLight() {
@@ -258,3 +257,4 @@ private fun PreviewStatsContentDark() {
         }
     }
 }
+*/

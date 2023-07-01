@@ -26,15 +26,15 @@ class BlinkStatisticComponent(
     private val output: (BlinkStatistic.Output) -> Unit,
 ) : BlinkStatistic, ComponentContext by componentContext {
 
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+
     private val store: BlinkStatisticStore =
         instanceKeeper.getStore {
             BlinkStatisticStoreProvider(
                 storeFactory = storeFactory,
-                repo = repo,
+                manager = StatisticsManagerImpl(repo, scope),
             ).provide()
         }
-
-    private val scope: CoroutineScope = CoroutineScope(Dispatchers.Main)
 
     init {
         store.labels
@@ -55,6 +55,6 @@ class BlinkStatisticComponent(
     override val initial: Model = stateToModel(BlinkStatisticStore.State())
 
     override fun onNewBlinksValue(value: Int) {
-        store.accept(BlinkStatisticStore.Intent.HandleNewBlinkValue(value))
+        store.accept(BlinkStatisticStore.Intent.OnNewBlink(value))
     }
 }

@@ -31,4 +31,5 @@ dependencies {
     implementation(libs.ark.decompose.core)
     implementation(libs.ark.decompose.extensions)
     implementation(libs.ark.essenty)
+    implementation(libs.vico.core)
 }
