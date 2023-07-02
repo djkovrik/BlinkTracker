@@ -47,6 +47,7 @@ internal val stateToModel: (State) -> Model =
         }
     }
 
+@Suppress("MagicNumber")
 internal fun Float.roundTo(decimals: Int): Float {
     var multiplier = 1.0f
     repeat(decimals) { multiplier *= 10f }

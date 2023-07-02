@@ -83,161 +83,167 @@ internal class StatisticsManagerImpl(
     }
 
     private fun generateStatsBundle(entries: List<BlinksRecordDbModel>, period: DisplayedPeriod): List<PeriodStatsBundle> {
-        when (period) {
-            DisplayedPeriod.MINUTE -> {
-                val result = mutableListOf<PeriodStatsBundle>()
-                entries.takeLast(DisplayedPeriod.MINUTE.takeLast).forEach { entry ->
-                    result.add(
-                        PeriodStatsBundle(
-                            averageForPeriod = entry.blinks.toFloat(),
-                            label = entry.date.time.toString().substringBeforeLast(":")
-                        )
-                    )
-                }
-
-                return result
-            }
-
-            DisplayedPeriod.QUARTER_HOUR -> {
-                val result = mutableListOf<PeriodStatsBundle>()
-                val grouped = mutableListOf<List<BlinksRecordDbModel>>()
-                val subgroup = mutableListOf<BlinksRecordDbModel>()
-                var tempInstant = entries.first().date.toInstant(timeZone)
-
-                entries.forEach { entry ->
-                    val entryInstant = entry.date.toInstant(timeZone)
-                    val diff = entryInstant - tempInstant
-                    if (diff.inWholeMinutes > PERIOD_FIFTEEN_MINUTES && subgroup.isNotEmpty()) {
-                        grouped.add(ArrayList(subgroup))
-                        subgroup.clear()
-                        tempInstant = entryInstant
-                    }
-
-                    subgroup.add(entry)
-                }
-
-                if (subgroup.isNotEmpty()) {
-                    grouped.add(ArrayList(subgroup))
-                }
-
-                grouped.takeLast(DisplayedPeriod.QUARTER_HOUR.takeLast).forEach { group ->
-                    result.add(
-                        PeriodStatsBundle(
-                            group.sumOf { it.blinks.toFloat() } / group.size,
-                            label = group.last().date.time.toString().substringBeforeLast(":")
-                        )
-                    )
-                }
-
-                return result
-            }
-
-            DisplayedPeriod.HOUR -> {
-                val result = mutableListOf<PeriodStatsBundle>()
-                val grouped = mutableListOf<List<BlinksRecordDbModel>>()
-                val subgroup = mutableListOf<BlinksRecordDbModel>()
-                var tempInstant = entries.first().date.toInstant(timeZone)
-
-                entries.forEach { entry ->
-                    val entryInstant = entry.date.toInstant(timeZone)
-                    val diff = entryInstant - tempInstant
-                    if (diff.inWholeMinutes > PERIOD_SIXTY_MINUTES && subgroup.isNotEmpty()) {
-                        grouped.add(ArrayList(subgroup))
-                        subgroup.clear()
-                        tempInstant = entryInstant
-                    }
-
-                    subgroup.add(entry)
-                }
-
-                if (subgroup.isNotEmpty()) {
-                    grouped.add(ArrayList(subgroup))
-                }
-
-                grouped.takeLast(DisplayedPeriod.HOUR.takeLast).forEach { group ->
-                    result.add(
-                        PeriodStatsBundle(
-                            group.sumOf { it.blinks.toFloat() } / group.size,
-                            label = group.last().date.time.toString().substringBeforeLast(":")
-                        )
-                    )
-                }
-
-                return result
-            }
-
-            DisplayedPeriod.DAY -> {
-                val result = mutableListOf<PeriodStatsBundle>()
-                val grouped = mutableListOf<List<BlinksRecordDbModel>>()
-                val subgroup = mutableListOf<BlinksRecordDbModel>()
-                var temp = entries.first()
-
-                entries.forEach { entry ->
-                    if (entry.hasDifferentDay(temp)) {
-                        if (subgroup.isNotEmpty()) {
-                            grouped.add(ArrayList(subgroup))
-                        }
-                        subgroup.clear()
-                        temp = entry
-                    }
-
-                    subgroup.add(entry)
-                }
-
-                if (subgroup.isNotEmpty()) {
-                    grouped.add(ArrayList(subgroup))
-                }
-
-                grouped.takeLast(DisplayedPeriod.DAY.takeLast).forEach { group ->
-                    result.add(
-                        PeriodStatsBundle(
-                            group.sumOf { it.blinks.toFloat() } / group.size,
-                            label = with(group.last().date) {
-                                "${month.getDisplayName(TextStyle.SHORT, Locale.getDefault())} $dayOfMonth"
-                            }
-                        )
-                    )
-                }
-
-                return result
-            }
-
-            DisplayedPeriod.MONTH -> {
-                val result = mutableListOf<PeriodStatsBundle>()
-                val grouped = mutableListOf<List<BlinksRecordDbModel>>()
-                val subgroup = mutableListOf<BlinksRecordDbModel>()
-                var temp = entries.first()
-
-                entries.forEach { entry ->
-                    if (entry.hasDifferentMonth(temp)) {
-                        if (subgroup.isNotEmpty()) {
-                            grouped.add(ArrayList(subgroup))
-                        }
-                        subgroup.clear()
-                        temp = entry
-                    }
-
-                    subgroup.add(entry)
-                }
-
-                if (subgroup.isNotEmpty()) {
-                    grouped.add(ArrayList(subgroup))
-                }
-
-                grouped.takeLast(DisplayedPeriod.MONTH.takeLast).forEach { group ->
-                    result.add(
-                        PeriodStatsBundle(
-                            group.sumOf { it.blinks.toFloat() } / group.size,
-                            label = with(group.last().date) {
-                                month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-                            }
-                        )
-                    )
-                }
-
-                return result
-            }
+        return when (period) {
+            DisplayedPeriod.MINUTE -> getPerMinuteStats(entries)
+            DisplayedPeriod.QUARTER_HOUR -> getPerQuarterHourStats(entries)
+            DisplayedPeriod.HOUR -> getPerHourStats(entries)
+            DisplayedPeriod.DAY -> getPerDayStats(entries)
+            DisplayedPeriod.MONTH -> getPerMonthStats(entries)
         }
+    }
+
+    private fun getPerMinuteStats(entries: List<BlinksRecordDbModel>): MutableList<PeriodStatsBundle> {
+        val result = mutableListOf<PeriodStatsBundle>()
+        entries.takeLast(DisplayedPeriod.MINUTE.takeLast).forEach { entry ->
+            result.add(
+                PeriodStatsBundle(
+                    averageForPeriod = entry.blinks.toFloat(),
+                    label = entry.date.time.toString().substringBeforeLast(":")
+                )
+            )
+        }
+
+        return result
+    }
+
+    private fun getPerQuarterHourStats(entries: List<BlinksRecordDbModel>): MutableList<PeriodStatsBundle> {
+        val result = mutableListOf<PeriodStatsBundle>()
+        val grouped = mutableListOf<List<BlinksRecordDbModel>>()
+        val subgroup = mutableListOf<BlinksRecordDbModel>()
+        var tempInstant = entries.first().date.toInstant(timeZone)
+
+        entries.forEach { entry ->
+            val entryInstant = entry.date.toInstant(timeZone)
+            val diff = entryInstant - tempInstant
+            if (diff.inWholeMinutes > PERIOD_FIFTEEN_MINUTES && subgroup.isNotEmpty()) {
+                grouped.add(ArrayList(subgroup))
+                subgroup.clear()
+                tempInstant = entryInstant
+            }
+
+            subgroup.add(entry)
+        }
+
+        if (subgroup.isNotEmpty()) {
+            grouped.add(ArrayList(subgroup))
+        }
+
+        grouped.takeLast(DisplayedPeriod.QUARTER_HOUR.takeLast).forEach { group ->
+            result.add(
+                PeriodStatsBundle(
+                    group.sumOf { it.blinks.toFloat() } / group.size,
+                    label = group.last().date.time.toString().substringBeforeLast(":")
+                )
+            )
+        }
+
+        return result
+    }
+
+    private fun getPerHourStats(entries: List<BlinksRecordDbModel>): MutableList<PeriodStatsBundle> {
+        val result = mutableListOf<PeriodStatsBundle>()
+        val grouped = mutableListOf<List<BlinksRecordDbModel>>()
+        val subgroup = mutableListOf<BlinksRecordDbModel>()
+        var tempInstant = entries.first().date.toInstant(timeZone)
+
+        entries.forEach { entry ->
+            val entryInstant = entry.date.toInstant(timeZone)
+            val diff = entryInstant - tempInstant
+            if (diff.inWholeMinutes > PERIOD_SIXTY_MINUTES && subgroup.isNotEmpty()) {
+                grouped.add(ArrayList(subgroup))
+                subgroup.clear()
+                tempInstant = entryInstant
+            }
+
+            subgroup.add(entry)
+        }
+
+        if (subgroup.isNotEmpty()) {
+            grouped.add(ArrayList(subgroup))
+        }
+
+        grouped.takeLast(DisplayedPeriod.HOUR.takeLast).forEach { group ->
+            result.add(
+                PeriodStatsBundle(
+                    group.sumOf { it.blinks.toFloat() } / group.size,
+                    label = group.last().date.time.toString().substringBeforeLast(":")
+                )
+            )
+        }
+
+        return result
+    }
+
+    private fun getPerDayStats(entries: List<BlinksRecordDbModel>): MutableList<PeriodStatsBundle> {
+        val result = mutableListOf<PeriodStatsBundle>()
+        val grouped = mutableListOf<List<BlinksRecordDbModel>>()
+        val subgroup = mutableListOf<BlinksRecordDbModel>()
+        var temp = entries.first()
+
+        entries.forEach { entry ->
+            if (entry.hasDifferentDay(temp)) {
+                if (subgroup.isNotEmpty()) {
+                    grouped.add(ArrayList(subgroup))
+                }
+                subgroup.clear()
+                temp = entry
+            }
+
+            subgroup.add(entry)
+        }
+
+        if (subgroup.isNotEmpty()) {
+            grouped.add(ArrayList(subgroup))
+        }
+
+        grouped.takeLast(DisplayedPeriod.DAY.takeLast).forEach { group ->
+            result.add(
+                PeriodStatsBundle(
+                    group.sumOf { it.blinks.toFloat() } / group.size,
+                    label = with(group.last().date) {
+                        "${month.getDisplayName(TextStyle.SHORT, Locale.getDefault())} $dayOfMonth"
+                    }
+                )
+            )
+        }
+
+        return result
+    }
+
+    private fun getPerMonthStats(entries: List<BlinksRecordDbModel>): MutableList<PeriodStatsBundle> {
+        val result = mutableListOf<PeriodStatsBundle>()
+        val grouped = mutableListOf<List<BlinksRecordDbModel>>()
+        val subgroup = mutableListOf<BlinksRecordDbModel>()
+        var temp = entries.first()
+
+        entries.forEach { entry ->
+            if (entry.hasDifferentMonth(temp)) {
+                if (subgroup.isNotEmpty()) {
+                    grouped.add(ArrayList(subgroup))
+                }
+                subgroup.clear()
+                temp = entry
+            }
+
+            subgroup.add(entry)
+        }
+
+        if (subgroup.isNotEmpty()) {
+            grouped.add(ArrayList(subgroup))
+        }
+
+        grouped.takeLast(DisplayedPeriod.MONTH.takeLast).forEach { group ->
+            result.add(
+                PeriodStatsBundle(
+                    group.sumOf { it.blinks.toFloat() } / group.size,
+                    label = with(group.last().date) {
+                        month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+                    }
+                )
+            )
+        }
+
+        return result
     }
 
     private fun BlinksRecordDbModel.hasDifferentDay(other: BlinksRecordDbModel): Boolean =

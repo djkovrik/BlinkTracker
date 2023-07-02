@@ -33,12 +33,12 @@ import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.axis.AxisPosition.Horizontal
 import com.patrykandpatrick.vico.core.axis.AxisPosition.Vertical
 import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
-import com.patrykandpatrick.vico.core.axis.vertical.VerticalAxis.HorizontalLabelPosition.Outside
-import com.patrykandpatrick.vico.core.chart.line.LineChart.PointPosition.Start
+import com.patrykandpatrick.vico.core.axis.vertical.VerticalAxis.HorizontalLabelPosition
+import com.patrykandpatrick.vico.core.chart.line.LineChart.PointPosition
 import com.patrykandpatrick.vico.core.entry.ChartEntry
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
 import com.patrykandpatrick.vico.core.scroll.AutoScrollCondition
-import com.patrykandpatrick.vico.core.scroll.InitialScroll.End
+import com.patrykandpatrick.vico.core.scroll.InitialScroll
 import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
 import com.sedsoftware.blinktracker.components.statistic.model.CustomChartEntry
 import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
@@ -91,7 +91,6 @@ private fun StatsPanelCard(
         )
     }
 }
-
 
 @Composable
 private fun StatsPanelDetails(
@@ -172,11 +171,13 @@ private fun StatsPanelDetails(
                     ) {
                         ProvideChartStyle(rememberChartStyle(chartColors)) {
                             Chart(
-                                chart = lineChart(pointPosition = Start),
+                                chart = lineChart(
+                                    pointPosition = PointPosition.Start,
+                                ),
                                 chartModelProducer = chartEntryModelProducer,
                                 startAxis = startAxis(
                                     guideline = null,
-                                    horizontalLabelPosition = Outside,
+                                    horizontalLabelPosition = HorizontalLabelPosition.Outside,
                                     valueFormatter = startAxisFormatter,
                                 ),
                                 bottomAxis = bottomAxis(
@@ -186,7 +187,7 @@ private fun StatsPanelDetails(
                                 fadingEdges = rememberFadingEdges(),
                                 chartScrollSpec = rememberChartScrollSpec(
                                     isScrollEnabled = true,
-                                    initialScroll = End,
+                                    initialScroll = InitialScroll.End,
                                     autoScrollCondition = AutoScrollCondition.OnModelSizeIncreased,
                                 ),
                                 modifier = Modifier
