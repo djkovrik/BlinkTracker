@@ -21,7 +21,7 @@
     <string name="tracking">Отслеживание морганий</string>
     <string name="tracking_active">Отслеживание активно</string>
     <string name="tracking_not_active">Отслеживание не активно</string>
-    <string name="today">Статистика за сегодня</string>
+    <string name="your_stats">Ваша статистика</string>
 
     <string name="info1">
         Согласно данным National Library of Medicine, нормальное моргание необходимо для правильного распределения слезной плёнки и защиты
@@ -35,10 +35,16 @@
     </string>
 
     <string name="loading">Загрузка…</string>
-    <string name="stats_placeholder">На сегодня еще нет статистики</string>
+    <string name="stats_placeholder">Для данного периода еще нет статистики</string>
     <string name="min">Мин.</string>
     <string name="max">Макс.</string>
     <string name="average">Среднее</string>
     <string name="blinks_axis">Моргания</string>
     <string name="settings">Настройки</string>
+
+    <string name="m1">1мин</string>
+    <string name="m15">15мин</string>
+    <string name="h1">1ч</string>
+    <string name="d1">1д</string>
+    <string name="d30">30дн</string>
 </resources>

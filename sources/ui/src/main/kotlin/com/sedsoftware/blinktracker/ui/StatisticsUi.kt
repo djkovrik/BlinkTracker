@@ -1,5 +1,6 @@
 package com.sedsoftware.blinktracker.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,19 +28,22 @@ import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
 import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.edges.rememberFadingEdges
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
+import com.patrykandpatrick.vico.compose.chart.scroll.rememberChartScrollSpec
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.axis.AxisPosition.Horizontal
 import com.patrykandpatrick.vico.core.axis.AxisPosition.Vertical
 import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
-import com.patrykandpatrick.vico.core.axis.vertical.VerticalAxis.HorizontalLabelPosition.Outside
-import com.patrykandpatrick.vico.core.chart.line.LineChart.PointPosition.Start
+import com.patrykandpatrick.vico.core.axis.vertical.VerticalAxis.HorizontalLabelPosition
+import com.patrykandpatrick.vico.core.chart.line.LineChart.PointPosition
 import com.patrykandpatrick.vico.core.entry.ChartEntry
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
+import com.patrykandpatrick.vico.core.scroll.AutoScrollCondition
+import com.patrykandpatrick.vico.core.scroll.InitialScroll
 import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
-import com.sedsoftware.blinktracker.ui.R.string
+import com.sedsoftware.blinktracker.components.statistic.model.CustomChartEntry
+import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
+import com.sedsoftware.blinktracker.ui.component.PeriodChips
 import com.sedsoftware.blinktracker.ui.component.rememberChartStyle
-import com.sedsoftware.blinktracker.ui.model.CustomChartEntry
-import com.sedsoftware.blinktracker.ui.model.toChartEntries
 import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
@@ -47,11 +51,13 @@ import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 fun BlinkStatisticContent(
     state: BlinkStatistic.Model,
     modifier: Modifier = Modifier,
+    onChipClick: (DisplayedPeriod) -> Unit = {},
 ) {
 
     StatsPanelCard(
         model = state,
         modifier = modifier,
+        onChipClick = onChipClick,
     )
 }
 
@@ -59,6 +65,7 @@ fun BlinkStatisticContent(
 private fun StatsPanelCard(
     model: BlinkStatistic.Model,
     modifier: Modifier = Modifier,
+    onChipClick: (DisplayedPeriod) -> Unit = {},
 ) {
     Card(
         shape = RoundedCornerShape(size = 16.dp),
@@ -72,55 +79,29 @@ private fun StatsPanelCard(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        when {
-            !model.checked -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Text(
-                        text = stringResource(id = string.loading),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(all = 32.dp),
-                    )
-                }
-            }
-
-            model.checked && model.showPlaceholder -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Text(
-                        text = stringResource(id = string.stats_placeholder),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(all = 32.dp),
-                    )
-                }
-            }
-
-            else -> {
-                StatsPanelDetails(
-                    min = model.min,
-                    max = model.max,
-                    average = model.average,
-                    entries = model.records.toChartEntries(),
-                )
-            }
-        }
+        StatsPanelDetails(
+            min = model.min,
+            max = model.max,
+            average = model.average,
+            period = model.period,
+            entries = model.records,
+            isLoading = model.isLoading,
+            isEmpty = model.isEmpty,
+            onChipSelect = onChipClick,
+        )
     }
 }
 
 @Composable
 private fun StatsPanelDetails(
-    min: Int,
-    max: Int,
+    min: Float,
+    max: Float,
     average: Float,
+    period: DisplayedPeriod,
     entries: List<ChartEntry>,
+    isLoading: Boolean,
+    isEmpty: Boolean,
+    onChipSelect: (DisplayedPeriod) -> Unit = {},
 ) {
     val color1: Color = MaterialTheme.colorScheme.primary
     val color2: Color = MaterialTheme.colorScheme.secondary
@@ -133,47 +114,99 @@ private fun StatsPanelDetails(
 
     Column {
         Text(
-            text = stringResource(id = string.today),
+            text = stringResource(id = R.string.your_stats),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp)
         )
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(1f)
-        ) {
-            ProvideChartStyle(rememberChartStyle(chartColors)) {
-                Chart(
-                    chart = lineChart(pointPosition = Start),
-                    chartModelProducer = chartEntryModelProducer,
-                    startAxis = startAxis(
-                        guideline = null,
-                        horizontalLabelPosition = Outside,
-                        valueFormatter = startAxisFormatter,
-                    ),
-                    bottomAxis = bottomAxis(
-                        valueFormatter = bottomAxisFormatter,
-                        labelRotationDegrees = -90f,
-                    ),
-                    fadingEdges = rememberFadingEdges(),
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 0.dp)
-                        .fillMaxSize(),
-                )
+        AnimatedVisibility(visible = !isLoading && !isEmpty) {
+            Text(
+                text = "${stringResource(id = R.string.min)}: $min | " +
+                    "${stringResource(id = R.string.max)}: $max | " +
+                    "${stringResource(id = R.string.average)}: $average",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.tertiary,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+            )
+        }
+
+        Box(modifier = Modifier.weight(1f)) {
+            when {
+                isLoading -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.loading),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(all = 32.dp),
+                        )
+                    }
+                }
+
+                isEmpty -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.stats_placeholder),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(all = 32.dp),
+                        )
+                    }
+                }
+
+                else -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        ProvideChartStyle(rememberChartStyle(chartColors)) {
+                            Chart(
+                                chart = lineChart(
+                                    pointPosition = PointPosition.Start,
+                                ),
+                                chartModelProducer = chartEntryModelProducer,
+                                startAxis = startAxis(
+                                    guideline = null,
+                                    horizontalLabelPosition = HorizontalLabelPosition.Outside,
+                                    valueFormatter = startAxisFormatter,
+                                ),
+                                bottomAxis = bottomAxis(
+                                    valueFormatter = bottomAxisFormatter,
+                                    labelRotationDegrees = -90f,
+                                ),
+                                fadingEdges = rememberFadingEdges(),
+                                chartScrollSpec = rememberChartScrollSpec(
+                                    isScrollEnabled = true,
+                                    initialScroll = InitialScroll.End,
+                                    autoScrollCondition = AutoScrollCondition.OnModelSizeIncreased,
+                                ),
+                                modifier = Modifier
+                                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 0.dp)
+                                    .fillMaxSize(),
+                            )
+                        }
+                    }
+                }
             }
         }
 
-        Text(
-            text = "${stringResource(id = string.min)}: $min | " +
-                "${stringResource(id = string.max)}: $max | " +
-                "${stringResource(id = string.average)}: $average",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.tertiary,
-            modifier = Modifier.padding(all = 16.dp)
-        )
+        AnimatedVisibility(visible = !isLoading) {
+            PeriodChips(
+                period = period,
+                modifier = Modifier.padding(horizontal = 8.dp),
+                onSelect = onChipSelect,
+            )
+        }
     }
 }
 
@@ -183,7 +216,7 @@ private val startAxisFormatter = AxisValueFormatter<Vertical.Start> { value, _ -
 
 private val bottomAxisFormatter = AxisValueFormatter<Horizontal.Bottom> { value, chartValues ->
     (chartValues.chartEntryModel.entries.firstOrNull()?.getOrNull(value.toInt()) as? CustomChartEntry)
-        ?.date
+        ?.label
         .orEmpty()
 }
 

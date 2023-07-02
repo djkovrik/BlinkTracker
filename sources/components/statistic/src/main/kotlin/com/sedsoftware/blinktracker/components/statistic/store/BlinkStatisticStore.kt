@@ -1,7 +1,8 @@
 package com.sedsoftware.blinktracker.components.statistic.store
 
 import com.arkivanov.mvikotlin.core.store.Store
-import com.sedsoftware.blinktracker.components.statistic.model.StatRecord
+import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
+import com.sedsoftware.blinktracker.components.statistic.model.DisplayedStats
 import com.sedsoftware.blinktracker.components.statistic.store.BlinkStatisticStore.Intent
 import com.sedsoftware.blinktracker.components.statistic.store.BlinkStatisticStore.Label
 import com.sedsoftware.blinktracker.components.statistic.store.BlinkStatisticStore.State
@@ -9,16 +10,13 @@ import com.sedsoftware.blinktracker.components.statistic.store.BlinkStatisticSto
 internal interface BlinkStatisticStore : Store<Intent, State, Label> {
 
     sealed class Intent {
-        data class HandleNewBlinkValue(val value: Int) : Intent()
+        data class OnNewBlink(val value: Int) : Intent()
+        data class OnNewPeriod(val value: DisplayedPeriod) : Intent()
     }
 
     data class State(
-        val records: List<StatRecord> = emptyList(),
-        val averageRate: Float = 0.0f,
-        val blinksMin: Int = 0,
-        val blinksMax: Int = 0,
-        val statsChecked: Boolean = false,
-        val placeholderVisible: Boolean = false,
+        val period: DisplayedPeriod = DisplayedPeriod.MINUTE,
+        val stats: DisplayedStats = DisplayedStats.Loading
     )
 
     sealed class Label {

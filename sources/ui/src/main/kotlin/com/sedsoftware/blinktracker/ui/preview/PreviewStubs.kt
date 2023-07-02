@@ -12,9 +12,9 @@ import com.sedsoftware.blinktracker.components.camera.model.CameraState
 import com.sedsoftware.blinktracker.components.camera.model.PermissionState
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
 import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
-import com.sedsoftware.blinktracker.components.statistic.model.StatRecord
+import com.sedsoftware.blinktracker.components.statistic.model.CustomChartEntry
+import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
-import kotlinx.datetime.LocalDateTime
 
 @Suppress("MemberVisibilityCanBePrivate")
 object PreviewStubs {
@@ -87,49 +87,41 @@ object PreviewStubs {
     )
 
     private val dummyRecords = listOf(
-        StatRecord(blinks = 14, dateTime = LocalDateTime(2023, 6, 13, 12, 34)),
-        StatRecord(blinks = 12, dateTime = LocalDateTime(2023, 6, 13, 12, 35)),
-        StatRecord(blinks = 18, dateTime = LocalDateTime(2023, 6, 13, 12, 36)),
-        StatRecord(blinks = 21, dateTime = LocalDateTime(2023, 6, 13, 12, 37)),
-        StatRecord(blinks = 12, dateTime = LocalDateTime(2023, 6, 13, 12, 38)),
-        StatRecord(blinks = 13, dateTime = LocalDateTime(2023, 6, 13, 12, 39)),
-        StatRecord(blinks = 13, dateTime = LocalDateTime(2023, 6, 13, 12, 40)),
-        StatRecord(blinks = 17, dateTime = LocalDateTime(2023, 6, 13, 13, 11)),
-        StatRecord(blinks = 16, dateTime = LocalDateTime(2023, 6, 13, 12, 12)),
-        StatRecord(blinks = 10, dateTime = LocalDateTime(2023, 6, 13, 12, 13)),
-        StatRecord(blinks = 18, dateTime = LocalDateTime(2023, 6, 13, 12, 14)),
-        StatRecord(blinks = 17, dateTime = LocalDateTime(2023, 6, 13, 12, 15)),
-        StatRecord(blinks = 18, dateTime = LocalDateTime(2023, 6, 14, 15, 21)),
-        StatRecord(blinks = 16, dateTime = LocalDateTime(2023, 6, 13, 12, 22)),
-        StatRecord(blinks = 15, dateTime = LocalDateTime(2023, 6, 13, 12, 23)),
-        StatRecord(blinks = 14, dateTime = LocalDateTime(2023, 6, 13, 12, 24)),
-        StatRecord(blinks = 13, dateTime = LocalDateTime(2023, 6, 13, 12, 25)),
+        CustomChartEntry(label = "11:12", x = 1f, y = 12f),
+        CustomChartEntry(label = "11:13", x = 2f, y = 17f),
+        CustomChartEntry(label = "11:14", x = 3f, y = 16f),
+        CustomChartEntry(label = "11:15", x = 4f, y = 13f),
+        CustomChartEntry(label = "11:16", x = 5f, y = 14f),
+        CustomChartEntry(label = "11:17", x = 6f, y = 18f),
     )
 
     val statsEmptyNotChecked = BlinkStatistic.Model(
         records = emptyList(),
+        period = DisplayedPeriod.MINUTE,
         average = 0f,
-        min = 0,
-        max = 0,
-        checked = false,
-        showPlaceholder = false,
+        min = 0f,
+        max = 0f,
+        isLoading = true,
+        isEmpty = false,
     )
 
     val statsEmptyChecked = BlinkStatistic.Model(
         records = emptyList(),
+        period = DisplayedPeriod.MINUTE,
         average = 0f,
-        min = 0,
-        max = 0,
-        checked = true,
-        showPlaceholder = true,
+        min = 0f,
+        max = 0f,
+        isLoading = false,
+        isEmpty = true,
     )
 
     val statsOneRecord = BlinkStatistic.Model(
+        isEmpty = false,
+        isLoading = false,
+        period = DisplayedPeriod.HOUR,
         average = 12f,
-        min = 12,
-        max = 15,
-        checked = true,
-        showPlaceholder = false,
+        min = 12f,
+        max = 15f,
         records = dummyRecords.take(1)
     )
 

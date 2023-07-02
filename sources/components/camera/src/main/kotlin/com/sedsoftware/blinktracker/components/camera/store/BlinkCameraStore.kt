@@ -11,10 +11,10 @@ import com.sedsoftware.blinktracker.components.camera.store.BlinkCameraStore.Sta
 internal interface BlinkCameraStore : Store<Intent, State, Label> {
 
     sealed class Intent {
-        object PermissionGranted : Intent()
-        object PermissionDenied : Intent()
-        object PermissionRationale : Intent()
-        data class LensChanged(val lens: CameraLens) : Intent()
+        object OnPermissionGrant : Intent()
+        object OnPermissionDeny : Intent()
+        object OnPermissionRationale : Intent()
+        data class OnLensChange(val lens: CameraLens) : Intent()
     }
 
     data class State(

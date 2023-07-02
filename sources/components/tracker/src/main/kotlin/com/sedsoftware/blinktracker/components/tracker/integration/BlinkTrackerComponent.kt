@@ -72,11 +72,11 @@ class BlinkTrackerComponent(
     override val initial: Model = stateToModel(BlinkTrackerStore.State())
 
     override fun onTrackingStarted() {
-        store.accept(BlinkTrackerStore.Intent.TrackingStarted)
+        store.accept(BlinkTrackerStore.Intent.OnTrackingStart)
     }
 
     override fun onTrackingStopped() {
-        store.accept(BlinkTrackerStore.Intent.TrackingStopped)
+        store.accept(BlinkTrackerStore.Intent.OnTrackingStop)
     }
 
     override fun onFaceDataChanged(data: VisionFaceData) {
@@ -84,7 +84,7 @@ class BlinkTrackerComponent(
     }
 
     override fun onMinimizeRequested() {
-        store.accept(BlinkTrackerStore.Intent.LaunchPip)
+        store.accept(BlinkTrackerStore.Intent.OnLaunchPip)
     }
 
     override fun onPictureInPictureChanged(enabled: Boolean) {

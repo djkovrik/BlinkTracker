@@ -8,30 +8,22 @@ import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
-import com.sedsoftware.blinktracker.components.statistic.model.StatRecord
-import com.sedsoftware.blinktracker.components.statistic.model.getAverage
+import com.sedsoftware.blinktracker.components.statistic.integration.StatisticsManager
+import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
+import com.sedsoftware.blinktracker.components.statistic.model.DisplayedStats
 import com.sedsoftware.blinktracker.components.statistic.store.BlinkStatisticStore.Intent
 import com.sedsoftware.blinktracker.components.statistic.store.BlinkStatisticStore.Label
 import com.sedsoftware.blinktracker.components.statistic.store.BlinkStatisticStore.Label.ErrorCaught
 import com.sedsoftware.blinktracker.components.statistic.store.BlinkStatisticStore.State
-import com.sedsoftware.blinktracker.database.StatisticsRepository
-import com.sedsoftware.blinktracker.database.model.BlinksRecordDbModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock.System
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import kotlin.math.round
 
 internal class BlinkStatisticStoreProvider(
     private val storeFactory: StoreFactory,
-    private val repo: StatisticsRepository,
+    private val manager: StatisticsManager,
 ) {
-
-    private val today: LocalDate by lazy {
-        System.now().toLocalDateTime(timeZone = TimeZone.currentSystemDefault()).date
-    }
 
     fun provide(): BlinkStatisticStore =
         object : BlinkStatisticStore, Store<Intent, State, Label> by storeFactory.create<Intent, Action, Msg, State, Label>(
@@ -43,49 +35,33 @@ internal class BlinkStatisticStoreProvider(
             executorFactory = coroutineExecutorFactory {
                 onAction<Action.ObserveStats> {
                     launch(getExceptionHandler(this)) {
-                        repo.observe().collect { items ->
-                            val mapped = mapItems(items)
-                            val filtered = mapped.filter { it.dateTime.date == today }
-                            if (filtered.isNotEmpty()) {
-                                val average = filtered.getAverage().roundTo(AVERAGE_PRECISION)
-                                val min = filtered.minBy { it.blinks }
-                                val max = filtered.maxBy { it.blinks }
-                                dispatch(Msg.RecordsUpdated(filtered))
-                                dispatch(Msg.AverageRateChanged(average))
-                                dispatch(Msg.MinMaxUpdated(min.blinks, max.blinks))
-                            } else {
-                                dispatch(Msg.NoStatsYet)
-                            }
-                        }
+                        manager.stats
+                            .onEach { dispatch(Msg.StatsUpdated(it)) }
+                            .launchIn(this)
                     }
                 }
 
-                onIntent<Intent.HandleNewBlinkValue> {
+                onIntent<Intent.OnNewBlink> {
                     launch(getExceptionHandler(this)) {
-                        repo.insert(it.value)
+                        manager.saveBlinks(it.value)
+                    }
+                }
+
+                onIntent<Intent.OnNewPeriod> {
+                    launch(getExceptionHandler(this)) {
+                        dispatch(Msg.PeriodUpdated(it.value))
+                        manager.switchPeriod(it.value)
                     }
                 }
             },
             reducer = { msg ->
                 when (msg) {
-                    is Msg.RecordsUpdated -> copy(
-                        records = msg.records,
-                        statsChecked = true,
-                        placeholderVisible = false,
+                    is Msg.PeriodUpdated -> copy(
+                        period = msg.newPeriod
                     )
 
-                    is Msg.AverageRateChanged -> copy(
-                        averageRate = msg.rate,
-                    )
-
-                    is Msg.MinMaxUpdated -> copy(
-                        blinksMin = msg.min,
-                        blinksMax = msg.max,
-                    )
-
-                    is Msg.NoStatsYet -> copy(
-                        statsChecked = true,
-                        placeholderVisible = true,
+                    is Msg.StatsUpdated -> copy(
+                        stats = msg.newStats
                     )
                 }
             }
@@ -96,33 +72,12 @@ internal class BlinkStatisticStoreProvider(
     }
 
     private sealed interface Msg {
-        data class RecordsUpdated(val records: List<StatRecord>) : Msg
-        data class AverageRateChanged(val rate: Float) : Msg
-        data class MinMaxUpdated(val min: Int, val max: Int) : Msg
-        object NoStatsYet : Msg
+        data class PeriodUpdated(val newPeriod: DisplayedPeriod) : Msg
+        data class StatsUpdated(val newStats: DisplayedStats) : Msg
     }
-
-    private fun mapItems(items: List<BlinksRecordDbModel>): List<StatRecord> =
-        items.map { item ->
-            StatRecord(
-                blinks = item.blinks,
-                dateTime = item.date,
-            )
-        }
 
     private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =
         CoroutineExceptionHandler { _, throwable ->
             scope.publish(ErrorCaught(throwable))
         }
-
-    @Suppress("MagicNumber")
-    private fun Float.roundTo(decimals: Int): Float {
-        var multiplier = 1.0f
-        repeat(decimals) { multiplier *= 10f }
-        return round(this * multiplier) / multiplier
-    }
-
-    private companion object {
-        const val AVERAGE_PRECISION = 1
-    }
 }

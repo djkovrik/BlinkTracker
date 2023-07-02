@@ -19,7 +19,7 @@ import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
 import com.sedsoftware.blinktracker.components.home.integration.ErrorHandler
 import com.sedsoftware.blinktracker.components.tracker.tools.PictureInPictureLauncher
-import com.sedsoftware.blinktracker.database.StatisticsRepositoryImpl
+import com.sedsoftware.blinktracker.database.StatisticsRepositoryReal
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.root.integration.BlinkRootComponent
 import com.sedsoftware.blinktracker.settings.AppSettings
@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             errorHandler = errorHandler,
             notificationsManager = AppNotificationsManager(this),
             settings = AppSettings(applicationContext),
-            repo = StatisticsRepositoryImpl(applicationContext),
+            repo = StatisticsRepositoryReal(applicationContext),
             pipLauncher = this,
         )
 

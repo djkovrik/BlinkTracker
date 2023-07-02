@@ -24,10 +24,10 @@ internal class BlinkCameraStoreProvider(
             initialState = State(),
             bootstrapper = coroutineBootstrapper { },
             executorFactory = coroutineExecutorFactory {
-                onIntent<Intent.PermissionGranted> { dispatch(Msg.PermissionStateChanged(PermissionState.GRANTED)) }
-                onIntent<Intent.PermissionDenied> { dispatch(Msg.PermissionStateChanged(PermissionState.DENIED)) }
-                onIntent<Intent.PermissionRationale> { dispatch(Msg.PermissionStateChanged(PermissionState.RATIONALE)) }
-                onIntent<Intent.LensChanged> { dispatch(Msg.LensSelected(it.lens)) }
+                onIntent<Intent.OnPermissionGrant> { dispatch(Msg.PermissionStateChanged(PermissionState.GRANTED)) }
+                onIntent<Intent.OnPermissionDeny> { dispatch(Msg.PermissionStateChanged(PermissionState.DENIED)) }
+                onIntent<Intent.OnPermissionRationale> { dispatch(Msg.PermissionStateChanged(PermissionState.RATIONALE)) }
+                onIntent<Intent.OnLensChange> { dispatch(Msg.LensSelected(it.lens)) }
             },
             reducer = { msg ->
                 when (msg) {

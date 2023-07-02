@@ -1,6 +1,7 @@
 package com.sedsoftware.blinktracker.components.statistic
 
-import com.sedsoftware.blinktracker.components.statistic.model.StatRecord
+import com.patrykandpatrick.vico.core.entry.ChartEntry
+import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
 import kotlinx.coroutines.flow.Flow
 
 interface BlinkStatistic {
@@ -9,14 +10,16 @@ interface BlinkStatistic {
     val initial: Model
 
     fun onNewBlinksValue(value: Int)
+    fun onPeriodChipSelect(value: DisplayedPeriod)
 
     data class Model(
-        val records: List<StatRecord>,
+        val isLoading: Boolean,
+        val isEmpty: Boolean,
+        val min: Float,
+        val max: Float,
         val average: Float,
-        val min: Int,
-        val max: Int,
-        val checked: Boolean,
-        val showPlaceholder: Boolean,
+        val records: List<ChartEntry>,
+        val period: DisplayedPeriod,
     )
 
     sealed class Output {
