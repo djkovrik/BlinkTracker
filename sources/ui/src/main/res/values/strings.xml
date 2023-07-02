@@ -46,7 +46,6 @@
     <string name="m1">1min</string>
     <string name="m15">15min</string>
     <string name="h1">1hr</string>
-    <string name="h6">6hrs</string>
     <string name="d1">1d</string>
     <string name="d30">30d</string>
 </resources>

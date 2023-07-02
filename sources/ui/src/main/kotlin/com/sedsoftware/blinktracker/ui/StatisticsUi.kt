@@ -122,6 +122,17 @@ private fun StatsPanelDetails(
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp)
         )
 
+        AnimatedVisibility(visible = !isLoading && !isEmpty) {
+            Text(
+                text = "${stringResource(id = R.string.min)}: $min | " +
+                    "${stringResource(id = R.string.max)}: $max | " +
+                    "${stringResource(id = R.string.average)}: $average",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.tertiary,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+            )
+        }
+
         Box(modifier = Modifier.weight(1f)) {
             when {
                 isLoading -> {
@@ -193,17 +204,6 @@ private fun StatsPanelDetails(
                 period = period,
                 modifier = Modifier.padding(horizontal = 8.dp),
                 onSelect = onChipSelect,
-            )
-        }
-
-        AnimatedVisibility(visible = !isLoading && !isEmpty,) {
-            Text(
-                text = "${stringResource(id = R.string.min)}: $min | " +
-                    "${stringResource(id = R.string.max)}: $max | " +
-                    "${stringResource(id = R.string.average)}: $average",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp)
             )
         }
     }

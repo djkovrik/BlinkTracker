@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.camera.model.CameraState
@@ -45,6 +46,8 @@ import com.sedsoftware.blinktracker.ui.component.FullScreenMessageInfo
 import com.sedsoftware.blinktracker.ui.component.MainScreenMinimized
 import com.sedsoftware.blinktracker.ui.component.RightModalDrawer
 import com.sedsoftware.blinktracker.ui.component.TrackingControls
+import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
+import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -200,7 +203,7 @@ private fun MainScreenActive(
                                     defaultElevation = 8.dp,
                                 ),
                                 modifier = Modifier
-                                    .padding(all = 16.dp)
+                                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
                                     .fillMaxWidth()
                             ) {
                                 Column(modifier = Modifier.padding(all = 16.dp)) {
@@ -280,30 +283,30 @@ private fun MainScreenActive(
     }
 }
 
-//@Composable
-//@Preview(showBackground = true)
-//private fun HomePreviewLight() {
-//    BlinkTrackerTheme(darkTheme = false) {
-//        Surface {
-//            MainScreenActive(
-//                camera = PreviewStubs.cameraPermissionGranted,
-//                tracker = PreviewStubs.trackerActiveWithFace,
-//                stats = PreviewStubs.statsFull,
-//            )
-//        }
-//    }
-//}
-//
-//@Composable
-//@Preview(showBackground = true)
-//private fun HomePreviewDark() {
-//    BlinkTrackerTheme(darkTheme = true) {
-//        Surface {
-//            MainScreenActive(
-//                camera = PreviewStubs.cameraPermissionGranted,
-//                tracker = PreviewStubs.trackerActiveWithFace,
-//                stats = PreviewStubs.statsFull,
-//            )
-//        }
-//    }
-//}
+@Composable
+@Preview(showBackground = true)
+private fun HomePreviewLight() {
+    BlinkTrackerTheme(darkTheme = false) {
+        Surface {
+            MainScreenActive(
+                camera = PreviewStubs.cameraPermissionGranted,
+                tracker = PreviewStubs.trackerActiveWithFace,
+                stats = PreviewStubs.statsFull,
+            )
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun HomePreviewDark() {
+    BlinkTrackerTheme(darkTheme = true) {
+        Surface {
+            MainScreenActive(
+                camera = PreviewStubs.cameraPermissionGranted,
+                tracker = PreviewStubs.trackerActiveWithFace,
+                stats = PreviewStubs.statsFull,
+            )
+        }
+    }
+}

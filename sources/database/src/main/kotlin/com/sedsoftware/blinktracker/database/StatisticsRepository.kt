@@ -57,9 +57,9 @@ class StatisticsRepositoryReal(
 }
 
 /**
- * Generates 13 months period fake stats with blinks record at every 5 mins
+ * Generates 13 months period fake stats with blinks record at every 4-6 mins
  */
-class StatisticsRepositoryFake: StatisticsRepository {
+class StatisticsRepositoryFake : StatisticsRepository {
 
     private val timeZone: TimeZone by lazy {
         TimeZone.currentSystemDefault()
@@ -78,11 +78,12 @@ class StatisticsRepositoryFake: StatisticsRepository {
                 while (current < today) {
                     result.add(
                         BlinksRecordDbModel(
-                            blinks = Random.nextInt(from = RAND_MIN, until = RAND_MAX),
+                            blinks = Random.nextInt(from = BLINKS_RAND_MIN, until = BLINKS_RAND_MAX),
                             date = current.toLocalDateTime(timeZone)
                         )
                     )
-                    current = current.plus(period = DateTimePeriod(minutes = FAKE_STATS_PERIOD_MIN), timeZone = timeZone)
+                    val fakePeriod = Random.nextInt(from = PERIOD_RAND_MIN, until = PERIOD_RAND_MAX)
+                    current = current.plus(period = DateTimePeriod(minutes = fakePeriod), timeZone = timeZone)
                 }
                 emit(result)
             }
@@ -90,9 +91,10 @@ class StatisticsRepositoryFake: StatisticsRepository {
 
 
     private companion object {
-        const val RAND_MIN = 12
-        const val RAND_MAX = 26
+        const val BLINKS_RAND_MIN = 10
+        const val BLINKS_RAND_MAX = 30
+        const val PERIOD_RAND_MIN = 1
+        const val PERIOD_RAND_MAX = 60
         const val FAKE_STATS_MONTHS = 13
-        const val FAKE_STATS_PERIOD_MIN = 5
     }
 }

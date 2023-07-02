@@ -1,6 +1,6 @@
 package com.sedsoftware.blinktracker.components.statistic.integration
 
 data class PeriodStatsBundle(
-    val blinksForPeriod: Float,
+    val averageForPeriod: Float,
     val label: String,
 )

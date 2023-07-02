@@ -4,6 +4,7 @@ package com.sedsoftware.blinktracker.ui.component
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.animateScrollBy
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -36,6 +37,7 @@ fun PeriodChips(
     val listState = rememberLazyListState()
 
     LazyRow(
+        horizontalArrangement = Arrangement.Center,
         state = listState,
         modifier = modifier.fillMaxWidth()
     ) {
