@@ -1,5 +1,6 @@
-![GitHub Actions](https://github.com/djkovrik/BlinkTracker/workflows/runOnGitHub/badge.svg?branch=master)
+![GitHub Actions](https://github.com/djkovrik/BlinkTracker/actions/workflows/AnalysisAndBuild.yml/badge.svg?branch=master)
 ![Last Commit](https://img.shields.io/github/last-commit/djkovrik/BlinkTracker/master.svg)
+![Last Release](https://img.shields.io/github/v/release/djkovrik/BlinkTracker)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 [![PlayStore](https://img.shields.io/badge/Download-Google_Play_Store-blue)](https://play.google.com/store/apps/details?id=com.sedsoftware.blinktracker)
 
