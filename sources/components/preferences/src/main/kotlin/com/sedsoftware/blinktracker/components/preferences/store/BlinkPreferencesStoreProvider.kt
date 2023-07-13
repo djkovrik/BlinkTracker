@@ -8,6 +8,8 @@ import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
+import com.sedsoftware.blinktracker.components.preferences.infrastructure.NotificationPermissionDeniedException
+import com.sedsoftware.blinktracker.components.preferences.model.PermissionStateNotification
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore.Intent
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore.Label
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore.State
@@ -29,6 +31,7 @@ internal class BlinkPreferencesStoreProvider(
                 dispatch(Action.ObserveNotifySoundOption)
                 dispatch(Action.ObserveNotifyVibrationOption)
                 dispatch(Action.ObserveLaunchOption)
+                dispatch(Action.ObserveReplacePipOption)
             },
             executorFactory = coroutineExecutorFactory {
                 onAction<Action.ObserveThresholdOption> {
@@ -59,6 +62,13 @@ internal class BlinkPreferencesStoreProvider(
                     }
                 }
 
+                onAction<Action.ObserveReplacePipOption> {
+                    launch(getExceptionHandler(this)) {
+                        settings.getReplacePipEnabled()
+                            .collect { dispatch(Msg.ReplacePipOptionChanged(it)) }
+                    }
+                }
+
                 onIntent<Intent.OnMinimalThresholdChange> {
                     launch(getExceptionHandler(this)) {
                         settings.setPerMinuteThreshold(it.value)
@@ -82,6 +92,25 @@ internal class BlinkPreferencesStoreProvider(
                         settings.setLaunchMinimizedEnabled(it.value)
                     }
                 }
+
+                onIntent<Intent.OnReplacePipChange> {
+                    launch(getExceptionHandler(this)) {
+                        settings.setReplacePipEnabled(it.value)
+                    }
+                }
+
+                onIntent<Intent.OnPermissionGranted> {
+                    dispatch(Msg.PermissionStateChanged(true))
+                }
+
+                onIntent<Intent.OnPermissionDenied> {
+                    dispatch(Msg.PermissionStateChanged(false))
+                    publish(Label.ErrorCaught(NotificationPermissionDeniedException()))
+
+                    launch(getExceptionHandler(this)) {
+                        settings.setReplacePipEnabled(false)
+                    }
+                }
             },
             reducer = { msg ->
                 when (msg) {
@@ -100,6 +129,18 @@ internal class BlinkPreferencesStoreProvider(
                     is Msg.LaunchOptionChanged -> copy(
                         launchMinimized = msg.newValue
                     )
+
+                    is Msg.ReplacePipOptionChanged -> copy(
+                        replacePip = msg.newValue
+                    )
+
+                    is Msg.PermissionStateChanged -> copy(
+                        permissionState = if (msg.newValue) {
+                            PermissionStateNotification.GRANTED
+                        } else {
+                            PermissionStateNotification.DENIED
+                        },
+                    )
                 }
             }
         ) {}
@@ -109,6 +150,7 @@ internal class BlinkPreferencesStoreProvider(
         object ObserveNotifySoundOption : Action
         object ObserveNotifyVibrationOption : Action
         object ObserveLaunchOption : Action
+        object ObserveReplacePipOption : Action
     }
 
     private sealed interface Msg {
@@ -116,6 +158,8 @@ internal class BlinkPreferencesStoreProvider(
         data class SoundOptionChanged(val newValue: Boolean) : Msg
         data class VibrationOptionChanged(val newValue: Boolean) : Msg
         data class LaunchOptionChanged(val newValue: Boolean) : Msg
+        data class ReplacePipOptionChanged(val newValue: Boolean) : Msg
+        data class PermissionStateChanged(val newValue: Boolean) : Msg
     }
 
     private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =

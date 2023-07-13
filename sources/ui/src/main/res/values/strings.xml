@@ -7,6 +7,8 @@
     <string name="prefs_notify_sound">Notify with sound</string>
     <string name="prefs_notify_vibro">Notify with vibration</string>
     <string name="prefs_minimize_on_start">Minimize on start</string>
+    <string name="prefs_replace_pip">Non-intrusive track mode</string>
+    <string name="prefs_replace_pip_description">Replaces Picture In Picture mode for active minimized tracker with ongoing notification</string>
     <string name="button_start">Start</string>
     <string name="button_stop">Stop</string>
     <string name="button_minimize">Minimize</string>

@@ -69,4 +69,16 @@ class BlinkPreferencesComponent(
     override fun onLaunchMinimizedChanged(value: Boolean) {
         store.accept(BlinkPreferencesStore.Intent.OnLaunchMinimizedChange(value))
     }
+
+    override fun onReplacePipChanged(value: Boolean) {
+        store.accept(BlinkPreferencesStore.Intent.OnReplacePipChange(value))
+    }
+
+    override fun onPermissionGranted() {
+        store.accept(BlinkPreferencesStore.Intent.OnPermissionGranted)
+    }
+
+    override fun onPermissionDenied() {
+        store.accept(BlinkPreferencesStore.Intent.OnPermissionDenied)
+    }
 }

@@ -77,6 +77,9 @@ class BlinkRootComponent internal constructor(
     private val home: BlinkHome
         get() = findChild<Child.Home>().component
 
+    private val preferences: BlinkPreferences
+        get() = findChild<Child.Preferences>().component
+
     override val childStack: Value<ChildStack<*, Child>> = stack
 
     override fun openPreferencesScreen() {
@@ -95,16 +98,28 @@ class BlinkRootComponent internal constructor(
         home.trackerComponent.onPictureInPictureChanged(enabled)
     }
 
-    override fun onPermissionGranted() {
+    override fun onCameraPermissionGranted() {
         home.cameraComponent.onPermissionGranted()
     }
 
-    override fun onPermissionDenied() {
+    override fun onCameraPermissionDenied() {
         home.cameraComponent.onPermissionDenied()
     }
 
-    override fun onPermissionRationale() {
+    override fun onCameraPermissionRationale() {
         home.cameraComponent.onPermissionRationale()
+    }
+
+    override fun onNotificationPermissionGranted() {
+        preferences.onPermissionGranted()
+    }
+
+    override fun onNotificationPermissionRationale() {
+        preferences.onPermissionDenied()
+    }
+
+    override fun onNotificationPermissionDenied() {
+        preferences.onPermissionDenied()
     }
 
     override fun onCurrentLensChanged(lens: CameraLens) {

@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.camera.model.CameraState
-import com.sedsoftware.blinktracker.components.camera.model.PermissionState
+import com.sedsoftware.blinktracker.components.camera.model.PermissionStateCamera
 import com.sedsoftware.blinktracker.components.home.BlinkHome
 import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
 import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
@@ -174,21 +174,21 @@ private fun MainScreenActive(
 ) {
 
     when (camera.currentPermissionState) {
-        PermissionState.DENIED ->
+        PermissionStateCamera.DENIED ->
             FullScreenMessageInfo(
                 messageRes = R.string.permissions_declined_info,
                 iconRes = drawable.ic_selfie,
                 modifier = modifier,
             )
 
-        PermissionState.RATIONALE ->
+        PermissionStateCamera.RATIONALE ->
             FullScreenMessageInfo(
                 messageRes = R.string.permissions_rationale_info,
                 iconRes = drawable.ic_permission,
                 modifier = modifier,
             )
 
-        PermissionState.GRANTED ->
+        PermissionStateCamera.GRANTED ->
             when (camera.cameraState) {
                 CameraState.DETECTED -> {
                     Box(modifier = modifier.fillMaxSize()) {

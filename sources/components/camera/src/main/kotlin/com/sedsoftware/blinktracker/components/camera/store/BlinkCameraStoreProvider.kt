@@ -9,7 +9,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
 import com.sedsoftware.blinktracker.components.camera.model.CameraState
-import com.sedsoftware.blinktracker.components.camera.model.PermissionState
+import com.sedsoftware.blinktracker.components.camera.model.PermissionStateCamera
 import com.sedsoftware.blinktracker.components.camera.store.BlinkCameraStore.Intent
 import com.sedsoftware.blinktracker.components.camera.store.BlinkCameraStore.Label
 import com.sedsoftware.blinktracker.components.camera.store.BlinkCameraStore.State
@@ -24,9 +24,9 @@ internal class BlinkCameraStoreProvider(
             initialState = State(),
             bootstrapper = coroutineBootstrapper { },
             executorFactory = coroutineExecutorFactory {
-                onIntent<Intent.OnPermissionGrant> { dispatch(Msg.PermissionStateChanged(PermissionState.GRANTED)) }
-                onIntent<Intent.OnPermissionDeny> { dispatch(Msg.PermissionStateChanged(PermissionState.DENIED)) }
-                onIntent<Intent.OnPermissionRationale> { dispatch(Msg.PermissionStateChanged(PermissionState.RATIONALE)) }
+                onIntent<Intent.OnPermissionGrant> { dispatch(Msg.PermissionStateChanged(PermissionStateCamera.GRANTED)) }
+                onIntent<Intent.OnPermissionDeny> { dispatch(Msg.PermissionStateChanged(PermissionStateCamera.DENIED)) }
+                onIntent<Intent.OnPermissionRationale> { dispatch(Msg.PermissionStateChanged(PermissionStateCamera.RATIONALE)) }
                 onIntent<Intent.OnLensChange> { dispatch(Msg.LensSelected(it.lens)) }
             },
             reducer = { msg ->
@@ -51,7 +51,7 @@ internal class BlinkCameraStoreProvider(
     private sealed interface Action
 
     private sealed interface Msg {
-        data class PermissionStateChanged(val newState: PermissionState) : Msg
+        data class PermissionStateChanged(val newState: PermissionStateCamera) : Msg
         data class LensSelected(val newLens: CameraLens) : Msg
     }
 }

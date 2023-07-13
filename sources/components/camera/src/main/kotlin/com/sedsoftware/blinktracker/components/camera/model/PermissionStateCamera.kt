@@ -1,5 +1,5 @@
 package com.sedsoftware.blinktracker.components.camera.model
 
-enum class PermissionState {
+enum class PermissionStateCamera {
     NOT_ASKED, GRANTED, DENIED, RATIONALE;
 }

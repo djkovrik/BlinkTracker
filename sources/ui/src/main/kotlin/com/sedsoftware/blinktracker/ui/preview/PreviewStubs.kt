@@ -9,8 +9,9 @@ import androidx.compose.ui.graphics.Color
 import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
 import com.sedsoftware.blinktracker.components.camera.model.CameraState
-import com.sedsoftware.blinktracker.components.camera.model.PermissionState
+import com.sedsoftware.blinktracker.components.camera.model.PermissionStateCamera
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
+import com.sedsoftware.blinktracker.components.preferences.model.PermissionStateNotification
 import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
 import com.sedsoftware.blinktracker.components.statistic.model.CustomChartEntry
 import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
@@ -19,25 +20,25 @@ import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 @Suppress("MemberVisibilityCanBePrivate")
 object PreviewStubs {
     val cameraPermissionDenied = BlinkCamera.Model(
-        currentPermissionState = PermissionState.DENIED,
+        currentPermissionState = PermissionStateCamera.DENIED,
         selectedLens = CameraLens.NOT_AVAILABLE,
         cameraState = CameraState.NOT_DETECTED,
     )
 
     val cameraPermissionGranted = BlinkCamera.Model(
-        currentPermissionState = PermissionState.GRANTED,
+        currentPermissionState = PermissionStateCamera.GRANTED,
         selectedLens = CameraLens.FRONT,
         CameraState.DETECTED,
     )
 
     val cameraPermissionGrantedNoCamera = BlinkCamera.Model(
-        currentPermissionState = PermissionState.GRANTED,
+        currentPermissionState = PermissionStateCamera.GRANTED,
         selectedLens = CameraLens.NOT_AVAILABLE,
         CameraState.NOT_DETECTED,
     )
 
     val cameraPermissionRationale = BlinkCamera.Model(
-        currentPermissionState = PermissionState.RATIONALE,
+        currentPermissionState = PermissionStateCamera.RATIONALE,
         selectedLens = CameraLens.NOT_AVAILABLE,
         CameraState.NOT_DETECTED,
     )
@@ -47,6 +48,8 @@ object PreviewStubs {
         notifySoundChecked = false,
         notifyVibrationChecked = false,
         launchMinimized = false,
+        replacePip = false,
+        permissionState = PermissionStateNotification.DENIED,
     )
 
     val prefsMixed = BlinkPreferences.Model(
@@ -54,6 +57,8 @@ object PreviewStubs {
         notifySoundChecked = false,
         notifyVibrationChecked = true,
         launchMinimized = true,
+        replacePip = false,
+        permissionState = PermissionStateNotification.GRANTED,
     )
 
     val trackerNotActiveNoFaceNoPrefs = BlinkTracker.Model(

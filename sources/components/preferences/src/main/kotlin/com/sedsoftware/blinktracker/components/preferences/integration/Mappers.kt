@@ -10,5 +10,7 @@ internal val stateToModel: (State) -> Model =
             notifySoundChecked = it.notifySound,
             notifyVibrationChecked = it.notifyVibration,
             launchMinimized = it.launchMinimized,
+            replacePip = it.replacePip,
+            permissionState = it.permissionState,
         )
     }

@@ -11,14 +11,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.PlainTooltipBox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
@@ -26,23 +29,29 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberPlainTooltipState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
+import com.sedsoftware.blinktracker.components.preferences.model.PermissionStateNotification
 import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun BlinkPreferencesContent(
     component: BlinkPreferences,
     modifier: Modifier = Modifier,
     onBackClicked: () -> Unit = {},
+    onNotificationPermission: () -> Unit = {},
 ) {
     val state: BlinkPreferences.Model by component.models.collectAsState(initial = component.initial)
 
@@ -54,6 +63,8 @@ fun BlinkPreferencesContent(
         onLaunchMinimizedChange = component::onLaunchMinimizedChanged,
         onNotifySoundChange = component::onNotifySoundChanged,
         onNotifyVibroChange = component::onNotifyVibrationChanged,
+        onReplacePipChange = component::onReplacePipChanged,
+        onNotificationPermission = onNotificationPermission,
     )
 }
 
@@ -66,7 +77,11 @@ private fun BlinkPreferencesScreen(
     onLaunchMinimizedChange: (Boolean) -> Unit = {},
     onNotifySoundChange: (Boolean) -> Unit = {},
     onNotifyVibroChange: (Boolean) -> Unit = {},
+    onReplacePipChange: (Boolean) -> Unit = {},
+    onNotificationPermission: () -> Unit = {},
 ) {
+    val permissionLauncherKey = model.replacePip && model.permissionState == PermissionStateNotification.NOT_ASKED
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -117,6 +132,13 @@ private fun BlinkPreferencesScreen(
                 labelRes = R.string.prefs_notify_vibro,
                 onValueChanged = onNotifyVibroChange,
             )
+            PrefsOptionSwitch(
+                modifier = modifier,
+                isChecked = model.replacePip,
+                labelRes = R.string.prefs_replace_pip,
+                descriptionRes = R.string.prefs_replace_pip_description,
+                onValueChanged = onReplacePipChange,
+            )
             Spacer(modifier = modifier.height(16.dp))
             PrefsOptionSlider(
                 modifier = modifier,
@@ -124,6 +146,12 @@ private fun BlinkPreferencesScreen(
                 labelRes = R.string.prefs_threshold,
                 onValueChanged = onThresholdChange,
             )
+
+            LaunchedEffect(key1 = permissionLauncherKey) {
+                if (permissionLauncherKey) {
+                    onNotificationPermission.invoke()
+                }
+            }
         }
     }
 }
@@ -133,8 +161,12 @@ private fun PrefsOptionSwitch(
     modifier: Modifier,
     isChecked: Boolean,
     @StringRes labelRes: Int,
-    onValueChanged: (Boolean) -> Unit
+    @StringRes descriptionRes: Int? = null,
+    onValueChanged: (Boolean) -> Unit = {},
 ) {
+    val tooltipState = rememberPlainTooltipState()
+    val scope = rememberCoroutineScope()
+
     Row(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -142,10 +174,36 @@ private fun PrefsOptionSwitch(
             text = stringResource(id = labelRes),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically),
+            modifier = Modifier.align(Alignment.CenterVertically),
         )
+
+        if (descriptionRes != null) {
+            PlainTooltipBox(
+                shape = RoundedCornerShape(size = 16.dp),
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondary,
+                tooltip = {
+                    Text(
+                        text = stringResource(id = descriptionRes),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(all = 4.dp)
+                    )
+                },
+                tooltipState = tooltipState,
+            ) {
+                IconButton(onClick = { scope.launch { tooltipState.show() } }) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Info",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
 
         Switch(
             checked = isChecked,

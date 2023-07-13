@@ -1,0 +1,4 @@
+<resources>
+    <string name="error_unknown">Неизвестная ошибка</string>
+    <string name="error_notif_permission">Данная опция требует разрешения на доступ к уведомлениям</string>
+</resources>

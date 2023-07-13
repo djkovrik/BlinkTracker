@@ -2,7 +2,7 @@ package com.sedsoftware.blinktracker.components.camera
 
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
 import com.sedsoftware.blinktracker.components.camera.model.CameraState
-import com.sedsoftware.blinktracker.components.camera.model.PermissionState
+import com.sedsoftware.blinktracker.components.camera.model.PermissionStateCamera
 import kotlinx.coroutines.flow.Flow
 
 interface BlinkCamera {
@@ -16,7 +16,7 @@ interface BlinkCamera {
     fun onCurrentLensChanged(lens: CameraLens)
 
     data class Model(
-        val currentPermissionState: PermissionState,
+        val currentPermissionState: PermissionStateCamera,
         val selectedLens: CameraLens,
         val cameraState: CameraState,
     )

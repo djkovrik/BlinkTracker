@@ -16,6 +16,7 @@ import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 fun BlinkRootContent(
     component: BlinkRoot,
     processor: VisionImageProcessor,
+    onNotificationPermission: () -> Unit = {},
 ) {
     Box(modifier = Modifier.fillMaxWidth()) {
         Children(
@@ -34,6 +35,7 @@ fun BlinkRootContent(
                     BlinkPreferencesContent(
                         component = child.component,
                         onBackClicked = component::closePreferencesScreen,
+                        onNotificationPermission = onNotificationPermission,
                     )
             }
         }

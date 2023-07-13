@@ -15,9 +15,12 @@ interface BlinkRoot {
     fun closePreferencesScreen()
     fun onFaceDataChanged(data: VisionFaceData)
     fun onPictureInPictureChanged(enabled: Boolean)
-    fun onPermissionGranted()
-    fun onPermissionDenied()
-    fun onPermissionRationale()
+    fun onCameraPermissionGranted()
+    fun onCameraPermissionDenied()
+    fun onCameraPermissionRationale()
+    fun onNotificationPermissionGranted()
+    fun onNotificationPermissionRationale()
+    fun onNotificationPermissionDenied()
     fun onCurrentLensChanged(lens: CameraLens)
 
     sealed class Child {

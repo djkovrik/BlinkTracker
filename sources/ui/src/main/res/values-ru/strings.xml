@@ -8,6 +8,8 @@
     <string name="prefs_notify_sound">Уведомлять звуковым сигналом</string>
     <string name="prefs_notify_vibro">Уведомлять вибрацией</string>
     <string name="prefs_minimize_on_start">Сворачивать при старте</string>
+    <string name="prefs_replace_pip">Ненавязчивый режим отслеживания</string>
+    <string name="prefs_replace_pip_description">Когда отслеживание активно и приложение свернуто заменяет режим Картинка в Картинке постоянно отображающимся уведомлением</string>
     <string name="button_start">Старт</string>
     <string name="button_stop">Стоп</string>
     <string name="button_minimize">Свернуть</string>

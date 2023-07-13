@@ -45,17 +45,29 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
     private val root: BlinkRoot
         get() = _root!!
 
-    private val requestPermissionLauncher =
+    private val cameraPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                root.onPermissionGranted()
+                root.onCameraPermissionGranted()
                 checkIfCamerasAvailable()
             } else {
-                root.onPermissionDenied()
+                root.onCameraPermissionDenied()
             }
         }
+
+    private val notificationsPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                root.onNotificationPermissionGranted()
+            } else {
+                root.onNotificationPermissionDenied()
+            }
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,14 +103,18 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
 
         setContent {
             BlinkTrackerTheme {
-                BlinkRootContent(root, imageProcessor)
+                BlinkRootContent(
+                    component = root,
+                    processor = imageProcessor,
+                    onNotificationPermission = ::checkNotificationPermission,
+                )
             }
         }
     }
 
     override fun onStart() {
         super.onStart()
-        checkCameraPermissions()
+        checkCameraPermission()
     }
 
     public override fun onDestroy() {
@@ -118,20 +134,40 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         enterPictureInPictureMode(getPictureInPictureParams())
     }
 
-    private fun checkCameraPermissions() {
+    private fun checkCameraPermission() {
         when {
             ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
-                root.onPermissionGranted()
+                root.onCameraPermissionGranted()
                 checkIfCamerasAvailable()
             }
 
             shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
-                root.onPermissionRationale()
+                root.onCameraPermissionRationale()
             }
 
             else -> {
-                requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+                cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
             }
+        }
+    }
+
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            when {
+                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED -> {
+                    root.onNotificationPermissionGranted()
+                }
+
+                shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
+                    root.onNotificationPermissionRationale()
+                }
+
+                else -> {
+                    notificationsPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+        } else {
+            root.onNotificationPermissionGranted()
         }
     }
 
