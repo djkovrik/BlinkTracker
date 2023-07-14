@@ -12,6 +12,7 @@ import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Intent
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Label
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.State
+import com.sedsoftware.blinktracker.components.tracker.tools.MinimizedLauncher
 import com.sedsoftware.blinktracker.components.tracker.tools.PictureInPictureLauncher
 import com.sedsoftware.blinktracker.settings.Settings
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -26,6 +27,7 @@ internal class BlinkTrackerStoreProvider(
     private val storeFactory: StoreFactory,
     private val settings: Settings,
     private val pipLauncher: WeakReference<PictureInPictureLauncher>,
+    private val minimizedLauncher: MinimizedLauncher,
 ) {
 
     @Suppress("CyclomaticComplexMethod")
@@ -39,6 +41,7 @@ internal class BlinkTrackerStoreProvider(
                     dispatch(Action.ObserveNotifySoundOption)
                     dispatch(Action.ObserveNotifyVibrationOption)
                     dispatch(Action.ObserveLaunchOption)
+                    dispatch(Action.ObserveReplacePipOption)
 
                     (0..Int.MAX_VALUE)
                         .asSequence()
@@ -78,6 +81,13 @@ internal class BlinkTrackerStoreProvider(
                     }
                 }
 
+                onAction<Action.ObserveReplacePipOption> {
+                    launch(getExceptionHandler(this)) {
+                        settings.getReplacePipEnabled()
+                            .collect { dispatch(Msg.ObservedReplacePipOptionChanged(it)) }
+                    }
+                }
+
                 onAction<Action.OnTick> {
                     if (state.active) {
                         val counter = state.timer
@@ -98,7 +108,11 @@ internal class BlinkTrackerStoreProvider(
                 onIntent<Intent.OnTrackingStart> {
                     dispatch(Msg.TrackerStateChangedStarted(true))
                     if (state.shouldLaunchMinimized) {
-                        pipLauncher.get()?.launchPictureInPicture()
+                        if (state.shouldReplacePip) {
+                            minimizedLauncher.launchMinimized()
+                        } else {
+                            pipLauncher.get()?.launchPictureInPicture()
+                        }
                     }
                 }
 
@@ -140,6 +154,10 @@ internal class BlinkTrackerStoreProvider(
                         shouldLaunchMinimized = msg.newValue
                     )
 
+                    is Msg.ObservedReplacePipOptionChanged -> copy(
+                        shouldReplacePip = msg.newValue
+                    )
+
                     is Msg.FaceDataAvailable -> copy(
                         faceDetected = msg.data.faceAvailable
                     )
@@ -174,6 +192,7 @@ internal class BlinkTrackerStoreProvider(
         object ObserveNotifySoundOption : Action
         object ObserveNotifyVibrationOption : Action
         object ObserveLaunchOption : Action
+        object ObserveReplacePipOption : Action
         object OnTick : Action
     }
 
@@ -182,6 +201,7 @@ internal class BlinkTrackerStoreProvider(
         data class ObservedSoundOptionChanged(val newValue: Boolean) : Msg
         data class ObservedVibrationOptionChanged(val newValue: Boolean) : Msg
         data class ObservedLaunchOptionChanged(val newValue: Boolean) : Msg
+        data class ObservedReplacePipOptionChanged(val newValue: Boolean) : Msg
         data class FaceDataAvailable(val data: VisionFaceData) : Msg
         data class TrackerStateChangedStarted(val started: Boolean) : Msg
         data class Tick(val seconds: Int) : Msg

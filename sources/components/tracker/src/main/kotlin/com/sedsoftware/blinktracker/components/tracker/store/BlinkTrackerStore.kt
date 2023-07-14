@@ -28,6 +28,7 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
         val notifyWithSound: Boolean = false,
         val notifyWithVibration: Boolean = false,
         val shouldLaunchMinimized: Boolean = false,
+        val shouldReplacePip: Boolean = false,
         val lastBlink: Instant = Instant.DISTANT_PAST,
     )
 

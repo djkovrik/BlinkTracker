@@ -19,6 +19,7 @@ import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
 import com.sedsoftware.blinktracker.components.preferences.integration.BlinkPreferencesComponent
 import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.tools.PictureInPictureLauncher
+import com.sedsoftware.blinktracker.components.tracker.tools.MinimizedLauncher
 import com.sedsoftware.blinktracker.database.StatisticsRepository
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.root.BlinkRoot.Child
@@ -40,6 +41,7 @@ class BlinkRootComponent internal constructor(
         settings: Settings,
         repo: StatisticsRepository,
         pipLauncher: PictureInPictureLauncher,
+        minimizedLauncher: MinimizedLauncher,
     ) : this(
         componentContext = componentContext,
         errorHandler = errorHandler,
@@ -60,6 +62,7 @@ class BlinkRootComponent internal constructor(
                 settings = settings,
                 repo = repo,
                 pipLauncher = pipLauncher,
+                minimizedLauncher = minimizedLauncher,
             )
         }
     )

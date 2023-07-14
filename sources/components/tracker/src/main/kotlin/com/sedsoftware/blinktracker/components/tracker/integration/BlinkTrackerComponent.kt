@@ -11,6 +11,7 @@ import com.sedsoftware.blinktracker.components.tracker.BlinkTracker.Model
 import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStoreProvider
+import com.sedsoftware.blinktracker.components.tracker.tools.MinimizedLauncher
 import com.sedsoftware.blinktracker.components.tracker.tools.PictureInPictureLauncher
 import com.sedsoftware.blinktracker.settings.Settings
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +28,7 @@ class BlinkTrackerComponent(
     private val storeFactory: StoreFactory,
     private val settings: Settings,
     private val pipLauncher: WeakReference<PictureInPictureLauncher>,
+    private val minimizedLauncher: MinimizedLauncher,
     private val output: (BlinkTracker.Output) -> Unit,
 ) : BlinkTracker, ComponentContext by componentContext {
 
@@ -36,6 +38,7 @@ class BlinkTrackerComponent(
                 storeFactory = storeFactory,
                 settings = settings,
                 pipLauncher = pipLauncher,
+                minimizedLauncher = minimizedLauncher,
             ).provide()
         }
 

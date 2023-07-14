@@ -24,6 +24,7 @@ import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.root.integration.BlinkRootComponent
 import com.sedsoftware.blinktracker.settings.AppSettings
 import com.sedsoftware.blinktracker.tools.AppErrorHandler
+import com.sedsoftware.blinktracker.tools.AppMinimizedLauncher
 import com.sedsoftware.blinktracker.tools.AppNotificationsManager
 import com.sedsoftware.blinktracker.ui.BlinkRootContent
 import com.sedsoftware.blinktracker.ui.Constants
@@ -89,10 +90,11 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             componentContext = defaultComponentContext(),
             storeFactory = DefaultStoreFactory(),
             errorHandler = errorHandler,
-            notificationsManager = AppNotificationsManager(this),
+            notificationsManager = AppNotificationsManager(applicationContext),
             settings = AppSettings(applicationContext),
             repo = StatisticsRepositoryReal(applicationContext),
             pipLauncher = this,
+            minimizedLauncher = AppMinimizedLauncher(applicationContext),
         )
 
         lifecycleScope.launch {
@@ -155,8 +157,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
                 root.onNotificationPermissionGranted()
-            }
-            else {
+            } else {
                 notificationsPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         } else {
