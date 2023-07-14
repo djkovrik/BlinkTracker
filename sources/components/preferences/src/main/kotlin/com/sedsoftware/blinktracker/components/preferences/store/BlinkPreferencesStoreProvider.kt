@@ -8,7 +8,6 @@ import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
-import com.sedsoftware.blinktracker.components.preferences.infrastructure.NotificationPermissionDeniedException
 import com.sedsoftware.blinktracker.components.preferences.model.PermissionStateNotification
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore.Intent
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore.Label
@@ -97,16 +96,17 @@ internal class BlinkPreferencesStoreProvider(
                     launch(getExceptionHandler(this)) {
                         settings.setReplacePipEnabled(it.value)
                     }
+                    dispatch(Msg.RationaleStateChanged(false))
                 }
 
                 onIntent<Intent.OnPermissionGranted> {
                     dispatch(Msg.PermissionStateChanged(true))
+                    dispatch(Msg.RationaleStateChanged(false))
                 }
 
                 onIntent<Intent.OnPermissionDenied> {
                     dispatch(Msg.PermissionStateChanged(false))
-                    publish(Label.ErrorCaught(NotificationPermissionDeniedException()))
-
+                    dispatch(Msg.RationaleStateChanged(true))
                     launch(getExceptionHandler(this)) {
                         settings.setReplacePipEnabled(false)
                     }
@@ -135,11 +135,15 @@ internal class BlinkPreferencesStoreProvider(
                     )
 
                     is Msg.PermissionStateChanged -> copy(
-                        permissionState = if (msg.newValue) {
+                        permissionState = if (msg.granted) {
                             PermissionStateNotification.GRANTED
                         } else {
                             PermissionStateNotification.DENIED
                         },
+                    )
+
+                    is Msg.RationaleStateChanged -> copy(
+                        showRationale = msg.displayed,
                     )
                 }
             }
@@ -159,7 +163,8 @@ internal class BlinkPreferencesStoreProvider(
         data class VibrationOptionChanged(val newValue: Boolean) : Msg
         data class LaunchOptionChanged(val newValue: Boolean) : Msg
         data class ReplacePipOptionChanged(val newValue: Boolean) : Msg
-        data class PermissionStateChanged(val newValue: Boolean) : Msg
+        data class PermissionStateChanged(val granted: Boolean) : Msg
+        data class RationaleStateChanged(val displayed: Boolean) : Msg
     }
 
     private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =

@@ -114,10 +114,6 @@ class BlinkRootComponent internal constructor(
         preferences.onPermissionGranted()
     }
 
-    override fun onNotificationPermissionRationale() {
-        preferences.onPermissionDenied()
-    }
-
     override fun onNotificationPermissionDenied() {
         preferences.onPermissionDenied()
     }

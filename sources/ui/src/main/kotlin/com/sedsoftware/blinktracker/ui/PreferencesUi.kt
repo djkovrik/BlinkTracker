@@ -21,19 +21,23 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PlainTooltipBox
+import androidx.compose.material3.RichTooltipBox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberPlainTooltipState
+import androidx.compose.material3.rememberRichTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
 import com.sedsoftware.blinktracker.components.preferences.model.PermissionStateNotification
+import com.sedsoftware.blinktracker.ui.R.string
 import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 import kotlinx.coroutines.launch
@@ -80,9 +85,19 @@ private fun BlinkPreferencesScreen(
     onReplacePipChange: (Boolean) -> Unit = {},
     onNotificationPermission: () -> Unit = {},
 ) {
-    val permissionLauncherKey = model.replacePip && model.permissionState == PermissionStateNotification.NOT_ASKED
+    val permissionLauncherKey = model.replacePip && model.permissionState != PermissionStateNotification.GRANTED
+    val snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
+    val rationaleMessage = stringResource(id = string.prefs_replace_pip_rationale)
+    LaunchedEffect(model.showRationale) {
+        if (model.showRationale) {
+            snackbarHostState.showSnackbar(message = rationaleMessage)
+        }
+    }
 
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             TopAppBar(
                 title = {
@@ -164,7 +179,9 @@ private fun PrefsOptionSwitch(
     @StringRes descriptionRes: Int? = null,
     onValueChanged: (Boolean) -> Unit = {},
 ) {
-    val tooltipState = rememberPlainTooltipState()
+    val tooltipState = rememberRichTooltipState(
+        isPersistent = true
+    )
     val scope = rememberCoroutineScope()
 
     Row(
@@ -178,11 +195,13 @@ private fun PrefsOptionSwitch(
         )
 
         if (descriptionRes != null) {
-            PlainTooltipBox(
+            RichTooltipBox(
                 shape = RoundedCornerShape(size = 16.dp),
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                contentColor = MaterialTheme.colorScheme.onSecondary,
-                tooltip = {
+                colors = TooltipDefaults.richTooltipColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondary,
+                ),
+                text = {
                     Text(
                         text = stringResource(id = descriptionRes),
                         style = MaterialTheme.typography.bodySmall,
@@ -251,6 +270,7 @@ private fun PrefsOptionSlider(
         )
     }
 }
+
 
 @Composable
 @Preview(showBackground = true)

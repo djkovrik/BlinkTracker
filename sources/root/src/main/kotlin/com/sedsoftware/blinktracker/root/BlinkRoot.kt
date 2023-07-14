@@ -19,7 +19,6 @@ interface BlinkRoot {
     fun onCameraPermissionDenied()
     fun onCameraPermissionRationale()
     fun onNotificationPermissionGranted()
-    fun onNotificationPermissionRationale()
     fun onNotificationPermissionDenied()
     fun onCurrentLensChanged(lens: CameraLens)
 

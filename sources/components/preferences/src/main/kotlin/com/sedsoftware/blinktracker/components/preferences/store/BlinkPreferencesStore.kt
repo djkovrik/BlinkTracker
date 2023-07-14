@@ -25,6 +25,7 @@ internal interface BlinkPreferencesStore : Store<Intent, State, Label> {
         val launchMinimized: Boolean = false,
         val replacePip: Boolean = false,
         val permissionState: PermissionStateNotification = PermissionStateNotification.NOT_ASKED,
+        val showRationale: Boolean = false,
     )
 
     sealed class Label {

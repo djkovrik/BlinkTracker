@@ -153,18 +153,11 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
 
     private fun checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            when {
-                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED -> {
-                    root.onNotificationPermissionGranted()
-                }
-
-                shouldShowRequestPermissionRationale(Manifest.permission.CAMERA) -> {
-                    root.onNotificationPermissionRationale()
-                }
-
-                else -> {
-                    notificationsPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                }
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                root.onNotificationPermissionGranted()
+            }
+            else {
+                notificationsPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         } else {
             root.onNotificationPermissionGranted()

@@ -23,6 +23,7 @@ interface BlinkPreferences {
         val launchMinimized: Boolean,
         val replacePip: Boolean,
         val permissionState: PermissionStateNotification,
+        val showRationale: Boolean,
     )
 
     sealed class Output {

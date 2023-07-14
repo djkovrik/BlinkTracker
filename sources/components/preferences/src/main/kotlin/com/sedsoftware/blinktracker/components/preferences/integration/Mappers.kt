@@ -12,5 +12,6 @@ internal val stateToModel: (State) -> Model =
             launchMinimized = it.launchMinimized,
             replacePip = it.replacePip,
             permissionState = it.permissionState,
+            showRationale = it.showRationale,
         )
     }

@@ -50,6 +50,7 @@ object PreviewStubs {
         launchMinimized = false,
         replacePip = false,
         permissionState = PermissionStateNotification.DENIED,
+        showRationale = false,
     )
 
     val prefsMixed = BlinkPreferences.Model(
@@ -59,6 +60,7 @@ object PreviewStubs {
         launchMinimized = true,
         replacePip = false,
         permissionState = PermissionStateNotification.GRANTED,
+        showRationale = true,
     )
 
     val trackerNotActiveNoFaceNoPrefs = BlinkTracker.Model(
