@@ -41,6 +41,10 @@ class AppNotificationsManager(
         vibrator?.vibrate(VibrationEffect.createOneShot(VIBRATION_DURATION, VibrationEffect.DEFAULT_AMPLITUDE))
     }
 
+    override fun showTrackingNotification(active: Boolean, timer: String, blinks: Int) {
+
+    }
+
     private companion object {
         const val VIBRATION_DURATION = 1000L
     }

@@ -11,7 +11,12 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.lifecycleScope
 import com.arkivanov.decompose.defaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
@@ -37,9 +42,13 @@ import timber.log.Timber
 class MainActivity : ComponentActivity(), PictureInPictureLauncher {
 
     private var _imageProcessor: VisionImageProcessor? = null
+    private var _lifecycleRegistry: LifecycleRegistry? = null
 
     private val imageProcessor: VisionImageProcessor
         get() = _imageProcessor!!
+
+    private val lifecycleRegistry: LifecycleRegistry
+        get() = _lifecycleRegistry!!
 
     private var _root: BlinkRoot? = null
 
@@ -69,12 +78,14 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             }
         }
 
+    private val customLifecycleOwner: LifecycleOwner
+        get() = object : LifecycleOwner {
+            override val lifecycle: Lifecycle
+                get() = lifecycleRegistry
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        enableKeepScreenOn(true)
-
         val errorHandler: ErrorHandler = AppErrorHandler(this)
 
         val faceDetectorOptions: FaceDetectorOptions = FaceDetectorOptions.Builder()
@@ -104,27 +115,44 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         }
 
         setContent {
-            BlinkTrackerTheme {
-                BlinkRootContent(
-                    component = root,
-                    processor = imageProcessor,
-                    onNotificationPermission = ::checkNotificationPermission,
-                )
+            CompositionLocalProvider(LocalLifecycleOwner provides customLifecycleOwner) {
+                BlinkTrackerTheme {
+                    BlinkRootContent(
+                        component = root,
+                        processor = imageProcessor,
+                        onNotificationPermission = ::checkNotificationPermission,
+                    )
+                }
             }
         }
+
+        _lifecycleRegistry = LifecycleRegistry(this)
+//        lifecycleRegistry.currentState = Lifecycle.State.CREATED
+//        lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        lifecycleRegistry.currentState = Lifecycle.State.RESUMED
     }
 
     override fun onStart() {
         super.onStart()
         checkCameraPermission()
+        enableKeepScreenOn(true)
+
+    }
+
+    override fun onStop() {
+        enableKeepScreenOn(false)
+        super.onStop()
     }
 
     public override fun onDestroy() {
-        super.onDestroy()
+//        lifecycleRegistry.currentState = Lifecycle.State.RESUMED
+//        lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
         _root = null
         _imageProcessor?.run { this.stop() }
         _imageProcessor = null
-        enableKeepScreenOn(false)
+        _lifecycleRegistry = null
+        super.onDestroy()
     }
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {

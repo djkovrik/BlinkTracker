@@ -12,7 +12,7 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
     sealed class Intent {
         object OnTrackingStart : Intent()
         object OnTrackingStop : Intent()
-        object OnLaunchPip : Intent()
+        object OnMinimizeRequest : Intent()
         data class FaceDataChanged(val data: VisionFaceData) : Intent()
         data class MinimizedStateChanged(val minimized: Boolean) : Intent()
     }
@@ -20,6 +20,7 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
     data class State(
         val active: Boolean = false,
         val timer: Int = 0,
+        val timerLabel: String = "",
         val blinkLastMinute: Int = 0,
         val blinksTotal: Int = 0,
         val minimized: Boolean = false,
@@ -37,5 +38,6 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
         object VibrationNotificationTriggered : Label()
         data class ErrorCaught(val throwable: Throwable) : Label()
         data class BlinksPerMinuteAvailable(val value: Int) : Label()
+        data class NotificationDataAvailable(val active: Boolean, val timer: String, val blinks: Int) : Label()
     }
 }

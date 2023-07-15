@@ -63,6 +63,10 @@ class BlinkTrackerComponent(
                     is BlinkTrackerStore.Label.BlinksPerMinuteAvailable -> {
                         output(BlinkTracker.Output.BlinkedPerMinute(label.value))
                     }
+
+                    is BlinkTrackerStore.Label.NotificationDataAvailable -> {
+                        output(BlinkTracker.Output.NotificationDataChanged(label.active, label.timer, label.blinks))
+                    }
                 }
             }
             .launchIn(scope)
@@ -87,7 +91,7 @@ class BlinkTrackerComponent(
     }
 
     override fun onMinimizeRequested() {
-        store.accept(BlinkTrackerStore.Intent.OnLaunchPip)
+        store.accept(BlinkTrackerStore.Intent.OnMinimizeRequest)
     }
 
     override fun onPictureInPictureChanged(enabled: Boolean) {

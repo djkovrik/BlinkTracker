@@ -86,6 +86,9 @@ class BlinkHomeComponent internal constructor(
 
             is BlinkTracker.Output.BlinkedPerMinute ->
                 statsComponent.onNewBlinksValue(output.value)
+
+            is BlinkTracker.Output.NotificationDataChanged ->
+                notificationsManager.showTrackingNotification(output.active, output.timer, output.blinks)
         }
     }
 

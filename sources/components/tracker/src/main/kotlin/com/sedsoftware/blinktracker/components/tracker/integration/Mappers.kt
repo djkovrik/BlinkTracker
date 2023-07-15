@@ -7,22 +7,10 @@ internal val stateToModel: (State) -> Model =
     {
         Model(
             isTrackingActive = it.active,
-            timerLabel = buildStringFromTimer(it.timer),
+            timerLabel = it.timerLabel,
             blinksPerLastMinute = it.blinkLastMinute,
             blinksTotal = it.blinksTotal,
             isMinimized = it.minimized,
             hasFaceDetected = it.faceDetected,
         )
     }
-
-@Suppress("MagicNumber")
-private fun buildStringFromTimer(timer: Int): String {
-    val minutes = timer / 60
-    val seconds = timer - minutes * 60
-
-    return when {
-        seconds < 10 && minutes == 10 -> "$minutes:0$seconds"
-        seconds < 10 && minutes != 10 -> "0$minutes:0$seconds"
-        else -> "0$minutes:$seconds"
-    }
-}

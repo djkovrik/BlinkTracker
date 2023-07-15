@@ -103,6 +103,14 @@ internal class BlinkTrackerStoreProvider(
 
                         dispatch(Msg.Tick(counter + 1))
                     }
+
+                    if (state.shouldReplacePip) {
+                        publish(Label.NotificationDataAvailable(
+                            active = state.active,
+                            timer = state.timerLabel,
+                            blinks = state.blinkLastMinute,
+                        ))
+                    }
                 }
 
                 onIntent<Intent.OnTrackingStart> {
@@ -132,8 +140,12 @@ internal class BlinkTrackerStoreProvider(
                     dispatch(Msg.MinimizedStateChanged(it.minimized))
                 }
 
-                onIntent<Intent.OnLaunchPip> {
-                    pipLauncher.get()?.launchPictureInPicture()
+                onIntent<Intent.OnMinimizeRequest> {
+                    if (state.shouldReplacePip) {
+                        minimizedLauncher.launchMinimized()
+                    } else {
+                        pipLauncher.get()?.launchPictureInPicture()
+                    }
                 }
             },
             reducer = { msg ->
@@ -167,7 +179,8 @@ internal class BlinkTrackerStoreProvider(
                     )
 
                     is Msg.Tick -> copy(
-                        timer = msg.seconds
+                        timer = msg.seconds,
+                        timerLabel = buildStringFromTimer(msg.seconds)
                     )
 
                     is Msg.Blink -> copy(
@@ -220,6 +233,19 @@ internal class BlinkTrackerStoreProvider(
 
     private fun State.blinkPeriodEnded(): Boolean =
         this.lastBlink < System.now().minus(BLINK_REGISTER_PERIOD_MS.milliseconds)
+
+    @Suppress("MagicNumber")
+    private fun buildStringFromTimer(timer: Int): String {
+        val minutes = timer / 60
+        val seconds = timer - minutes * 60
+
+        return when {
+            seconds < 10 && minutes == 10 -> "$minutes:0$seconds"
+            seconds < 10 && minutes != 10 -> "0$minutes:0$seconds"
+            else -> "0$minutes:$seconds"
+        }
+    }
+
 
     private companion object {
         const val TIMER_DELAY = 1000L
