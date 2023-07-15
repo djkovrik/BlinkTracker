@@ -1,5 +1,6 @@
 package com.sedsoftware.blinktracker.components.tracker
 
+import com.sedsoftware.blinktracker.components.tracker.model.NotificationInfoData
 import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import kotlinx.coroutines.flow.Flow
 
@@ -28,6 +29,6 @@ interface BlinkTracker {
         object VibroNotificationTriggered : Output()
         data class ErrorCaught(val throwable: Throwable) : Output()
         data class BlinkedPerMinute(val value: Int) : Output()
-        data class NotificationDataChanged(val active: Boolean, val timer: String, val blinks: Int) : Output()
+        data class NotificationDataChanged(val data: NotificationInfoData) : Output()
     }
 }

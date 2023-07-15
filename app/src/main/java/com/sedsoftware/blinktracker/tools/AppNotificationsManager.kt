@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat
 import com.sedsoftware.blinktracker.MainActivity
 import com.sedsoftware.blinktracker.R
 import com.sedsoftware.blinktracker.components.home.integration.NotificationsManager
+import com.sedsoftware.blinktracker.components.tracker.model.NotificationInfoData
 import timber.log.Timber
 
 @Suppress("DEPRECATION")
@@ -70,13 +71,17 @@ class AppNotificationsManager(
         vibrator?.vibrate(VibrationEffect.createOneShot(VIBRATION_DURATION, VibrationEffect.DEFAULT_AMPLITUDE))
     }
 
-    override fun showTrackingNotification(active: Boolean, timer: String, blinks: Int) {
-        builder.setContentTitle(getTitle(active))
-        builder.setContentText(getContent(timer, blinks))
-        notificationManager.notify(BLINKZ_NOTIFICATION_ID, builder.build())
+    override fun showTrackingNotification(data: NotificationInfoData) {
+        if (data.replace) {
+            builder.setContentTitle(getTitle(data.active))
+            builder.setContentText(getContent(data.timer, data.blinks))
+            notificationManager.notify(BLINKZ_NOTIFICATION_ID, builder.build())
+        } else {
+            clearNotification()
+        }
     }
 
-    override fun clearNotification() {
+    private fun clearNotification() {
         notificationManager.cancel(BLINKZ_NOTIFICATION_ID)
     }
 

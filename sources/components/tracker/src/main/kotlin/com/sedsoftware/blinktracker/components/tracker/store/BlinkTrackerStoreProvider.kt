@@ -8,6 +8,7 @@ import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
+import com.sedsoftware.blinktracker.components.tracker.model.NotificationInfoData
 import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Intent
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Label
@@ -104,13 +105,14 @@ internal class BlinkTrackerStoreProvider(
                         dispatch(Msg.Tick(counter + 1))
                     }
 
-                    if (state.shouldReplacePip) {
-                        publish(Label.NotificationDataAvailable(
+                    publish(Label.NotificationDataAvailable(
+                        NotificationInfoData(
+                            replace = state.shouldReplacePip,
                             active = state.active,
                             timer = state.timerLabel,
                             blinks = state.blinkLastMinute,
-                        ))
-                    }
+                        )
+                    ))
                 }
 
                 onIntent<Intent.OnTrackingStart> {

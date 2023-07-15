@@ -65,7 +65,7 @@ class BlinkTrackerComponent(
                     }
 
                     is BlinkTrackerStore.Label.NotificationDataAvailable -> {
-                        output(BlinkTracker.Output.NotificationDataChanged(label.active, label.timer, label.blinks))
+                        output(BlinkTracker.Output.NotificationDataChanged(label.data))
                     }
                 }
             }

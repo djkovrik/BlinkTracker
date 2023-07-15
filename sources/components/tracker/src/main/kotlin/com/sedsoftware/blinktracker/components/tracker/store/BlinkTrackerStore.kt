@@ -1,6 +1,7 @@
 package com.sedsoftware.blinktracker.components.tracker.store
 
 import com.arkivanov.mvikotlin.core.store.Store
+import com.sedsoftware.blinktracker.components.tracker.model.NotificationInfoData
 import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Intent
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Label
@@ -38,6 +39,6 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
         object VibrationNotificationTriggered : Label()
         data class ErrorCaught(val throwable: Throwable) : Label()
         data class BlinksPerMinuteAvailable(val value: Int) : Label()
-        data class NotificationDataAvailable(val active: Boolean, val timer: String, val blinks: Int) : Label()
+        data class NotificationDataAvailable(val data: NotificationInfoData) : Label()
     }
 }

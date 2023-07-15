@@ -1,8 +1,9 @@
 package com.sedsoftware.blinktracker.components.home.integration
 
+import com.sedsoftware.blinktracker.components.tracker.model.NotificationInfoData
+
 interface NotificationsManager {
     fun notifyWithSound()
     fun notifyWithVibro()
-    fun showTrackingNotification(active: Boolean, timer: String, blinks: Int)
-    fun clearNotification()
+    fun showTrackingNotification(data: NotificationInfoData)
 }
