@@ -2,6 +2,7 @@ package com.sedsoftware.blinktracker.components.home.integration
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
+import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.blinktracker.components.camera.BlinkCamera
 import com.sedsoftware.blinktracker.components.camera.integration.BlinkCameraComponent
@@ -63,6 +64,12 @@ class BlinkHomeComponent internal constructor(
             )
         },
     )
+
+    init {
+        lifecycle.doOnDestroy {
+            notificationsManager.clearNotification()
+        }
+    }
 
     override val cameraComponent: BlinkCamera =
         blinkCamera(componentContext.childContext(key = COMPONENT_CAMERA))

@@ -1,4 +1,10 @@
 <resources>
     <string name="error_unknown">Неизвестная ошибка</string>
     <string name="error_notif_permission">Данная опция требует разрешения на доступ к уведомлениям</string>
+    <string name="notification_tracking_active">Отслеживание активно</string>
+    <string name="notification_tracking_not_active">Отслеживание неактивно</string>
+    <string name="notification_tracking_time">Время: </string>
+    <string name="notification_tracking_blinks">Морганий в минуту: </string>
+    <string name="notification_channel">Отслеживание морганий</string>
+    <string name="notification_channel_desc">Уведомление сигнализирующее об активном отслеживании</string>
 </resources>

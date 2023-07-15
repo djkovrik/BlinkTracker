@@ -2,4 +2,10 @@
     <string name="app_name" translatable="false">Blinkz</string>
     <string name="error_unknown">Unknown error</string>
     <string name="error_notif_permission">This option requires notification permission</string>
+    <string name="notification_tracking_active">Tracking is active</string>
+    <string name="notification_tracking_not_active">Tracking is not active</string>
+    <string name="notification_tracking_time">Time: </string>
+    <string name="notification_tracking_blinks">Blinks per minute: </string>
+    <string name="notification_channel">Blinks tracker</string>
+    <string name="notification_channel_desc">Notification about ongoing blinks tracking</string>
 </resources>

@@ -26,6 +26,7 @@
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:exported="true"
             android:supportsPictureInPicture="true"
+            android:launchMode="singleTop"
             android:theme="@style/Theme.BlinkTracker">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
