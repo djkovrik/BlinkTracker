@@ -6,4 +6,5 @@ interface NotificationsManager {
     fun notifyWithSound()
     fun notifyWithVibro()
     fun showTrackingNotification(data: NotificationInfoData)
+    fun clearNotification()
 }

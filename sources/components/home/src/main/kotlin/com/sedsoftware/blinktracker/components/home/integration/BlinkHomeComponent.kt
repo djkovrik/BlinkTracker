@@ -65,12 +65,6 @@ class BlinkHomeComponent internal constructor(
         },
     )
 
-    init {
-        lifecycle.doOnDestroy {
-            notificationsManager.clearNotification()
-        }
-    }
-
     override val cameraComponent: BlinkCamera =
         blinkCamera(componentContext.childContext(key = COMPONENT_CAMERA))
 
@@ -96,6 +90,9 @@ class BlinkHomeComponent internal constructor(
 
             is BlinkTracker.Output.NotificationDataChanged ->
                 notificationsManager.showTrackingNotification(output.data)
+
+            is BlinkTracker.Output.TrackingStopped ->
+                notificationsManager.clearNotification()
         }
     }
 

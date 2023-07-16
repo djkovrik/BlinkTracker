@@ -4,14 +4,13 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.RingtoneManager
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import androidx.core.app.NotificationCompat
-import com.sedsoftware.blinktracker.MainActivity
 import com.sedsoftware.blinktracker.R
 import com.sedsoftware.blinktracker.components.home.integration.NotificationsManager
 import com.sedsoftware.blinktracker.components.tracker.model.NotificationInfoData
@@ -29,6 +28,9 @@ class AppNotificationsManager(
     private val notificationManager: NotificationManager =
         context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+    private val packageManager: PackageManager =
+        context.packageManager
+
     private var builder = NotificationCompat.Builder(context, BLINKZ_NOTIFICATION_CHANNEL_ID)
         .setSmallIcon(R.drawable.ic_track_notification)
         .setContentTitle(getTitle(false))
@@ -36,10 +38,10 @@ class AppNotificationsManager(
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setContentIntent(
             PendingIntent.getActivity(
-                context, 0,
-                Intent(context, MainActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                }, PendingIntent.FLAG_IMMUTABLE
+                context.applicationContext,
+                BLINKZ_REQUEST_CODE,
+                packageManager.getLaunchIntentForPackage("com.sedsoftware.blinktracker"),
+                PendingIntent.FLAG_IMMUTABLE
             )
         )
         .setSilent(true)
@@ -81,7 +83,7 @@ class AppNotificationsManager(
         }
     }
 
-    private fun clearNotification() {
+    override fun clearNotification() {
         notificationManager.cancel(BLINKZ_NOTIFICATION_ID)
     }
 
@@ -92,8 +94,8 @@ class AppNotificationsManager(
     }
 
     private fun getContent(timer: String, blinks: Int): String =
-        "${context.getString(R.string.notification_tracking_time)}: $timer | " +
-            "${context.getString(R.string.notification_tracking_blinks)}: $blinks"
+        "${context.getString(R.string.notification_tracking_time)} $timer | " +
+            "${context.getString(R.string.notification_tracking_blinks)} $blinks"
 
     private fun createNotificationChannel() {
         if (notificationManager.getNotificationChannel(BLINKZ_NOTIFICATION_CHANNEL_ID) == null) {
@@ -110,6 +112,7 @@ class AppNotificationsManager(
 
     private companion object {
         const val VIBRATION_DURATION = 1000L
+        const val BLINKZ_REQUEST_CODE = 132
         const val BLINKZ_NOTIFICATION_ID = 1213
         const val BLINKZ_NOTIFICATION_CHANNEL_ID = "blinkz_notification_channel"
     }

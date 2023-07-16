@@ -67,6 +67,10 @@ class BlinkTrackerComponent(
                     is BlinkTrackerStore.Label.NotificationDataAvailable -> {
                         output(BlinkTracker.Output.NotificationDataChanged(label.data))
                     }
+
+                    is BlinkTrackerStore.Label.TrackingStopped -> {
+                        output(BlinkTracker.Output.TrackingStopped)
+                    }
                 }
             }
             .launchIn(scope)

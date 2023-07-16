@@ -128,6 +128,9 @@ internal class BlinkTrackerStoreProvider(
 
                 onIntent<Intent.OnTrackingStop> {
                     dispatch(Msg.TrackerStateChangedStarted(false))
+                    if (state.shouldReplacePip) {
+                        publish(Label.TrackingStopped)
+                    }
                 }
 
                 onIntent<Intent.FaceDataChanged> {

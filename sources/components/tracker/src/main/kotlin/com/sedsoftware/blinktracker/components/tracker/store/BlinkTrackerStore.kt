@@ -40,5 +40,6 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
         data class ErrorCaught(val throwable: Throwable) : Label()
         data class BlinksPerMinuteAvailable(val value: Int) : Label()
         data class NotificationDataAvailable(val data: NotificationInfoData) : Label()
+        object TrackingStopped : Label()
     }
 }

@@ -30,5 +30,6 @@ interface BlinkTracker {
         data class ErrorCaught(val throwable: Throwable) : Output()
         data class BlinkedPerMinute(val value: Int) : Output()
         data class NotificationDataChanged(val data: NotificationInfoData) : Output()
+        object TrackingStopped : Output()
     }
 }
