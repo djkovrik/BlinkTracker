@@ -9,7 +9,7 @@
     <string name="prefs_notify_vibro">Уведомлять вибрацией</string>
     <string name="prefs_minimize_on_start">Сворачивать при старте</string>
     <string name="prefs_replace_pip">Ненавязчивое отслеживание</string>
-    <string name="prefs_replace_pip_description">Заменяет режим Картинка в Картинке постоянно отображающимся уведомлением во время работы отслеживания</string>
+    <string name="prefs_replace_pip_description">Заменяет режим Картинка в Картинке постоянно отображающимся уведомлением во время работы отслеживания.\nУведомления вибрацией будут отключены.</string>
     <string name="prefs_replace_pip_rationale">Опция ненавязчивого отслеживания требует разрешения на доступ к уведомлениям</string>
     <string name="button_start">Старт</string>
     <string name="button_stop">Стоп</string>

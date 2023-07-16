@@ -127,8 +127,8 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         }
 
         _lifecycleRegistry = LifecycleRegistry(this)
-//        lifecycleRegistry.currentState = Lifecycle.State.CREATED
-//        lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        lifecycleRegistry.currentState = Lifecycle.State.CREATED
+        lifecycleRegistry.currentState = Lifecycle.State.STARTED
         lifecycleRegistry.currentState = Lifecycle.State.RESUMED
     }
 
@@ -145,8 +145,8 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
     }
 
     public override fun onDestroy() {
-//        lifecycleRegistry.currentState = Lifecycle.State.RESUMED
-//        lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        lifecycleRegistry.currentState = Lifecycle.State.RESUMED
+        lifecycleRegistry.currentState = Lifecycle.State.STARTED
         lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
         _root = null
         _imageProcessor?.run { this.stop() }

@@ -8,7 +8,7 @@
     <string name="prefs_notify_vibro">Notify with vibration</string>
     <string name="prefs_minimize_on_start">Minimize on start</string>
     <string name="prefs_replace_pip">Non-intrusive tracker</string>
-    <string name="prefs_replace_pip_description">Replaces Picture In Picture mode for active minimized tracker with ongoing notification</string>
+    <string name="prefs_replace_pip_description">Replaces Picture In Picture mode for active minimized tracker with ongoing notification.\nVibro notifications will be disabled.</string>
     <string name="prefs_replace_pip_rationale">Non-intrusive tracker option requires notifications permission to work</string>
     <string name="button_start">Start</string>
     <string name="button_stop">Stop</string>

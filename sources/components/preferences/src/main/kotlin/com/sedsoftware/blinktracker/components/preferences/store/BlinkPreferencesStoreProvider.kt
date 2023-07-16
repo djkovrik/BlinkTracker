@@ -83,6 +83,10 @@ internal class BlinkPreferencesStoreProvider(
                 onIntent<Intent.OnNotifyVibrationChange> {
                     launch(getExceptionHandler(this)) {
                         settings.setNotifyVibrationEnabled(it.value)
+
+                        if (state.replacePip) {
+                            settings.setReplacePipEnabled(false)
+                        }
                     }
                 }
 
@@ -95,6 +99,10 @@ internal class BlinkPreferencesStoreProvider(
                 onIntent<Intent.OnReplacePipChange> {
                     launch(getExceptionHandler(this)) {
                         settings.setReplacePipEnabled(it.value)
+                        if (state.notifyVibration) {
+                            settings.setNotifySoundEnabled(true)
+                            settings.setNotifyVibrationEnabled(false)
+                        }
                     }
                     dispatch(Msg.RationaleStateChanged(false))
                 }
