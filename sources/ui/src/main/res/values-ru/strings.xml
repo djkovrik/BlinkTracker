@@ -8,6 +8,7 @@
     <string name="prefs_notify_sound">Уведомлять звуковым сигналом</string>
     <string name="prefs_notify_vibro">Уведомлять вибрацией</string>
     <string name="prefs_minimize_on_start">Сворачивать при старте</string>
+    <string name="prefs_minimized_opacity">Непрозрачность окна, %</string>
     <string name="button_start">Старт</string>
     <string name="button_stop">Стоп</string>
     <string name="button_minimize">Свернуть</string>

@@ -18,7 +18,7 @@ interface BlinkPreferences {
         val notifySoundChecked: Boolean,
         val notifyVibrationChecked: Boolean,
         val launchMinimized: Boolean,
-        val minimizedOpacity: Float,
+        val minimizedOpacityPercent: Float,
     )
 
     sealed class Output {

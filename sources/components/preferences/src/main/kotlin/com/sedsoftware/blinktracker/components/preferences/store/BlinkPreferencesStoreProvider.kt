@@ -93,7 +93,8 @@ internal class BlinkPreferencesStoreProvider(
 
                 onIntent<Intent.OnMinimizedOpacityChange> {
                     launch(getExceptionHandler(this)) {
-                        settings.setMinimizedOpacity(it.value)
+                        val newValue = it.value / OPACITY_PERCENTS_DIVIDER
+                        settings.setMinimizedOpacity(newValue)
                     }
                 }
             },
@@ -142,4 +143,8 @@ internal class BlinkPreferencesStoreProvider(
         CoroutineExceptionHandler { _, throwable ->
             scope.publish(Label.ErrorCaught(throwable))
         }
+
+    internal companion object {
+        const val OPACITY_PERCENTS_DIVIDER = 100f
+    }
 }

@@ -3,6 +3,7 @@
 package com.sedsoftware.blinktracker.ui
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -31,10 +34,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
+import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
+import com.sedsoftware.blinktracker.ui.component.MainScreenMinimized
 import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
@@ -54,6 +61,7 @@ fun BlinkPreferencesContent(
         onLaunchMinimizedChange = component::onLaunchMinimizedChanged,
         onNotifySoundChange = component::onNotifySoundChanged,
         onNotifyVibroChange = component::onNotifyVibrationChanged,
+        onMinimizedOpacityChange = component::onMinimizedOpacityChanged,
     )
 }
 
@@ -66,6 +74,7 @@ private fun BlinkPreferencesScreen(
     onLaunchMinimizedChange: (Boolean) -> Unit = {},
     onNotifySoundChange: (Boolean) -> Unit = {},
     onNotifyVibroChange: (Boolean) -> Unit = {},
+    onMinimizedOpacityChange: (Float) -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -93,37 +102,75 @@ private fun BlinkPreferencesScreen(
             )
         }
     ) { paddingValues: PaddingValues ->
-        Column(
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
                 .fillMaxWidth()
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
         ) {
-            PrefsOptionSwitch(
-                modifier = modifier,
-                isChecked = model.launchMinimized,
-                labelRes = R.string.prefs_minimize_on_start,
-                onValueChanged = onLaunchMinimizedChange,
-            )
-            PrefsOptionSwitch(
-                modifier = modifier,
-                isChecked = model.notifySoundChecked,
-                labelRes = R.string.prefs_notify_sound,
-                onValueChanged = onNotifySoundChange,
-            )
-            PrefsOptionSwitch(
-                modifier = modifier,
-                isChecked = model.notifyVibrationChecked,
-                labelRes = R.string.prefs_notify_vibro,
-                onValueChanged = onNotifyVibroChange,
-            )
-            Spacer(modifier = modifier.height(16.dp))
-            PrefsOptionSlider(
-                modifier = modifier,
-                value = model.selectedThreshold,
-                labelRes = R.string.prefs_threshold,
-                onValueChanged = onThresholdChange,
-            )
+            item {
+                PrefsOptionSwitch(
+                    modifier = modifier,
+                    isChecked = model.launchMinimized,
+                    labelRes = R.string.prefs_minimize_on_start,
+                    onValueChanged = onLaunchMinimizedChange,
+                )
+            }
+            item {
+                PrefsOptionSwitch(
+                    modifier = modifier,
+                    isChecked = model.notifySoundChecked,
+                    labelRes = R.string.prefs_notify_sound,
+                    onValueChanged = onNotifySoundChange,
+                )
+            }
+            item {
+                PrefsOptionSwitch(
+                    modifier = modifier,
+                    isChecked = model.notifyVibrationChecked,
+                    labelRes = R.string.prefs_notify_vibro,
+                    onValueChanged = onNotifyVibroChange,
+                )
+                Spacer(modifier = modifier.height(16.dp))
+            }
+            item {
+                PrefsOptionSlider(
+                    modifier = modifier,
+                    value = model.selectedThreshold,
+                    valueRange = 5f..30f,
+                    steps = 0,
+                    labelRes = R.string.prefs_threshold,
+                    onValueChanged = onThresholdChange,
+                )
+                Spacer(modifier = modifier.height(16.dp))
+            }
+            item {
+                PrefsOptionSlider(
+                    modifier = modifier,
+                    value = model.minimizedOpacityPercent,
+                    valueRange = 10f..100f,
+                    steps = 16,
+                    labelRes = R.string.prefs_minimized_opacity,
+                    onValueChanged = onMinimizedOpacityChange,
+                )
+
+                Box(modifier = Modifier.size(width = 120.dp, height = 240.dp)) {
+                    MainScreenMinimized(
+                        model = BlinkTracker.Model(
+                            isTrackingActive = true,
+                            timerLabel = "12:34",
+                            blinksPerLastMinute = 16,
+                            blinksTotal = 16,
+                            isMinimized = true,
+                            hasFaceDetected = true,
+                        ),
+                        modifier = Modifier
+                            .clip(shape = RoundedCornerShape(size = 8.dp))
+                            .alpha(alpha = model.minimizedOpacityPercent / 100f)
+                    )
+                }
+            }
         }
     }
 }
@@ -174,6 +221,8 @@ private fun PrefsOptionSwitch(
 private fun PrefsOptionSlider(
     modifier: Modifier,
     value: Float,
+    valueRange: ClosedFloatingPointRange<Float>,
+    steps: Int,
     @StringRes labelRes: Int,
     onValueChanged: (Float) -> Unit
 ) {
@@ -187,7 +236,8 @@ private fun PrefsOptionSlider(
 
         Slider(
             value = value,
-            valueRange = 5f..30f,
+            valueRange = valueRange,
+            steps = steps,
             onValueChange = onValueChanged,
             modifier = Modifier.padding(horizontal = 8.dp)
         )
