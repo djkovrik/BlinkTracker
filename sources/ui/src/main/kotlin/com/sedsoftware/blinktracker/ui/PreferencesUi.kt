@@ -239,7 +239,7 @@ private fun PrefsOptionSlider(
             valueRange = valueRange,
             steps = steps,
             onValueChange = onValueChanged,
-            modifier = Modifier.padding(horizontal = 8.dp)
+            modifier = Modifier.padding(horizontal = 16.dp)
         )
     }
 }
