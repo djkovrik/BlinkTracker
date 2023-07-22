@@ -29,6 +29,7 @@ class AppSettings(
     private val notifySoundEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("notify_sound_enabled")
     private val notifyVibrationEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("notify_vibration_enabled")
     private val launchMinimizedEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("launch_minimized_enabled")
+    private val minimizedOpacityKey: Preferences.Key<Float> = floatPreferencesKey("minimized_opacity")
 
     override suspend fun getPerMinuteThreshold(): Flow<Float> =
         getPrefsValue(perMinuteThresholdKey, PER_MINUTE_THRESHOLD_DEFAULT)
@@ -42,6 +43,9 @@ class AppSettings(
     override suspend fun getLaunchMinimizedEnabled(): Flow<Boolean> =
         getPrefsValue(launchMinimizedEnabledKey, LAUNCH_MINIMIZED_DEFAULT)
 
+    override suspend fun getMinimizedOpacity(): Flow<Float> =
+        getPrefsValue(minimizedOpacityKey, MINIMIZED_OPACITY_DEFAULT)
+
     override suspend fun setPerMinuteThreshold(value: Float) =
         setPrefsValue(perMinuteThresholdKey, value)
 
@@ -53,6 +57,9 @@ class AppSettings(
 
     override suspend fun setLaunchMinimizedEnabled(value: Boolean) =
         setPrefsValue(launchMinimizedEnabledKey, value)
+
+    override suspend fun setMinimizedOpacity(value: Float) =
+        setPrefsValue(minimizedOpacityKey, value)
 
     private fun <T> getPrefsValue(key: Preferences.Key<T>, default: T): Flow<T> =
         Store.get(context).data.map { it[key] ?: default }
@@ -68,5 +75,6 @@ class AppSettings(
         const val NOTIFY_SOUND_DEFAULT = false
         const val NOTIFY_VIBRATION_DEFAULT = true
         const val LAUNCH_MINIMIZED_DEFAULT = false
+        const val MINIMIZED_OPACITY_DEFAULT = 1f
     }
 }
