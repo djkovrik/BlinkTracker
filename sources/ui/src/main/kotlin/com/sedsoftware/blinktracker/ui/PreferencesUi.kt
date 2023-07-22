@@ -150,7 +150,7 @@ private fun BlinkPreferencesScreen(
                     modifier = modifier,
                     value = model.minimizedOpacityPercent,
                     valueRange = 10f..100f,
-                    steps = 16,
+                    steps = 17,
                     labelRes = R.string.prefs_minimized_opacity,
                     onValueChanged = onMinimizedOpacityChange,
                 )

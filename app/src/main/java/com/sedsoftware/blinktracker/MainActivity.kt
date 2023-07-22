@@ -23,6 +23,7 @@ import com.sedsoftware.blinktracker.database.StatisticsRepositoryReal
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.root.integration.BlinkRootComponent
 import com.sedsoftware.blinktracker.settings.AppSettings
+import com.sedsoftware.blinktracker.settings.ObservableOpacityProvider
 import com.sedsoftware.blinktracker.tools.AppErrorHandler
 import com.sedsoftware.blinktracker.tools.AppNotificationsManager
 import com.sedsoftware.blinktracker.ui.BlinkRootContent
@@ -30,7 +31,8 @@ import com.sedsoftware.blinktracker.ui.Constants
 import com.sedsoftware.blinktracker.ui.camera.core.FaceDetectorProcessor
 import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 class MainActivity : ComponentActivity(), PictureInPictureLauncher {
@@ -57,10 +59,11 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             }
         }
 
+    private var currentWindowAlpha: Float = 1f
+    private var opacityProvider: ObservableOpacityProvider? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        enableKeepScreenOn(true)
 
         val errorHandler: ErrorHandler = AppErrorHandler(this)
 
@@ -72,6 +75,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             .build()
 
         _imageProcessor = FaceDetectorProcessor(faceDetectorOptions)
+        opacityProvider = ObservableOpacityProvider(applicationContext)
 
         _root = BlinkRootComponent(
             componentContext = defaultComponentContext(),
@@ -83,11 +87,13 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             pipLauncher = this,
         )
 
-        lifecycleScope.launch {
-            imageProcessor.faceData.collect {
-                root.onFaceDataChanged(it)
-            }
-        }
+        imageProcessor.faceData
+            .onEach { root.onFaceDataChanged(it) }
+            .launchIn(lifecycleScope)
+
+        opacityProvider?.opacity
+            ?.onEach { currentWindowAlpha = it }
+            ?.launchIn(lifecycleScope)
 
         setContent {
             BlinkTrackerTheme {
@@ -101,6 +107,17 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         checkCameraPermissions()
     }
 
+    override fun onResume() {
+        super.onResume()
+        enableKeepScreenOn(true)
+        changeMinimizedAlpha(enabled = false)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        enableKeepScreenOn(false)
+    }
+
     public override fun onDestroy() {
         super.onDestroy()
         _root = null
@@ -112,6 +129,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
         root.onPictureInPictureChanged(enabled = isInPictureInPictureMode)
+        changeMinimizedAlpha(enabled = isInPictureInPictureMode)
     }
 
     override fun launchPictureInPicture() {
@@ -166,4 +184,10 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         Timber.i("Screen always awake - $enabled")
     }
 
+    private fun changeMinimizedAlpha(enabled: Boolean) {
+        val currentAlpha = if (enabled) currentWindowAlpha else 1f
+        val params = window.attributes
+        params.alpha = currentAlpha
+        window.attributes = params
+    }
 }

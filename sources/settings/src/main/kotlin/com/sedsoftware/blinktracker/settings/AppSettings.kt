@@ -25,11 +25,11 @@ class AppSettings(
         }
     }
 
-    private val perMinuteThresholdKey: Preferences.Key<Float> = floatPreferencesKey("per_minute_threshold")
-    private val notifySoundEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("notify_sound_enabled")
-    private val notifyVibrationEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("notify_vibration_enabled")
-    private val launchMinimizedEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey("launch_minimized_enabled")
-    private val minimizedOpacityKey: Preferences.Key<Float> = floatPreferencesKey("minimized_opacity")
+    private val perMinuteThresholdKey: Preferences.Key<Float> = floatPreferencesKey(PreferenceKey.THRESHOLD)
+    private val notifySoundEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey(PreferenceKey.NOTIFY_SOUND)
+    private val notifyVibrationEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey(PreferenceKey.NOTIFY_VIBRO)
+    private val launchMinimizedEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey(PreferenceKey.LAUNCH_MINIMIZED)
+    private val minimizedOpacityKey: Preferences.Key<Float> = floatPreferencesKey(PreferenceKey.OPACITY)
 
     override suspend fun getPerMinuteThreshold(): Flow<Float> =
         getPrefsValue(perMinuteThresholdKey, PER_MINUTE_THRESHOLD_DEFAULT)
