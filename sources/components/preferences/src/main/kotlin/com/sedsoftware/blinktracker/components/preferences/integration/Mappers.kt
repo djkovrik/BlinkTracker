@@ -10,5 +10,6 @@ internal val stateToModel: (State) -> Model =
             notifySoundChecked = it.notifySound,
             notifyVibrationChecked = it.notifyVibration,
             launchMinimized = it.launchMinimized,
+            minimizedOpacity = it.minimizedOpacity,
         )
     }
