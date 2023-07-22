@@ -30,23 +30,12 @@ object PreviewStubs {
         CameraState.DETECTED,
     )
 
-    val cameraPermissionGrantedNoCamera = BlinkCamera.Model(
-        currentPermissionState = PermissionState.GRANTED,
-        selectedLens = CameraLens.NOT_AVAILABLE,
-        CameraState.NOT_DETECTED,
-    )
-
-    val cameraPermissionRationale = BlinkCamera.Model(
-        currentPermissionState = PermissionState.RATIONALE,
-        selectedLens = CameraLens.NOT_AVAILABLE,
-        CameraState.NOT_DETECTED,
-    )
-
     val prefsAllDisabled = BlinkPreferences.Model(
         selectedThreshold = 12f,
         notifySoundChecked = false,
         notifyVibrationChecked = false,
         launchMinimized = false,
+        minimizedOpacityPercent = 100f,
     )
 
     val prefsMixed = BlinkPreferences.Model(
@@ -54,6 +43,7 @@ object PreviewStubs {
         notifySoundChecked = false,
         notifyVibrationChecked = true,
         launchMinimized = true,
+        minimizedOpacityPercent = 100f,
     )
 
     val trackerNotActiveNoFaceNoPrefs = BlinkTracker.Model(

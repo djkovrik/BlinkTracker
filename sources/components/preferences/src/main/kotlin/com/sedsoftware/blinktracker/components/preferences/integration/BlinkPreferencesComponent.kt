@@ -69,4 +69,8 @@ class BlinkPreferencesComponent(
     override fun onLaunchMinimizedChanged(value: Boolean) {
         store.accept(BlinkPreferencesStore.Intent.OnLaunchMinimizedChange(value))
     }
+
+    override fun onMinimizedOpacityChanged(value: Float) {
+        store.accept(BlinkPreferencesStore.Intent.OnMinimizedOpacityChange(value))
+    }
 }

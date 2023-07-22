@@ -11,12 +11,14 @@ interface BlinkPreferences {
     fun onNotifySoundChanged(value: Boolean)
     fun onNotifyVibrationChanged(value: Boolean)
     fun onLaunchMinimizedChanged(value: Boolean)
+    fun onMinimizedOpacityChanged(value: Float)
 
     data class Model(
         val selectedThreshold: Float,
         val notifySoundChecked: Boolean,
         val notifyVibrationChecked: Boolean,
         val launchMinimized: Boolean,
+        val minimizedOpacityPercent: Float,
     )
 
     sealed class Output {

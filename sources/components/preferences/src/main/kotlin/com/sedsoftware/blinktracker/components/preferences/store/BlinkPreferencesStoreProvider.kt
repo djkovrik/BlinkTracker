@@ -29,6 +29,7 @@ internal class BlinkPreferencesStoreProvider(
                 dispatch(Action.ObserveNotifySoundOption)
                 dispatch(Action.ObserveNotifyVibrationOption)
                 dispatch(Action.ObserveLaunchOption)
+                dispatch(Action.ObserveMinimizedOpacityOption)
             },
             executorFactory = coroutineExecutorFactory {
                 onAction<Action.ObserveThresholdOption> {
@@ -59,6 +60,13 @@ internal class BlinkPreferencesStoreProvider(
                     }
                 }
 
+                onAction<Action.ObserveMinimizedOpacityOption> {
+                    launch(getExceptionHandler(this)) {
+                        settings.getMinimizedOpacity()
+                            .collect { dispatch(Msg.MinimizedOpacityChanged(it)) }
+                    }
+                }
+
                 onIntent<Intent.OnMinimalThresholdChange> {
                     launch(getExceptionHandler(this)) {
                         settings.setPerMinuteThreshold(it.value)
@@ -82,6 +90,13 @@ internal class BlinkPreferencesStoreProvider(
                         settings.setLaunchMinimizedEnabled(it.value)
                     }
                 }
+
+                onIntent<Intent.OnMinimizedOpacityChange> {
+                    launch(getExceptionHandler(this)) {
+                        val newValue = it.value / OPACITY_PERCENTS_DIVIDER
+                        settings.setMinimizedOpacity(newValue)
+                    }
+                }
             },
             reducer = { msg ->
                 when (msg) {
@@ -100,6 +115,10 @@ internal class BlinkPreferencesStoreProvider(
                     is Msg.LaunchOptionChanged -> copy(
                         launchMinimized = msg.newValue
                     )
+
+                    is Msg.MinimizedOpacityChanged -> copy(
+                        minimizedOpacity = msg.newValue
+                    )
                 }
             }
         ) {}
@@ -109,6 +128,7 @@ internal class BlinkPreferencesStoreProvider(
         object ObserveNotifySoundOption : Action
         object ObserveNotifyVibrationOption : Action
         object ObserveLaunchOption : Action
+        object ObserveMinimizedOpacityOption : Action
     }
 
     private sealed interface Msg {
@@ -116,10 +136,15 @@ internal class BlinkPreferencesStoreProvider(
         data class SoundOptionChanged(val newValue: Boolean) : Msg
         data class VibrationOptionChanged(val newValue: Boolean) : Msg
         data class LaunchOptionChanged(val newValue: Boolean) : Msg
+        data class MinimizedOpacityChanged(val newValue: Float) : Msg
     }
 
     private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =
         CoroutineExceptionHandler { _, throwable ->
             scope.publish(Label.ErrorCaught(throwable))
         }
+
+    internal companion object {
+        const val OPACITY_PERCENTS_DIVIDER = 100f
+    }
 }

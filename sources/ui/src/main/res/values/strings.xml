@@ -7,6 +7,7 @@
     <string name="prefs_notify_sound">Notify with sound</string>
     <string name="prefs_notify_vibro">Notify with vibration</string>
     <string name="prefs_minimize_on_start">Minimize on start</string>
+    <string name="prefs_minimized_opacity">Minimized opacity, %</string>
     <string name="button_start">Start</string>
     <string name="button_stop">Stop</string>
     <string name="button_minimize">Minimize</string>
