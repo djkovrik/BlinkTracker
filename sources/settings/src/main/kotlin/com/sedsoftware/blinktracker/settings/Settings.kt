@@ -3,6 +3,8 @@ package com.sedsoftware.blinktracker.settings
 import kotlinx.coroutines.flow.Flow
 
 interface Settings {
+    val observableOpacity: Flow<Float>
+
     suspend fun getPerMinuteThreshold(): Flow<Float>
     suspend fun getNotifySoundEnabled(): Flow<Boolean>
     suspend fun getNotifyVibrationEnabled(): Flow<Boolean>

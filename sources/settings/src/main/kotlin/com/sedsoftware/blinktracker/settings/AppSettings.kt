@@ -31,6 +31,11 @@ class AppSettings(
     private val launchMinimizedEnabledKey: Preferences.Key<Boolean> = booleanPreferencesKey(PreferenceKey.LAUNCH_MINIMIZED)
     private val minimizedOpacityKey: Preferences.Key<Float> = floatPreferencesKey(PreferenceKey.OPACITY)
 
+    override val observableOpacity: Flow<Float> =
+        Store.get(context).data.map { preferences ->
+            preferences[minimizedOpacityKey] ?: 1f
+        }
+
     override suspend fun getPerMinuteThreshold(): Flow<Float> =
         getPrefsValue(perMinuteThresholdKey, PER_MINUTE_THRESHOLD_DEFAULT)
 
