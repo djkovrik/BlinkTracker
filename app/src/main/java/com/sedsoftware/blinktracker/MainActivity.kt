@@ -123,6 +123,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         _root = null
         _imageProcessor?.run { this.stop() }
         _imageProcessor = null
+        settings = null
         enableKeepScreenOn(false)
     }
 
