@@ -23,7 +23,7 @@ import com.sedsoftware.blinktracker.database.StatisticsRepositoryReal
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.root.integration.BlinkRootComponent
 import com.sedsoftware.blinktracker.settings.AppSettings
-import com.sedsoftware.blinktracker.settings.ObservableOpacityProvider
+import com.sedsoftware.blinktracker.settings.Settings
 import com.sedsoftware.blinktracker.tools.AppErrorHandler
 import com.sedsoftware.blinktracker.tools.AppNotificationsManager
 import com.sedsoftware.blinktracker.ui.BlinkRootContent
@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         }
 
     private var currentWindowAlpha: Float = 1f
-    private var opacityProvider: ObservableOpacityProvider? = null
+    private var settings: Settings? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,14 +75,14 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             .build()
 
         _imageProcessor = FaceDetectorProcessor(faceDetectorOptions)
-        opacityProvider = ObservableOpacityProvider(applicationContext)
+        settings = AppSettings(applicationContext)
 
         _root = BlinkRootComponent(
             componentContext = defaultComponentContext(),
             storeFactory = DefaultStoreFactory(),
             errorHandler = errorHandler,
             notificationsManager = AppNotificationsManager(this),
-            settings = AppSettings(applicationContext),
+            settings = settings!!,
             repo = StatisticsRepositoryReal(applicationContext),
             pipLauncher = this,
         )
@@ -91,7 +91,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             .onEach { root.onFaceDataChanged(it) }
             .launchIn(lifecycleScope)
 
-        opacityProvider?.opacity
+        settings?.observableOpacity
             ?.onEach { currentWindowAlpha = it }
             ?.launchIn(lifecycleScope)
 
@@ -123,6 +123,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         _root = null
         _imageProcessor?.run { this.stop() }
         _imageProcessor = null
+        settings = null
         enableKeepScreenOn(false)
     }
 
