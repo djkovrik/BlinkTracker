@@ -80,6 +80,6 @@ class AppSettings(
         const val NOTIFY_SOUND_DEFAULT = false
         const val NOTIFY_VIBRATION_DEFAULT = true
         const val LAUNCH_MINIMIZED_DEFAULT = false
-        const val MINIMIZED_OPACITY_DEFAULT = 1f
+        const val MINIMIZED_OPACITY_DEFAULT = 0.7f
     }
 }
