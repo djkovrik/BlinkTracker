@@ -70,7 +70,6 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions, context: Conte
                 val originalToBitmap = ImageConvertUtils.getInstance().getUpRightBitmap(inputImage)
                 // Change to average luminosity
                 val brighterBitmap = changeBitmapContrastBrightness(originalToBitmap, 1f, luma.toFloat())
-//                val brighterBitmap = changeBitmapContrastBrightness(originalToBitmap, 1f, 100f)
                 // Rotation degrees 0 because upright bitmap
                 inputImage = InputImage.fromBitmap(brighterBitmap, 0)
                 Toast.makeText(myContext, "Low light detected: $luma", Toast.LENGTH_SHORT).show()
