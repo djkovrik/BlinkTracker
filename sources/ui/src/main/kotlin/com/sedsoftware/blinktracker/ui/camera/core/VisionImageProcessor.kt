@@ -42,7 +42,7 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions, context: Conte
     private var isShutdown: Boolean = false
 
     private var lastAnalyzedTimestamp = 0L
-    private val lowLightThreshold = 90.0
+    private val lowLightThreshold = 105.0
 
     private var myContext = context
 
@@ -64,18 +64,16 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions, context: Conte
             val data = buffer.toByteArray()
             val pixels = data.map { it.toInt() and 0xFF }
             val luma = pixels.average()
-            Log.d("CameraXApp", "Average luminosity: $luma")
             lastAnalyzedTimestamp = currentTimestamp
 
             if (luma <= lowLightThreshold) {
-                Log.d("CameraXApp", "Low luminosity detected")
                 val originalToBitmap = ImageConvertUtils.getInstance().getUpRightBitmap(inputImage)
                 // Change to average luminosity
                 val brighterBitmap = changeBitmapContrastBrightness(originalToBitmap, 1f, luma.toFloat())
+//                val brighterBitmap = changeBitmapContrastBrightness(originalToBitmap, 1f, 100f)
                 // Rotation degrees 0 because upright bitmap
                 inputImage = InputImage.fromBitmap(brighterBitmap, 0)
-                Log.d("CameraXApp", "Set brightened image to detect on")
-                Toast.makeText(myContext, "Low light detected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(myContext, "Low light detected: $luma", Toast.LENGTH_SHORT).show()
             }
         }
 
