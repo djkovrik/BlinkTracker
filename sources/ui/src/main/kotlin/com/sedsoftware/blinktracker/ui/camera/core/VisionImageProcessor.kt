@@ -1,11 +1,13 @@
 package com.sedsoftware.blinktracker.ui.camera.core
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
 import android.util.Log
+import android.widget.Toast
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
 import com.google.android.gms.tasks.TaskExecutors
@@ -32,7 +34,7 @@ interface VisionImageProcessor {
     fun stop()
 }
 
-class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions) : VisionImageProcessor {
+class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions, context: Context) : VisionImageProcessor {
     private val detector: FaceDetector = FaceDetection.getClient(detectorOptions)
     private val executor: ScopedExecutor = ScopedExecutor(TaskExecutors.MAIN_THREAD)
     private val emptyData: VisionFaceData = VisionFaceData()
@@ -41,6 +43,8 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions) : VisionImageP
 
     private var lastAnalyzedTimestamp = 0L
     private val lowLightThreshold = 90.0
+
+    private var myContext = context
 
     override val faceData: Flow<VisionFaceData>
         get() = _faceData
@@ -71,6 +75,7 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions) : VisionImageP
                 // Rotation degrees 0 because upright bitmap
                 inputImage = InputImage.fromBitmap(brighterBitmap, 0)
                 Log.d("CameraXApp", "Set brightened image to detect on")
+                Toast.makeText(myContext, "Low light detected", Toast.LENGTH_SHORT).show()
             }
         }
 

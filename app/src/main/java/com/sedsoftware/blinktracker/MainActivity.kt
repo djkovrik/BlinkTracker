@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_FAST)
             .build()
 
-        _imageProcessor = FaceDetectorProcessor(faceDetectorOptions)
+        _imageProcessor = FaceDetectorProcessor(faceDetectorOptions, this)
         settings = AppSettings(applicationContext)
 
         _root = BlinkRootComponent(
