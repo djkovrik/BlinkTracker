@@ -137,6 +137,10 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         enterPictureInPictureMode(getPictureInPictureParams())
     }
 
+    override fun onUserLeaveHint() {
+        enterPictureInPictureMode(getPictureInPictureParams())
+    }
+
     private fun checkCameraPermissions() {
         when {
             ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
