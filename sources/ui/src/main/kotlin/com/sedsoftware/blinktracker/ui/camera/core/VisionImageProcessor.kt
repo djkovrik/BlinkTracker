@@ -34,7 +34,7 @@ interface VisionImageProcessor {
     fun stop()
 }
 
-class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions, context: Context) : VisionImageProcessor {
+class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions) : VisionImageProcessor {
     private val detector: FaceDetector = FaceDetection.getClient(detectorOptions)
     private val executor: ScopedExecutor = ScopedExecutor(TaskExecutors.MAIN_THREAD)
     private val emptyData: VisionFaceData = VisionFaceData()
@@ -43,8 +43,6 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions, context: Conte
 
     private var lastAnalyzedTimestamp = 0L
     private val lowLightThreshold = 105.0
-
-    private var myContext = context
 
     override val faceData: Flow<VisionFaceData>
         get() = _faceData
@@ -72,7 +70,6 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions, context: Conte
                 val brighterBitmap = changeBitmapContrastBrightness(originalToBitmap, 1f, luma.toFloat())
                 // Rotation degrees 0 because upright bitmap
                 inputImage = InputImage.fromBitmap(brighterBitmap, 0)
-                Toast.makeText(myContext, "Low light detected: $luma", Toast.LENGTH_SHORT).show()
             }
         }
 
