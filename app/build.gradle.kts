@@ -23,8 +23,8 @@ android {
         applicationId = "com.sedsoftware.blinktracker"
         minSdk = 26
         targetSdk = 34
-        versionCode = 100301
-        versionName = "1.3.1"
+        versionCode = 100400
+        versionName = "1.4.0"
         setProperty("archivesBaseName", applicationId)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -68,7 +68,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
+        kotlinCompilerExtensionVersion = "1.5.12"
     }
     packaging {
         resources {

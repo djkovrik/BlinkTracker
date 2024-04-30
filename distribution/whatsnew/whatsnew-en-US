@@ -1,1 +1,2 @@
-Minor tweaks and fixes
+Improved face detection under low light conditions
+Fixed face detection while app works in background
