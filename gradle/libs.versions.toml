@@ -1,6 +1,6 @@
 [versions]
 agp = "8.1.4"
-org-jetbrains-kotlin-android = "1.8.21"
+org-jetbrains-kotlin-android = "1.9.23"
 org-jetbrains-kotlin-coroutines = "1.8.0"
 org-jetbrains-kotlin-datetime = "0.5.0"
 google-play-services = "4.4.1"
