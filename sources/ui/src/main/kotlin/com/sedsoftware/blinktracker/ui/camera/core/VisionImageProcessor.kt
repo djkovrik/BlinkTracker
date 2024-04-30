@@ -1,13 +1,10 @@
 package com.sedsoftware.blinktracker.ui.camera.core
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.Paint
-import android.util.Log
-import android.widget.Toast
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
 import com.google.android.gms.tasks.TaskExecutors
@@ -48,6 +45,7 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions) : VisionImageP
         get() = _faceData
 
     @ExperimentalGetImage
+    @Suppress("MagicNumber")
     override suspend fun process(image: ImageProxy) {
         if (isShutdown) {
             return
