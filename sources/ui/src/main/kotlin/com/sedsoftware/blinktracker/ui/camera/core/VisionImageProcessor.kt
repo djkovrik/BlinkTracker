@@ -43,6 +43,7 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions) : VisionImageP
 
     private var lastAnalyzedTimestamp = 0L
     private val lowLightThreshold = 105.0
+    private val whiteHexValue = 0xFF
 
     override val faceData: Flow<VisionFaceData>
         get() = _faceData
@@ -60,7 +61,7 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions) : VisionImageP
             TimeUnit.SECONDS.toMillis(1)) {
             val buffer = image.planes[0].buffer
             val data = buffer.toByteArray()
-            val pixels = data.map { it.toInt() and 0xFF }
+            val pixels = data.map { it.toInt() and whiteHexValue }
             val luma = pixels.average()
             lastAnalyzedTimestamp = currentTimestamp
 
