@@ -66,6 +66,8 @@ fun PeriodChips(
                     FilterChipDefaults.filterChipBorder(
                         borderColor = MaterialTheme.colorScheme.primary,
                         borderWidth = 1.dp,
+                        enabled = true,
+                        selected = false,
                     )
                 } else {
                     null
