@@ -8,8 +8,20 @@ on:
       - closed
 
 jobs:
+  build:
+    name: Print PR variables
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print PR state
+        run: echo ${{ github.event.pull_request.merged == true }}
+      - name: Print branch name
+        run: echo ${{ github.event.pull_request.head.ref }}
+      - name: Print resulting flag
+        run: echo ${{ github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/') }}
+
   deploy:
-    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.base.ref, 'release/')
+    if: ${{ github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/') }}
     runs-on: ubuntu-latest
 
     steps:
