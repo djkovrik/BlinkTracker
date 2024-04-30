@@ -137,6 +137,10 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         enterPictureInPictureMode(getPictureInPictureParams())
     }
 
+    override fun onUserLeaveHint() {
+        enterPictureInPictureMode(getPictureInPictureParams())
+    }
+
     private fun checkCameraPermissions() {
         when {
             ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
@@ -167,7 +171,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             .setAspectRatio(Rational(Constants.PIP_RATIO_WIDTH, Constants.PIP_RATIO_HEIGHT))
             .apply {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    setAutoEnterEnabled(false)
+                    setAutoEnterEnabled(true)
                     setSeamlessResizeEnabled(false)
                 }
             }
