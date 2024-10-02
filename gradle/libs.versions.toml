@@ -1,30 +1,32 @@
 [versions]
-agp = "8.1.4"
-org-jetbrains-kotlin-android = "1.9.23"
-org-jetbrains-kotlin-coroutines = "1.8.0"
-org-jetbrains-kotlin-datetime = "0.5.0"
-google-play-services = "4.4.1"
+agp = "8.6.1"
+kotlin = "2.0.20"
+org-jetbrains-kotlin-android = "2.0.20"
+org-jetbrains-kotlin-coroutines = "1.9.0-RC"
+org-jetbrains-kotlin-datetime = "0.6.0"
+google-play-services = "4.4.2"
 crashlytics = "2.9.6"
-compose-bom = "2024.04.01"
-firebase-bom = "32.8.1"
-firebase-crashlytics = "2.9.9"
+compose-bom = "2024.09.02"
+ksp = "2.0.20-1.0.24"
+firebase-bom = "33.4.0"
+firebase-crashlytics = "3.0.2"
 firebase-perf = "1.4.2"
-compose-icons = "1.6.6"
-core-ktx = "1.13.0"
-lifecycle-runtime-ktx = "2.7.0"
-activity-compose = "1.9.0"
-face-detection = "16.1.6"
-camera = "1.3.3"
-datastore = "1.1.0"
+compose-icons = "1.7.2"
+core-ktx = "1.13.1"
+lifecycle-runtime-ktx = "2.8.6"
+activity-compose = "1.9.2"
+face-detection = "16.1.7"
+camera = "1.3.4"
+datastore = "1.1.1"
 room = "2.6.1"
-decompose = "2.2.3"
-essenty = "1.3.0"
-mvi-kotlin = "3.2.1"
+decompose = "3.1.0"
+essenty = "2.1.0"
+mvi-kotlin = "4.1.0"
 junit = "4.13.2"
-androidx-test-ext-junit = "1.1.5"
-espresso-core = "3.5.1"
-appcompat = "1.6.1"
-material = "1.11.0"
+androidx-test-ext-junit = "1.2.1"
+espresso-core = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
 timber = "5.0.1"
 vico = "1.6.6"
 
@@ -54,7 +56,7 @@ ark-mvikotlin-core = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref
 ark-mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.ref = "mvi-kotlin" }
 ark-mvikotlin-extensions-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mvi-kotlin" }
 ark-decompose-core = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
-ark-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose-jetpack", version.ref = "decompose" }
+ark-decompose-extensions = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
 ark-essenty = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
@@ -68,11 +70,12 @@ vico-compose = { group = "com.patrykandpatrick.vico", name = "compose-m3", versi
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
 com-android-library = { id = "com.android.library", version.ref = "agp" }
-org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
-org-jetbrains-kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "org-jetbrains-kotlin-android" }
+org-jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"  }
 google-play-services = { id = "com.google.gms.google-services", version.ref = "google-play-services" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf" }
+org-jetbrains-kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 [bundles]
 

@@ -1,13 +1,12 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.library)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
-    alias(libs.plugins.org.jetbrains.kotlin.parcelize)
+    alias(libs.plugins.org.jetbrains.kotlin.serialization)
+    kotlin("android")
 }
 
 android {
     namespace = "com.sedsoftware.blinktracker.root"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 26

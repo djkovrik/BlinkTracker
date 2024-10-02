@@ -4,13 +4,13 @@ import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.util.Properties
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.application)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.org.jetbrains.kotlin.compose.compiler)
     alias(libs.plugins.google.play.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.perf)
+    kotlin("android")
 }
 
 val useReleaseKeystore = rootProject.file("app/release.jks").exists()
@@ -37,8 +37,8 @@ android {
             if (useReleaseKeystore) {
                 storeFile = rootProject.file("app/release.jks")
                 keyAlias = "blinkz"
-                keyPassword = gradleLocalProperties(rootDir).getProperty("releaseKeyPwd")
-                storePassword = gradleLocalProperties(rootDir).getProperty("releaseKeystorePwd")
+                keyPassword = gradleLocalProperties(rootDir, providers).getProperty("releaseKeyPwd")
+                storePassword = gradleLocalProperties(rootDir, providers).getProperty("releaseKeystorePwd")
             }
         }
     }
@@ -66,9 +66,6 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.12"
     }
     packaging {
         resources {

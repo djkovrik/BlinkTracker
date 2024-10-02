@@ -1,12 +1,11 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.library)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
+    kotlin("android")
 }
 
 android {
     namespace = "com.sedsoftware.blinktracker.components.home"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 26
@@ -28,7 +27,6 @@ dependencies {
     implementation(project(":sources:components:tracker"))
 
     implementation(libs.org.jetbrains.coroutines)
-    implementation(libs.org.jetbrains.datetime)
     implementation(libs.ark.mvikotlin.core)
     implementation(libs.ark.mvikotlin.main)
     implementation(libs.ark.decompose.core)

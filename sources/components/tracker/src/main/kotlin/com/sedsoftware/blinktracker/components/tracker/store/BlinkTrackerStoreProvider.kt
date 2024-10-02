@@ -79,6 +79,7 @@ internal class BlinkTrackerStoreProvider(
                 }
 
                 onAction<Action.OnTick> {
+                    val state = state()
                     if (state.active) {
                         val counter = state.timer
 
@@ -97,6 +98,7 @@ internal class BlinkTrackerStoreProvider(
 
                 onIntent<Intent.OnTrackingStart> {
                     dispatch(Msg.TrackerStateChangedStarted(true))
+                    val state = state()
                     if (state.shouldLaunchMinimized) {
                         pipLauncher.get()?.launchPictureInPicture()
                     }
@@ -108,7 +110,7 @@ internal class BlinkTrackerStoreProvider(
 
                 onIntent<Intent.FaceDataChanged> {
                     dispatch(Msg.FaceDataAvailable(it.data))
-
+                    val state = state()
                     if (state.active && it.data.hasEyesData() && state.blinkPeriodEnded()) {
                         dispatch(Msg.Blink)
                     }
@@ -170,11 +172,11 @@ internal class BlinkTrackerStoreProvider(
         ) {}
 
     private sealed interface Action {
-        object ObserveThresholdOption : Action
-        object ObserveNotifySoundOption : Action
-        object ObserveNotifyVibrationOption : Action
-        object ObserveLaunchOption : Action
-        object OnTick : Action
+        data object ObserveThresholdOption : Action
+        data object ObserveNotifySoundOption : Action
+        data object ObserveNotifyVibrationOption : Action
+        data object ObserveLaunchOption : Action
+        data object OnTick : Action
     }
 
     private sealed interface Msg {
@@ -185,12 +187,12 @@ internal class BlinkTrackerStoreProvider(
         data class FaceDataAvailable(val data: VisionFaceData) : Msg
         data class TrackerStateChangedStarted(val started: Boolean) : Msg
         data class Tick(val seconds: Int) : Msg
-        object Blink : Msg
-        object ResetMinute : Msg
+        data object Blink : Msg
+        data object ResetMinute : Msg
         data class MinimizedStateChanged(val minimized: Boolean) : Msg
     }
 
-    private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =
+    private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Action, Label>): CoroutineExceptionHandler =
         CoroutineExceptionHandler { _, throwable ->
             scope.publish(Label.ErrorCaught(throwable))
         }

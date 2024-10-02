@@ -1,13 +1,12 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.library)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
-    id("kotlin-kapt")
+    alias(libs.plugins.kotlin.ksp)
+    kotlin("android")
 }
 
 android {
     namespace = "com.sedsoftware.blinktracker.database"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 26
@@ -26,5 +25,5 @@ dependencies {
     implementation(libs.org.jetbrains.datetime)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
 }
