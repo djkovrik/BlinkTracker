@@ -14,6 +14,7 @@ import com.google.mlkit.common.MlKitException
 import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.nio.BufferUnderflowException
 
 @Suppress("MagicNumber")
 suspend fun Context.bindCameraUseCases(
@@ -38,6 +39,8 @@ suspend fun Context.bindCameraUseCases(
                     imageProcessor.process(imageProxy)
                 }
             } catch (e: MlKitException) {
+                Timber.e("Failed to process image. Error: ${e.localizedMessage}")
+            } catch (e: BufferUnderflowException) {
                 Timber.e("Failed to process image. Error: ${e.localizedMessage}")
             }
         }
