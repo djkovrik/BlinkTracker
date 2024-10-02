@@ -1,13 +1,13 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.library)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
+    kotlin("android")
     id("kotlin-kapt")
 }
 
 android {
     namespace = "com.sedsoftware.blinktracker.database"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 26

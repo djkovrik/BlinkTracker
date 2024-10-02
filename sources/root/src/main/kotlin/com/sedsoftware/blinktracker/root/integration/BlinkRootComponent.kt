@@ -8,7 +8,6 @@ import com.arkivanov.decompose.router.stack.items
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
 import com.sedsoftware.blinktracker.components.home.BlinkHome
@@ -23,7 +22,7 @@ import com.sedsoftware.blinktracker.database.StatisticsRepository
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.root.BlinkRoot.Child
 import com.sedsoftware.blinktracker.settings.Settings
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 class BlinkRootComponent internal constructor(
     componentContext: ComponentContext,
@@ -69,8 +68,9 @@ class BlinkRootComponent internal constructor(
     private val stack: Value<ChildStack<Configuration, Child>> =
         childStack(
             source = navigation,
-            initialConfiguration = Configuration.Home,
+            serializer = Configuration.serializer(),
             handleBackButton = true,
+            initialConfiguration = Configuration.Home,
             childFactory = ::createChild
         )
 
@@ -128,11 +128,12 @@ class BlinkRootComponent internal constructor(
         stack.items.find { it.instance is T }?.instance as? T
             ?: error("Failed to find child")
 
-    private sealed interface Configuration : Parcelable {
-        @Parcelize
-        object Home : Configuration
+    @Serializable
+    private sealed interface Configuration {
+        @Serializable
+        data object Home : Configuration
 
-        @Parcelize
-        object Preferences : Configuration
+        @Serializable
+        data object Preferences : Configuration
     }
 }

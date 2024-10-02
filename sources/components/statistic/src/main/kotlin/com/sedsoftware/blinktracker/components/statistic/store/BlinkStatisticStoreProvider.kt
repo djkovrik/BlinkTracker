@@ -68,7 +68,7 @@ internal class BlinkStatisticStoreProvider(
         ) {}
 
     private sealed interface Action {
-        object ObserveStats : Action
+        data object ObserveStats : Action
     }
 
     private sealed interface Msg {
@@ -76,7 +76,7 @@ internal class BlinkStatisticStoreProvider(
         data class StatsUpdated(val newStats: DisplayedStats) : Msg
     }
 
-    private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =
+    private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Action, Label>): CoroutineExceptionHandler =
         CoroutineExceptionHandler { _, throwable ->
             scope.publish(ErrorCaught(throwable))
         }

@@ -79,6 +79,7 @@ internal class BlinkTrackerStoreProvider(
                 }
 
                 onAction<Action.OnTick> {
+                    val state = state()
                     if (state.active) {
                         val counter = state.timer
 
@@ -97,6 +98,7 @@ internal class BlinkTrackerStoreProvider(
 
                 onIntent<Intent.OnTrackingStart> {
                     dispatch(Msg.TrackerStateChangedStarted(true))
+                    val state = state()
                     if (state.shouldLaunchMinimized) {
                         pipLauncher.get()?.launchPictureInPicture()
                     }
@@ -108,7 +110,7 @@ internal class BlinkTrackerStoreProvider(
 
                 onIntent<Intent.FaceDataChanged> {
                     dispatch(Msg.FaceDataAvailable(it.data))
-
+                    val state = state()
                     if (state.active && it.data.hasEyesData() && state.blinkPeriodEnded()) {
                         dispatch(Msg.Blink)
                     }
@@ -190,7 +192,7 @@ internal class BlinkTrackerStoreProvider(
         data class MinimizedStateChanged(val minimized: Boolean) : Msg
     }
 
-    private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Label>): CoroutineExceptionHandler =
+    private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Action, Label>): CoroutineExceptionHandler =
         CoroutineExceptionHandler { _, throwable ->
             scope.publish(Label.ErrorCaught(throwable))
         }
