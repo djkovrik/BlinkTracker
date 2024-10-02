@@ -1,8 +1,7 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.library)
+    alias(libs.plugins.kotlin.ksp)
     kotlin("android")
-    id("kotlin-kapt")
 }
 
 android {
@@ -26,5 +25,5 @@ dependencies {
     implementation(libs.org.jetbrains.datetime)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    kapt(libs.room.compiler)
+    ksp(libs.room.compiler)
 }

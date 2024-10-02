@@ -1,4 +1,3 @@
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.com.android.library)
     kotlin("android")
@@ -28,7 +27,6 @@ dependencies {
     implementation(project(":sources:components:tracker"))
 
     implementation(libs.org.jetbrains.coroutines)
-    implementation(libs.org.jetbrains.datetime)
     implementation(libs.ark.mvikotlin.core)
     implementation(libs.ark.mvikotlin.main)
     implementation(libs.ark.decompose.core)

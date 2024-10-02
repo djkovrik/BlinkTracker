@@ -124,11 +124,11 @@ internal class BlinkPreferencesStoreProvider(
         ) {}
 
     private interface Action {
-        object ObserveThresholdOption : Action
-        object ObserveNotifySoundOption : Action
-        object ObserveNotifyVibrationOption : Action
-        object ObserveLaunchOption : Action
-        object ObserveMinimizedOpacityOption : Action
+        data object ObserveThresholdOption : Action
+        data object ObserveNotifySoundOption : Action
+        data object ObserveNotifyVibrationOption : Action
+        data object ObserveLaunchOption : Action
+        data object ObserveMinimizedOpacityOption : Action
     }
 
     private sealed interface Msg {

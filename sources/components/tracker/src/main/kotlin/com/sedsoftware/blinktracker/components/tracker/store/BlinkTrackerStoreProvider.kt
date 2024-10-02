@@ -172,11 +172,11 @@ internal class BlinkTrackerStoreProvider(
         ) {}
 
     private sealed interface Action {
-        object ObserveThresholdOption : Action
-        object ObserveNotifySoundOption : Action
-        object ObserveNotifyVibrationOption : Action
-        object ObserveLaunchOption : Action
-        object OnTick : Action
+        data object ObserveThresholdOption : Action
+        data object ObserveNotifySoundOption : Action
+        data object ObserveNotifyVibrationOption : Action
+        data object ObserveLaunchOption : Action
+        data object OnTick : Action
     }
 
     private sealed interface Msg {
@@ -187,8 +187,8 @@ internal class BlinkTrackerStoreProvider(
         data class FaceDataAvailable(val data: VisionFaceData) : Msg
         data class TrackerStateChangedStarted(val started: Boolean) : Msg
         data class Tick(val seconds: Int) : Msg
-        object Blink : Msg
-        object ResetMinute : Msg
+        data object Blink : Msg
+        data object ResetMinute : Msg
         data class MinimizedStateChanged(val minimized: Boolean) : Msg
     }
 

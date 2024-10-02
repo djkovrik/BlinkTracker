@@ -10,9 +10,9 @@ import kotlinx.datetime.Instant
 internal interface BlinkTrackerStore : Store<Intent, State, Label> {
 
     sealed class Intent {
-        object OnTrackingStart : Intent()
-        object OnTrackingStop : Intent()
-        object OnLaunchPip : Intent()
+        data object OnTrackingStart : Intent()
+        data object OnTrackingStop : Intent()
+        data object OnLaunchPip : Intent()
         data class FaceDataChanged(val data: VisionFaceData) : Intent()
         data class MinimizedStateChanged(val minimized: Boolean) : Intent()
     }
@@ -32,8 +32,8 @@ internal interface BlinkTrackerStore : Store<Intent, State, Label> {
     )
 
     sealed class Label {
-        object SoundNotificationTriggered : Label()
-        object VibrationNotificationTriggered : Label()
+        data object SoundNotificationTriggered : Label()
+        data object VibrationNotificationTriggered : Label()
         data class ErrorCaught(val throwable: Throwable) : Label()
         data class BlinksPerMinuteAvailable(val value: Int) : Label()
     }
