@@ -1,2 +1,1 @@
-* Dependencies update and stability tweaks (#31)
-* 
+* Dependencies update and crash fix (#33)
