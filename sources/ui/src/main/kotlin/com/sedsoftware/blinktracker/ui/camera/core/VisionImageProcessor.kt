@@ -18,6 +18,7 @@ import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
+import java.nio.BufferUnderflowException
 import java.nio.ByteBuffer
 import java.util.concurrent.TimeUnit
 import kotlin.math.round
@@ -64,11 +65,18 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions) : VisionImageP
             lastAnalyzedTimestamp = currentTimestamp
 
             if (luma <= lowLightThreshold) {
-                val originalToBitmap = ImageConvertUtils.getInstance().getUpRightBitmap(inputImage)
+                val originalToBitmap = try {
+                    ImageConvertUtils.getInstance().getUpRightBitmap(inputImage)
+                } catch (exception: BufferUnderflowException) {
+                    null
+                }
                 // Change to average luminosity
-                val brighterBitmap = changeBitmapContrastBrightness(originalToBitmap, 1f, luma.toFloat())
-                // Rotation degrees 0 because upright bitmap
-                inputImage = InputImage.fromBitmap(brighterBitmap, 0)
+
+                originalToBitmap?.let {
+                    val brighterBitmap = changeBitmapContrastBrightness(originalToBitmap, 1f, luma.toFloat())
+                    // Rotation degrees 0 because upright bitmap
+                    inputImage = InputImage.fromBitmap(brighterBitmap, 0)
+                }
             }
         }
 
