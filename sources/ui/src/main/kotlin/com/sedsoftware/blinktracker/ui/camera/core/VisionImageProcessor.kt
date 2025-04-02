@@ -67,7 +67,7 @@ class FaceDetectorProcessor(detectorOptions: FaceDetectorOptions) : VisionImageP
             if (luma <= lowLightThreshold) {
                 val originalToBitmap = try {
                     ImageConvertUtils.getInstance().getUpRightBitmap(inputImage)
-                } catch (exception: BufferUnderflowException) {
+                } catch (_: BufferUnderflowException) {
                     null
                 }
                 // Change to average luminosity
