@@ -9,6 +9,7 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.plus
 import com.arkivanov.decompose.extensions.compose.stack.animation.scale
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
+import androidx.compose.foundation.layout.systemBarsPadding
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 
@@ -17,7 +18,11 @@ fun BlinkRootContent(
     component: BlinkRoot,
     processor: VisionImageProcessor,
 ) {
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .systemBarsPadding()
+    ) {
         Children(
             stack = component.childStack,
             animation = stackAnimation(fade() + scale()),
