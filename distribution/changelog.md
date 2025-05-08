@@ -1,1 +1,1 @@
-* Dependencies update and crash fix (#33)
+* Add edge to edge support (#35)
