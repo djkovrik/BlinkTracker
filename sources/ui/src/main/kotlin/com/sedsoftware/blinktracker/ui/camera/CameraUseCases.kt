@@ -50,8 +50,8 @@ suspend fun Context.bindCameraUseCases(
         cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, previewUseCase)
         cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, analysisUseCase)
     } catch (exception: IllegalStateException) {
-        Timber.e("CameraX unable to bind preview use case", exception)
+        Timber.e(exception, "CameraX unable to bind preview use case")
     } catch (exception: IllegalArgumentException) {
-        Timber.e("CameraX unable to resolve camera", exception)
+        Timber.e(exception, "CameraX unable to resolve camera")
     }
 }

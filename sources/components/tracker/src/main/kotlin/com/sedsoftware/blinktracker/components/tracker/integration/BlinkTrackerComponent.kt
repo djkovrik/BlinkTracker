@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.sedsoftware.blinktracker.components.tracker.integration
 
 import com.arkivanov.decompose.ComponentContext
@@ -21,6 +23,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import java.lang.ref.WeakReference
+import kotlin.time.ExperimentalTime
 
 class BlinkTrackerComponent(
     private val componentContext: ComponentContext,

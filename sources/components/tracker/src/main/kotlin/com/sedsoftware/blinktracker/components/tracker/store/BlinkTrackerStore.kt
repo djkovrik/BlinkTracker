@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.sedsoftware.blinktracker.components.tracker.store
 
 import com.arkivanov.mvikotlin.core.store.Store
@@ -5,7 +7,8 @@ import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Intent
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.Label
 import com.sedsoftware.blinktracker.components.tracker.store.BlinkTrackerStore.State
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 internal interface BlinkTrackerStore : Store<Intent, State, Label> {
 
