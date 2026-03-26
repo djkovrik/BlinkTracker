@@ -30,6 +30,7 @@ internal class BlinkPreferencesStoreProvider(
                 dispatch(Action.ObserveNotifyVibrationOption)
                 dispatch(Action.ObserveLaunchOption)
                 dispatch(Action.ObserveMinimizedOpacityOption)
+                dispatch(Action.ObserveAutoStartOption)
             },
             executorFactory = coroutineExecutorFactory {
                 onAction<Action.ObserveThresholdOption> {
@@ -67,6 +68,13 @@ internal class BlinkPreferencesStoreProvider(
                     }
                 }
 
+                onAction<Action.ObserveAutoStartOption> {
+                    launch(getExceptionHandler(this)) {
+                        settings.getAutoStartEnabled()
+                            .collect { dispatch(Msg.AutoStartOptionChanged(it)) }
+                    }
+                }
+
                 onIntent<Intent.OnMinimalThresholdChange> {
                     launch(getExceptionHandler(this)) {
                         settings.setPerMinuteThreshold(it.value)
@@ -97,27 +105,37 @@ internal class BlinkPreferencesStoreProvider(
                         settings.setMinimizedOpacity(newValue)
                     }
                 }
+
+                onIntent<Intent.OnAutoStartChanged> {
+                    launch(getExceptionHandler(this)) {
+                        settings.setAutoStartEnabled(it.value)
+                    }
+                }
             },
             reducer = { msg ->
                 when (msg) {
                     is Msg.ThresholdOptionChanged -> copy(
-                        minimalMinuteThreshold = msg.newValue
+                        minimalMinuteThreshold = msg.newValue,
                     )
 
                     is Msg.SoundOptionChanged -> copy(
-                        notifySound = msg.newValue
+                        notifySound = msg.newValue,
                     )
 
                     is Msg.VibrationOptionChanged -> copy(
-                        notifyVibration = msg.newValue
+                        notifyVibration = msg.newValue,
                     )
 
                     is Msg.LaunchOptionChanged -> copy(
-                        launchMinimized = msg.newValue
+                        launchMinimized = msg.newValue,
                     )
 
                     is Msg.MinimizedOpacityChanged -> copy(
-                        minimizedOpacity = msg.newValue
+                        minimizedOpacity = msg.newValue,
+                    )
+
+                    is Msg.AutoStartOptionChanged -> copy(
+                        autoStartOnUnlock = msg.newValue,
                     )
                 }
             }
@@ -129,6 +147,7 @@ internal class BlinkPreferencesStoreProvider(
         data object ObserveNotifyVibrationOption : Action
         data object ObserveLaunchOption : Action
         data object ObserveMinimizedOpacityOption : Action
+        data object ObserveAutoStartOption : Action
     }
 
     private sealed interface Msg {
@@ -137,6 +156,7 @@ internal class BlinkPreferencesStoreProvider(
         data class VibrationOptionChanged(val newValue: Boolean) : Msg
         data class LaunchOptionChanged(val newValue: Boolean) : Msg
         data class MinimizedOpacityChanged(val newValue: Float) : Msg
+        data class AutoStartOptionChanged(val newValue: Boolean) : Msg
     }
 
     private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Action, Label>): CoroutineExceptionHandler =

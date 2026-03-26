@@ -13,6 +13,7 @@ internal interface BlinkPreferencesStore : Store<Intent, State, Label> {
         data class OnNotifyVibrationChange(val value: Boolean) : Intent()
         data class OnLaunchMinimizedChange(val value: Boolean) : Intent()
         data class OnMinimizedOpacityChange(val value: Float) : Intent()
+        data class OnAutoStartChanged(val value: Boolean) : Intent()
     }
 
     data class State(
@@ -21,6 +22,7 @@ internal interface BlinkPreferencesStore : Store<Intent, State, Label> {
         val notifyVibration: Boolean = false,
         val launchMinimized: Boolean = false,
         val minimizedOpacity: Float = 1f,
+        val autoStartOnUnlock: Boolean = false,
     )
 
     sealed class Label {

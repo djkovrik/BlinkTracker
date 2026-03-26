@@ -62,6 +62,7 @@ fun BlinkPreferencesContent(
         onNotifySoundChange = component::onNotifySoundChanged,
         onNotifyVibroChange = component::onNotifyVibrationChanged,
         onMinimizedOpacityChange = component::onMinimizedOpacityChanged,
+        onAutoStartChange = component::onAutoStartChanged,
     )
 }
 
@@ -75,6 +76,7 @@ private fun BlinkPreferencesScreen(
     onNotifySoundChange: (Boolean) -> Unit = {},
     onNotifyVibroChange: (Boolean) -> Unit = {},
     onMinimizedOpacityChange: (Float) -> Unit = {},
+    onAutoStartChange: (Boolean) -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -123,6 +125,14 @@ private fun BlinkPreferencesScreen(
                     isChecked = model.notifySoundChecked,
                     labelRes = R.string.prefs_notify_sound,
                     onValueChanged = onNotifySoundChange,
+                )
+            }
+            item {
+                PrefsOptionSwitch(
+                    modifier = modifier,
+                    isChecked = model.autoStartChecked,
+                    labelRes = R.string.prefs_auto_start,
+                    onValueChanged = onAutoStartChange,
                 )
             }
             item {
