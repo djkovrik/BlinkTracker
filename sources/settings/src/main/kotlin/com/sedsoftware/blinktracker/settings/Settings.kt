@@ -4,14 +4,12 @@ import kotlinx.coroutines.flow.Flow
 
 interface Settings {
     val observableOpacity: Flow<Float>
-    val observeAutoStart: Flow<Boolean>
-
-    suspend fun getPerMinuteThreshold(): Flow<Float>
-    suspend fun getNotifySoundEnabled(): Flow<Boolean>
-    suspend fun getNotifyVibrationEnabled(): Flow<Boolean>
-    suspend fun getLaunchMinimizedEnabled(): Flow<Boolean>
-    suspend fun getMinimizedOpacity(): Flow<Float>
-    suspend fun getAutoStartEnabled(): Flow<Boolean>
+    fun getPerMinuteThreshold(): Flow<Float>
+    fun getNotifySoundEnabled(): Flow<Boolean>
+    fun getNotifyVibrationEnabled(): Flow<Boolean>
+    fun getLaunchMinimizedEnabled(): Flow<Boolean>
+    fun getMinimizedOpacity(): Flow<Float>
+    fun getAutoStartEnabled(): Flow<Boolean>
     suspend fun setPerMinuteThreshold(value: Float)
     suspend fun setNotifySoundEnabled(value: Boolean)
     suspend fun setNotifyVibrationEnabled(value: Boolean)
