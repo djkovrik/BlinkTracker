@@ -2,6 +2,8 @@ package com.sedsoftware.blinktracker
 
 import android.Manifest
 import android.app.PictureInPictureParams
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
@@ -27,6 +29,7 @@ import com.sedsoftware.blinktracker.settings.AppSettings
 import com.sedsoftware.blinktracker.settings.Settings
 import com.sedsoftware.blinktracker.tools.AppErrorHandler
 import com.sedsoftware.blinktracker.tools.AppNotificationsManager
+import com.sedsoftware.blinktracker.tools.AppUnlockReceiver
 import com.sedsoftware.blinktracker.ui.BlinkRootContent
 import com.sedsoftware.blinktracker.ui.Constants
 import com.sedsoftware.blinktracker.ui.camera.core.FaceDetectorProcessor
@@ -60,6 +63,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             }
         }
 
+    private val screenReceiver: AppUnlockReceiver = AppUnlockReceiver()
     private var currentWindowAlpha: Float = 1f
     private var settings: Settings? = null
 
@@ -97,6 +101,12 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             ?.onEach { currentWindowAlpha = it }
             ?.launchIn(lifecycleScope)
 
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_SCREEN_ON)
+            addAction(Intent.ACTION_USER_PRESENT)
+        }
+        registerReceiver(screenReceiver, filter)
+
         setContent {
             BlinkTrackerTheme {
                 BlinkRootContent(root, imageProcessor)
@@ -127,6 +137,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         _imageProcessor = null
         settings = null
         enableKeepScreenOn(false)
+        unregisterReceiver(screenReceiver)
     }
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
