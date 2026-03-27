@@ -25,6 +25,7 @@ import com.sedsoftware.blinktracker.root.BlinkRoot.Child
 import com.sedsoftware.blinktracker.settings.Settings
 import kotlinx.serialization.Serializable
 
+@Suppress("TooManyFunctions")
 class BlinkRootComponent internal constructor(
     componentContext: ComponentContext,
     private val errorHandler: ErrorHandler,
