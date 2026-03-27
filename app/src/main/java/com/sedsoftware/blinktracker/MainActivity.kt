@@ -29,6 +29,7 @@ import com.sedsoftware.blinktracker.settings.AppSettings
 import com.sedsoftware.blinktracker.settings.Settings
 import com.sedsoftware.blinktracker.tools.AppErrorHandler
 import com.sedsoftware.blinktracker.tools.AppNotificationsManager
+import com.sedsoftware.blinktracker.tools.AppOverlayPermissionChecker
 import com.sedsoftware.blinktracker.tools.AppUnlockReceiver
 import com.sedsoftware.blinktracker.ui.BlinkRootContent
 import com.sedsoftware.blinktracker.ui.Constants
@@ -91,6 +92,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             settings = settings!!,
             repo = StatisticsRepositoryReal(applicationContext),
             pipLauncher = this,
+            permissionChecker = AppOverlayPermissionChecker(this),
         )
 
         imageProcessor.faceData
@@ -123,6 +125,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         super.onResume()
         enableKeepScreenOn(true)
         changeMinimizedAlpha(enabled = false)
+        _root?.onResumed()
     }
 
     override fun onPause() {
@@ -137,7 +140,6 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         _imageProcessor = null
         settings = null
         enableKeepScreenOn(false)
-        unregisterReceiver(screenReceiver)
     }
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {

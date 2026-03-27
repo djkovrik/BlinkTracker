@@ -14,6 +14,9 @@ internal interface BlinkPreferencesStore : Store<Intent, State, Label> {
         data class OnLaunchMinimizedChange(val value: Boolean) : Intent()
         data class OnMinimizedOpacityChange(val value: Float) : Intent()
         data class OnAutoStartChanged(val value: Boolean) : Intent()
+        data object CheckOverlayPermissionOnResume : Intent()
+        data object AgreeToDisplayOverlaySettings : Intent()
+        data object DisagreeToDisplayOverlaySettings : Intent()
     }
 
     data class State(
@@ -23,6 +26,9 @@ internal interface BlinkPreferencesStore : Store<Intent, State, Label> {
         val launchMinimized: Boolean = false,
         val minimizedOpacity: Float = 1f,
         val autoStartOnUnlock: Boolean = false,
+        val overlaySettingsDisplayed: Boolean = false,
+        val overlayRationaleDisplayed: Boolean = false,
+        val overlayPermissionGranted: Boolean = false,
     )
 
     sealed class Label {

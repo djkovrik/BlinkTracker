@@ -49,4 +49,10 @@
     <string name="h1">1ч</string>
     <string name="d1">1д</string>
     <string name="d30">30дн</string>
+
+    <string name="overlay_permission_rationale">
+        Для использования функции авто-запуска вам необходимо выдать Blinkz разрешение на отрисовку поверх других приложений.
+    </string>
+    <string name="overlay_permission_rationale_ok">Открыть настройки</string>
+    <string name="overlay_permission_rationale_cancel">Отмена</string>
 </resources>

@@ -13,5 +13,6 @@ internal val stateToModel: (State) -> Model =
             launchMinimized = it.launchMinimized,
             minimizedOpacityPercent = it.minimizedOpacity * OPACITY_PERCENTS_DIVIDER,
             autoStartChecked = it.autoStartOnUnlock,
+            rationaleDisplayed = it.overlayRationaleDisplayed,
         )
     }

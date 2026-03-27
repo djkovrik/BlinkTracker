@@ -19,6 +19,9 @@ interface BlinkRoot {
     fun onPermissionDenied()
     fun onPermissionRationale()
     fun onCurrentLensChanged(lens: CameraLens)
+    fun onResumed()
+    fun onOverlayPermissionRequestAgreed()
+    fun onOverlayPermissionRequestCanceled()
 
     sealed class Child {
         data class Home(val component: BlinkHome) : Child()

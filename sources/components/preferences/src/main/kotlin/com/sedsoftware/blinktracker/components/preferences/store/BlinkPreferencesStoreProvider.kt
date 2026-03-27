@@ -8,6 +8,7 @@ import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
+import com.sedsoftware.blinktracker.components.preferences.integration.OverlayPermissionChecker
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore.Intent
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore.Label
 import com.sedsoftware.blinktracker.components.preferences.store.BlinkPreferencesStore.State
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 
 internal class BlinkPreferencesStoreProvider(
     private val storeFactory: StoreFactory,
+    private val permissionChecker: OverlayPermissionChecker,
     private val settings: Settings,
 ) {
 
@@ -31,8 +33,16 @@ internal class BlinkPreferencesStoreProvider(
                 dispatch(Action.ObserveLaunchOption)
                 dispatch(Action.ObserveMinimizedOpacityOption)
                 dispatch(Action.ObserveAutoStartOption)
+                dispatch(Action.GetInitialPermissionValue)
             },
             executorFactory = coroutineExecutorFactory {
+                onAction<Action.GetInitialPermissionValue> {
+                    launch(getExceptionHandler(this)) {
+                        val granted = permissionChecker.isPermissionGranted()
+                        dispatch(Msg.OverlayPermissionChanged(granted))
+                    }
+                }
+
                 onAction<Action.ObserveThresholdOption> {
                     launch(getExceptionHandler(this)) {
                         settings.getPerMinuteThreshold()
@@ -111,6 +121,41 @@ internal class BlinkPreferencesStoreProvider(
                         settings.setAutoStartEnabled(it.value)
                     }
                 }
+
+                onIntent<Intent.CheckOverlayPermissionOnResume> {
+                    launch(getExceptionHandler(this)) {
+                        val granted = permissionChecker.isPermissionGranted()
+
+                        when {
+                            state().overlaySettingsDisplayed && granted -> {
+                                dispatch(Msg.OverlaySettingsDisplayed(false))
+                                dispatch(Msg.OverlayRationaleDisplayed(false))
+                                dispatch(Msg.OverlayPermissionChanged(true))
+                            }
+
+                            state().overlaySettingsDisplayed && !granted -> {
+                                dispatch(Msg.OverlaySettingsDisplayed(false))
+                                dispatch(Msg.OverlayRationaleDisplayed(false))
+                                dispatch(Msg.OverlayPermissionChanged(false))
+                                settings.setAutoStartEnabled(false)
+                            }
+                        }
+                    }
+                }
+
+                onIntent<Intent.AgreeToDisplayOverlaySettings> {
+                    dispatch(Msg.OverlayRationaleDisplayed(false))
+                    dispatch(Msg.OverlaySettingsDisplayed(true))
+                    permissionChecker.requestPermission()
+                }
+
+                onIntent<Intent.DisagreeToDisplayOverlaySettings> {
+                    launch(getExceptionHandler(this)) {
+                        dispatch(Msg.OverlayRationaleDisplayed(false))
+                        dispatch(Msg.OverlaySettingsDisplayed(false))
+                        settings.setAutoStartEnabled(false)
+                    }
+                }
             },
             reducer = { msg ->
                 when (msg) {
@@ -136,6 +181,19 @@ internal class BlinkPreferencesStoreProvider(
 
                     is Msg.AutoStartOptionChanged -> copy(
                         autoStartOnUnlock = msg.newValue,
+                        overlayRationaleDisplayed = msg.newValue && !overlayPermissionGranted,
+                    )
+
+                    is Msg.OverlaySettingsDisplayed -> copy(
+                        overlaySettingsDisplayed = msg.newValue,
+                    )
+
+                    is Msg.OverlayRationaleDisplayed -> copy(
+                        overlayRationaleDisplayed = msg.newValue,
+                    )
+
+                    is Msg.OverlayPermissionChanged -> copy(
+                        overlayPermissionGranted = msg.newValue,
                     )
                 }
             }
@@ -148,6 +206,7 @@ internal class BlinkPreferencesStoreProvider(
         data object ObserveLaunchOption : Action
         data object ObserveMinimizedOpacityOption : Action
         data object ObserveAutoStartOption : Action
+        data object GetInitialPermissionValue : Action
     }
 
     private sealed interface Msg {
@@ -157,6 +216,9 @@ internal class BlinkPreferencesStoreProvider(
         data class LaunchOptionChanged(val newValue: Boolean) : Msg
         data class MinimizedOpacityChanged(val newValue: Float) : Msg
         data class AutoStartOptionChanged(val newValue: Boolean) : Msg
+        data class OverlaySettingsDisplayed(val newValue: Boolean) : Msg
+        data class OverlayRationaleDisplayed(val newValue: Boolean) : Msg
+        data class OverlayPermissionChanged(val newValue: Boolean) : Msg
     }
 
     private fun getExceptionHandler(scope: CoroutineExecutorScope<State, Msg, Action, Label>): CoroutineExceptionHandler =
