@@ -24,8 +24,8 @@ android {
         minSdk = 26
         //noinspection EditedTargetSdkVersion
         targetSdk = 36
-        versionCode = 100403
-        versionName = "1.4.3"
+        versionCode = 100404
+        versionName = "1.4.4"
         setProperty("archivesBaseName", applicationId)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

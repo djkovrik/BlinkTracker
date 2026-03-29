@@ -1,1 +1,1 @@
-* Add edge to edge support (#35)
+* Add auto-start on screen unlock feature (#37)
