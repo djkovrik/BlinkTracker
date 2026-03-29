@@ -12,5 +12,7 @@ internal val stateToModel: (State) -> Model =
             notifyVibrationChecked = it.notifyVibration,
             launchMinimized = it.launchMinimized,
             minimizedOpacityPercent = it.minimizedOpacity * OPACITY_PERCENTS_DIVIDER,
+            autoStartChecked = it.autoStartOnUnlock,
+            rationaleDisplayed = it.overlayRationaleDisplayed,
         )
     }

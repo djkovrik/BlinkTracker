@@ -16,6 +16,7 @@ import com.sedsoftware.blinktracker.components.home.integration.ErrorHandler
 import com.sedsoftware.blinktracker.components.home.integration.NotificationsManager
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
 import com.sedsoftware.blinktracker.components.preferences.integration.BlinkPreferencesComponent
+import com.sedsoftware.blinktracker.components.preferences.integration.OverlayPermissionChecker
 import com.sedsoftware.blinktracker.components.tracker.model.VisionFaceData
 import com.sedsoftware.blinktracker.components.tracker.tools.PictureInPictureLauncher
 import com.sedsoftware.blinktracker.database.StatisticsRepository
@@ -24,6 +25,7 @@ import com.sedsoftware.blinktracker.root.BlinkRoot.Child
 import com.sedsoftware.blinktracker.settings.Settings
 import kotlinx.serialization.Serializable
 
+@Suppress("TooManyFunctions")
 class BlinkRootComponent internal constructor(
     componentContext: ComponentContext,
     private val errorHandler: ErrorHandler,
@@ -39,6 +41,7 @@ class BlinkRootComponent internal constructor(
         settings: Settings,
         repo: StatisticsRepository,
         pipLauncher: PictureInPictureLauncher,
+        permissionChecker: OverlayPermissionChecker,
     ) : this(
         componentContext = componentContext,
         errorHandler = errorHandler,
@@ -47,6 +50,7 @@ class BlinkRootComponent internal constructor(
                 componentContext = childContext,
                 storeFactory = storeFactory,
                 settings = settings,
+                permissionChecker = permissionChecker,
                 output = output,
             )
         },
@@ -76,6 +80,9 @@ class BlinkRootComponent internal constructor(
 
     private val home: BlinkHome
         get() = findChild<Child.Home>().component
+
+    private val preferences: BlinkPreferences?
+        get() = findPossibleChild<Child.Preferences>()?.component
 
     override val childStack: Value<ChildStack<*, Child>> = stack
 
@@ -111,6 +118,18 @@ class BlinkRootComponent internal constructor(
         home.cameraComponent.onCurrentLensChanged(lens)
     }
 
+    override fun onResumed() {
+        preferences?.onResumedFromOverlay()
+    }
+
+    override fun onOverlayPermissionRequestAgreed() {
+        preferences?.onOverlaySettingsRequested()
+    }
+
+    override fun onOverlayPermissionRequestCanceled() {
+        preferences?.onOverlaySettingsCanceled()
+    }
+
     private fun createChild(configuration: Configuration, componentContext: ComponentContext): Child =
         when (configuration) {
             is Configuration.Home -> Child.Home(blinkHome(componentContext))
@@ -127,6 +146,9 @@ class BlinkRootComponent internal constructor(
     private inline fun <reified T : Child> findChild(): T =
         stack.items.find { it.instance is T }?.instance as? T
             ?: error("Failed to find child")
+
+    private inline fun <reified T : Child> findPossibleChild(): T? =
+        stack.items.find { it.instance is T }?.instance as? T
 
     @Serializable
     private sealed interface Configuration {

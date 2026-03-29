@@ -36,6 +36,8 @@ object PreviewStubs {
         notifyVibrationChecked = false,
         launchMinimized = false,
         minimizedOpacityPercent = 100f,
+        autoStartChecked = false,
+        rationaleDisplayed = false,
     )
 
     val prefsMixed = BlinkPreferences.Model(
@@ -44,6 +46,18 @@ object PreviewStubs {
         notifyVibrationChecked = true,
         launchMinimized = true,
         minimizedOpacityPercent = 100f,
+        autoStartChecked = true,
+        rationaleDisplayed = false,
+    )
+
+    val prefsRationale = BlinkPreferences.Model(
+        selectedThreshold = 16f,
+        notifySoundChecked = false,
+        notifyVibrationChecked = true,
+        launchMinimized = true,
+        minimizedOpacityPercent = 100f,
+        autoStartChecked = true,
+        rationaleDisplayed = true,
     )
 
     val trackerNotActiveNoFaceNoPrefs = BlinkTracker.Model(

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.sedsoftware.blinktracker.components.statistic.integration
 
 import com.patrykandpatrick.vico.core.extension.sumOf
@@ -11,10 +13,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format.MonthNames
+import kotlinx.datetime.format.char
+import kotlinx.datetime.number
 import kotlinx.datetime.toInstant
-import java.time.format.TextStyle
 import java.util.Locale
+import kotlin.time.ExperimentalTime
 
 internal interface StatisticsManager {
     val stats: StateFlow<DisplayedStats>
@@ -27,6 +33,21 @@ internal class StatisticsManagerImpl(
     private val repo: StatisticsRepository,
     scope: CoroutineScope,
 ) : StatisticsManager {
+
+    // TODO Other languages support?
+    private val englishNames: MonthNames = MonthNames(
+        listOf(
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        )
+    )
+
+    private val russianNames: MonthNames = MonthNames(
+        listOf(
+            "Янв", "Фев", "Мар", "Апр", "Май", "Июн",
+            "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"
+        )
+    )
 
     override val stats: StateFlow<DisplayedStats>
         get() = _stats
@@ -200,9 +221,7 @@ internal class StatisticsManagerImpl(
             result.add(
                 PeriodStatsBundle(
                     group.sumOf { it.blinks.toFloat() } / group.size,
-                    label = with(group.last().date) {
-                        "${month.getDisplayName(TextStyle.SHORT, Locale.getDefault())} $dayOfMonth"
-                    }
+                    label = getDisplayName(group.last().date, true)
                 )
             )
         }
@@ -236,9 +255,7 @@ internal class StatisticsManagerImpl(
             result.add(
                 PeriodStatsBundle(
                     group.sumOf { it.blinks.toFloat() } / group.size,
-                    label = with(group.last().date) {
-                        month.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-                    }
+                    label = getDisplayName(group.last().date, false),
                 )
             )
         }
@@ -246,11 +263,29 @@ internal class StatisticsManagerImpl(
         return result
     }
 
+    private fun getDisplayName(date: LocalDateTime, showDay: Boolean): String {
+        val months = if (Locale.getDefault().country == "ru") {
+            russianNames
+        } else {
+            englishNames
+        }
+        val format = LocalDateTime.Format {
+            monthName(months)
+            char(' ')
+            if (showDay) {
+                day()
+            }
+        }
+
+        return format.format(date)
+    }
+
+
     private fun BlinksRecordDbModel.hasDifferentDay(other: BlinksRecordDbModel): Boolean =
         (this.date.year != other.date.year) || (this.date.year == other.date.year && this.date.dayOfYear != other.date.dayOfYear)
 
     private fun BlinksRecordDbModel.hasDifferentMonth(other: BlinksRecordDbModel): Boolean =
-        (this.date.year != other.date.year) || (this.date.year == other.date.year && this.date.monthNumber != other.date.monthNumber)
+        (this.date.year != other.date.year) || (this.date.year == other.date.year && date.month.number != other.date.month.number)
 
     private companion object {
         const val PERIOD_FIFTEEN_MINUTES = 15

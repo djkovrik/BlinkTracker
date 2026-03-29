@@ -24,6 +24,8 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         html.required.set(true)
         html.outputLocation.set(file("$projectDir/detekt/reports/detekt.html"))
     }
+
+    exclude("**/build/**")
 }
 
 tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {

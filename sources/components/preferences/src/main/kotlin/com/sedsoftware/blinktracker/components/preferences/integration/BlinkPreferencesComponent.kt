@@ -23,6 +23,7 @@ class BlinkPreferencesComponent(
     private val componentContext: ComponentContext,
     private val storeFactory: StoreFactory,
     private val settings: Settings,
+    private val permissionChecker: OverlayPermissionChecker,
     private val output: (BlinkPreferences.Output) -> Unit,
 ) : BlinkPreferences, ComponentContext by componentContext {
 
@@ -30,6 +31,7 @@ class BlinkPreferencesComponent(
         instanceKeeper.getStore {
             BlinkPreferencesStoreProvider(
                 storeFactory = storeFactory,
+                permissionChecker = permissionChecker,
                 settings = settings,
             ).provide()
         }
@@ -72,5 +74,21 @@ class BlinkPreferencesComponent(
 
     override fun onMinimizedOpacityChanged(value: Float) {
         store.accept(BlinkPreferencesStore.Intent.OnMinimizedOpacityChange(value))
+    }
+
+    override fun onAutoStartChanged(value: Boolean) {
+        store.accept(BlinkPreferencesStore.Intent.OnAutoStartChanged(value))
+    }
+
+    override fun onResumedFromOverlay() {
+        store.accept(BlinkPreferencesStore.Intent.CheckOverlayPermissionOnResume)
+    }
+
+    override fun onOverlaySettingsRequested() {
+        store.accept(BlinkPreferencesStore.Intent.AgreeToDisplayOverlaySettings)
+    }
+
+    override fun onOverlaySettingsCanceled() {
+        store.accept(BlinkPreferencesStore.Intent.DisagreeToDisplayOverlaySettings)
     }
 }

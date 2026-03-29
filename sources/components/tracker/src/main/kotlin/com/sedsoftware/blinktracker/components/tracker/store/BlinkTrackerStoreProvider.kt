@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMviKotlinApi::class)
+@file:OptIn(ExperimentalMviKotlinApi::class, ExperimentalTime::class)
 
 package com.sedsoftware.blinktracker.components.tracker.store
 
@@ -18,9 +18,10 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock.System
 import java.lang.ref.WeakReference
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
 
 internal class BlinkTrackerStoreProvider(
     private val storeFactory: StoreFactory,
@@ -157,7 +158,7 @@ internal class BlinkTrackerStoreProvider(
                     is Msg.Blink -> copy(
                         blinkLastMinute = this.blinkLastMinute + 1,
                         blinksTotal = this.blinksTotal + 1,
-                        lastBlink = System.now(),
+                        lastBlink = Clock.System.now(),
                     )
 
                     is Msg.ResetMinute -> copy(
@@ -201,7 +202,7 @@ internal class BlinkTrackerStoreProvider(
         this.leftEye != null && this.leftEye < BLINK_THRESHOLD && this.rightEye != null && this.rightEye < BLINK_THRESHOLD
 
     private fun State.blinkPeriodEnded(): Boolean =
-        this.lastBlink < System.now().minus(BLINK_REGISTER_PERIOD_MS.milliseconds)
+        this.lastBlink < Clock.System.now().minus(BLINK_REGISTER_PERIOD_MS.milliseconds)
 
     private companion object {
         const val TIMER_DELAY = 1000L

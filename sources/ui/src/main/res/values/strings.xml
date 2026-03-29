@@ -6,6 +6,7 @@
     <string name="prefs_threshold">Blinks per minute threshold</string>
     <string name="prefs_notify_sound">Notify with sound</string>
     <string name="prefs_notify_vibro">Notify with vibration</string>
+    <string name="prefs_auto_start">Auto-start on screen unlock</string>
     <string name="prefs_minimize_on_start">Minimize on start</string>
     <string name="prefs_minimized_opacity">Minimized opacity, %</string>
     <string name="button_start">Start</string>
@@ -49,4 +50,10 @@
     <string name="h1">1hr</string>
     <string name="d1">1d</string>
     <string name="d30">30d</string>
+
+    <string name="overlay_permission_rationale">
+        To use auto-start feature you must enable Display over other apps permission for Blinkz.
+    </string>
+    <string name="overlay_permission_rationale_ok">Open settings</string>
+    <string name="overlay_permission_rationale_cancel">Cancel</string>
 </resources>

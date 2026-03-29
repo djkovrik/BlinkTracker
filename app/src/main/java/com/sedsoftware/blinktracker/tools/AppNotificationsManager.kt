@@ -33,7 +33,7 @@ class AppNotificationsManager(
             val ringtone = RingtoneManager.getRingtone(context, notification)
             ringtone.play()
         } catch (exception: Exception) {
-            Timber.e("Failed to notify with sound", exception)
+            Timber.e(exception, "Failed to notify with sound")
         }
     }
 

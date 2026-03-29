@@ -12,6 +12,10 @@ interface BlinkPreferences {
     fun onNotifyVibrationChanged(value: Boolean)
     fun onLaunchMinimizedChanged(value: Boolean)
     fun onMinimizedOpacityChanged(value: Float)
+    fun onAutoStartChanged(value: Boolean)
+    fun onResumedFromOverlay()
+    fun onOverlaySettingsRequested()
+    fun onOverlaySettingsCanceled()
 
     data class Model(
         val selectedThreshold: Float,
@@ -19,6 +23,8 @@ interface BlinkPreferences {
         val notifyVibrationChecked: Boolean,
         val launchMinimized: Boolean,
         val minimizedOpacityPercent: Float,
+        val autoStartChecked: Boolean,
+        val rationaleDisplayed: Boolean,
     )
 
     sealed class Output {

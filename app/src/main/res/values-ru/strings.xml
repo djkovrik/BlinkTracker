@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_notification_channel">Канал уведомлений из Blinkz</string>
+    <string name="app_notification_channel_description">Уведомление для авто-запуска Blinkz после разблокировки экрана</string>
+    <string name="app_notification_text">Приложение готово отслеживать моргание ваших глаз</string>
+</resources>

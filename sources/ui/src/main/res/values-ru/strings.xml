@@ -7,6 +7,7 @@
     <string name="prefs_threshold">Минимум морганий в минуту</string>
     <string name="prefs_notify_sound">Уведомлять звуковым сигналом</string>
     <string name="prefs_notify_vibro">Уведомлять вибрацией</string>
+    <string name="prefs_auto_start">Авто-запуск при разблокировке экрана</string>
     <string name="prefs_minimize_on_start">Сворачивать при старте</string>
     <string name="prefs_minimized_opacity">Непрозрачность окна, %</string>
     <string name="button_start">Старт</string>
@@ -48,4 +49,10 @@
     <string name="h1">1ч</string>
     <string name="d1">1д</string>
     <string name="d30">30дн</string>
+
+    <string name="overlay_permission_rationale">
+        Для использования функции авто-запуска вам необходимо выдать Blinkz разрешение на отрисовку поверх других приложений.
+    </string>
+    <string name="overlay_permission_rationale_ok">Открыть настройки</string>
+    <string name="overlay_permission_rationale_cancel">Отмена</string>
 </resources>

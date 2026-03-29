@@ -2,6 +2,8 @@ package com.sedsoftware.blinktracker
 
 import android.Manifest
 import android.app.PictureInPictureParams
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
@@ -13,12 +15,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.arkivanov.decompose.defaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
 import com.sedsoftware.blinktracker.components.home.integration.ErrorHandler
+import com.sedsoftware.blinktracker.components.preferences.integration.OverlayPermissionChecker
 import com.sedsoftware.blinktracker.components.tracker.tools.PictureInPictureLauncher
 import com.sedsoftware.blinktracker.database.StatisticsRepositoryReal
 import com.sedsoftware.blinktracker.root.BlinkRoot
@@ -27,6 +31,7 @@ import com.sedsoftware.blinktracker.settings.AppSettings
 import com.sedsoftware.blinktracker.settings.Settings
 import com.sedsoftware.blinktracker.tools.AppErrorHandler
 import com.sedsoftware.blinktracker.tools.AppNotificationsManager
+import com.sedsoftware.blinktracker.tools.AppUnlockReceiver
 import com.sedsoftware.blinktracker.ui.BlinkRootContent
 import com.sedsoftware.blinktracker.ui.Constants
 import com.sedsoftware.blinktracker.ui.camera.core.FaceDetectorProcessor
@@ -35,8 +40,10 @@ import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
+import android.provider.Settings as AndroidSettings
 
-class MainActivity : ComponentActivity(), PictureInPictureLauncher {
+@Suppress("TooManyFunctions")
+class MainActivity : ComponentActivity(), PictureInPictureLauncher, OverlayPermissionChecker {
 
     private var _imageProcessor: VisionImageProcessor? = null
 
@@ -60,6 +67,8 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             }
         }
 
+    private val screenReceiver: AppUnlockReceiver = AppUnlockReceiver()
+    private var settingsOverlayVisible: Boolean = false
     private var currentWindowAlpha: Float = 1f
     private var settings: Settings? = null
 
@@ -87,6 +96,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             settings = settings!!,
             repo = StatisticsRepositoryReal(applicationContext),
             pipLauncher = this,
+            permissionChecker = this,
         )
 
         imageProcessor.faceData
@@ -96,6 +106,12 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         settings?.observableOpacity
             ?.onEach { currentWindowAlpha = it }
             ?.launchIn(lifecycleScope)
+
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_SCREEN_ON)
+            addAction(Intent.ACTION_USER_PRESENT)
+        }
+        registerReceiver(screenReceiver, filter)
 
         setContent {
             BlinkTrackerTheme {
@@ -112,7 +128,9 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
     override fun onResume() {
         super.onResume()
         enableKeepScreenOn(true)
-        changeMinimizedAlpha(enabled = false)
+        changeMinimizedAlpha(false)
+        settingsOverlayVisible = false
+        _root?.onResumed()
     }
 
     override fun onPause() {
@@ -120,7 +138,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
         enableKeepScreenOn(false)
     }
 
-    public override fun onDestroy() {
+    override fun onDestroy() {
         super.onDestroy()
         _root = null
         _imageProcessor?.run { this.stop() }
@@ -140,7 +158,23 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
     }
 
     override fun onUserLeaveHint() {
-        enterPictureInPictureMode(getPictureInPictureParams())
+        if (!settingsOverlayVisible) {
+            enterPictureInPictureMode(getPictureInPictureParams())
+        }
+    }
+
+    override fun isPermissionGranted(): Boolean {
+        return AndroidSettings.canDrawOverlays(this)
+    }
+
+    override fun requestPermission() {
+        val intent = Intent(
+            AndroidSettings.ACTION_MANAGE_OVERLAY_PERMISSION,
+            "package:${packageName}".toUri()
+        )
+
+        settingsOverlayVisible = true
+        startActivity(intent)
     }
 
     private fun checkCameraPermissions() {
@@ -173,7 +207,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher {
             .setAspectRatio(Rational(Constants.PIP_RATIO_WIDTH, Constants.PIP_RATIO_HEIGHT))
             .apply {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    setAutoEnterEnabled(true)
+                    setAutoEnterEnabled(!settingsOverlayVisible)
                     setSeamlessResizeEnabled(false)
                 }
             }

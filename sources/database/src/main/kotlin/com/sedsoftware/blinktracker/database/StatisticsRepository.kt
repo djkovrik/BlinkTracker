@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.sedsoftware.blinktracker.database
 
 import android.content.Context
@@ -9,14 +11,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock.System
 import kotlinx.datetime.DateTimePeriod
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import kotlin.random.Random
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 interface StatisticsRepository {
     suspend fun insert(count: Int)
@@ -52,7 +55,7 @@ class StatisticsRepositoryReal(
         }
 
     private fun mapStatRecord(count: Int): BlinksRecordDbModel =
-        BlinksRecordDbModel(blinks = count, date = System.now().toLocalDateTime(timeZone))
+        BlinksRecordDbModel(blinks = count, date = Clock.System.now().toLocalDateTime(timeZone))
 
 }
 
@@ -65,7 +68,7 @@ class StatisticsRepositoryFake : StatisticsRepository {
         TimeZone.currentSystemDefault()
     }
 
-    private val today: Instant = System.now()
+    private val today: Instant = Clock.System.now()
     private val starting: Instant = today.minus(period = DateTimePeriod(months = FAKE_STATS_MONTHS), timeZone = timeZone)
 
     override suspend fun insert(count: Int) = Unit

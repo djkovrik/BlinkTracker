@@ -17,12 +17,13 @@ val useReleaseKeystore = rootProject.file("app/release.jks").exists()
 
 android {
     namespace = "com.sedsoftware.blinktracker"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.sedsoftware.blinktracker"
         minSdk = 26
-        targetSdk = 35
+        //noinspection EditedTargetSdkVersion
+        targetSdk = 36
         versionCode = 100403
         versionName = "1.4.3"
         setProperty("archivesBaseName", applicationId)

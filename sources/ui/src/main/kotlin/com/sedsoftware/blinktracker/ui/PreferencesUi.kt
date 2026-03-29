@@ -3,6 +3,11 @@
 package com.sedsoftware.blinktracker.ui
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,7 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.blinktracker.components.preferences.BlinkPreferences
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
+import com.sedsoftware.blinktracker.ui.component.AutostartRationale
 import com.sedsoftware.blinktracker.ui.component.MainScreenMinimized
 import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
@@ -62,6 +68,9 @@ fun BlinkPreferencesContent(
         onNotifySoundChange = component::onNotifySoundChanged,
         onNotifyVibroChange = component::onNotifyVibrationChanged,
         onMinimizedOpacityChange = component::onMinimizedOpacityChanged,
+        onAutoStartChange = component::onAutoStartChanged,
+        onDisplayOverlayAgree = component::onOverlaySettingsRequested,
+        onDisplayOverlayDisagree = component::onOverlaySettingsCanceled,
     )
 }
 
@@ -75,6 +84,9 @@ private fun BlinkPreferencesScreen(
     onNotifySoundChange: (Boolean) -> Unit = {},
     onNotifyVibroChange: (Boolean) -> Unit = {},
     onMinimizedOpacityChange: (Float) -> Unit = {},
+    onAutoStartChange: (Boolean) -> Unit = {},
+    onDisplayOverlayAgree: () -> Unit = {},
+    onDisplayOverlayDisagree: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -92,7 +104,7 @@ private fun BlinkPreferencesScreen(
                         modifier = Modifier,
                     ) {
                         Icon(
-                            imageVector = Icons.Default.ArrowBack,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Back",
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier
@@ -125,6 +137,28 @@ private fun BlinkPreferencesScreen(
                     onValueChanged = onNotifySoundChange,
                 )
             }
+            item {
+                PrefsOptionSwitch(
+                    modifier = modifier,
+                    isChecked = model.autoStartChecked,
+                    labelRes = R.string.prefs_auto_start,
+                    onValueChanged = onAutoStartChange,
+                )
+            }
+
+            item {
+                AnimatedVisibility(
+                    visible = model.rationaleDisplayed,
+                    enter = fadeIn() + expandVertically(),
+                    exit = fadeOut() + shrinkVertically(),
+                ) {
+                    AutostartRationale(
+                        onAgree = onDisplayOverlayAgree,
+                        onDisagree = onDisplayOverlayDisagree,
+                    )
+                }
+            }
+
             item {
                 PrefsOptionSwitch(
                     modifier = modifier,
@@ -180,7 +214,7 @@ private fun PrefsOptionSwitch(
     modifier: Modifier,
     isChecked: Boolean,
     @StringRes labelRes: Int,
-    onValueChanged: (Boolean) -> Unit
+    onValueChanged: (Boolean) -> Unit,
 ) {
     Row(
         modifier = modifier.fillMaxWidth()
@@ -224,7 +258,7 @@ private fun PrefsOptionSlider(
     valueRange: ClosedFloatingPointRange<Float>,
     steps: Int,
     @StringRes labelRes: Int,
-    onValueChanged: (Float) -> Unit
+    onValueChanged: (Float) -> Unit,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
@@ -270,6 +304,19 @@ private fun PreviewPreferencesAllEnabledLight() {
 
 @Composable
 @Preview(showBackground = true)
+private fun PreviewPreferencesRationaleLight() {
+    BlinkTrackerTheme(darkTheme = false) {
+        Surface {
+            BlinkPreferencesScreen(
+                model = PreviewStubs.prefsRationale,
+            )
+        }
+    }
+}
+
+
+@Composable
+@Preview(showBackground = true)
 private fun PreviewPreferencesAllDisabledDark() {
     BlinkTrackerTheme(darkTheme = true) {
         Surface {
@@ -287,6 +334,18 @@ private fun PreviewPreferencesAllEnabledDark() {
         Surface {
             BlinkPreferencesScreen(
                 model = PreviewStubs.prefsMixed,
+            )
+        }
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+private fun PreviewPreferencesRationaleDark() {
+    BlinkTrackerTheme(darkTheme = true) {
+        Surface {
+            BlinkPreferencesScreen(
+                model = PreviewStubs.prefsRationale,
             )
         }
     }

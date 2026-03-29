@@ -6,12 +6,11 @@ import androidx.camera.view.PreviewView
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.lifecycleScope
-import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 import com.sedsoftware.blinktracker.components.camera.model.CameraLens
 import com.sedsoftware.blinktracker.components.camera.model.isNotValid
+import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 import kotlinx.coroutines.launch
 
 @Composable
@@ -25,7 +24,7 @@ fun CameraPreviewComposable(
     }
 
     val context = LocalContext.current
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
 
     val previewView = PreviewView(context).apply {
         scaleType = PreviewView.ScaleType.FILL_CENTER

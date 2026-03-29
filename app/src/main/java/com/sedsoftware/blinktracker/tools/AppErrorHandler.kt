@@ -23,7 +23,7 @@ class AppErrorHandler(
         // TODO split by throwable type
         context
         _messages.value = "Unknown error"
-        Timber.e("Blink tracker error: ${throwable.message}", throwable)
+        Timber.e(throwable,"Blink tracker error: ${throwable.message}")
         crashlytics.recordException(throwable)
     }
 }
