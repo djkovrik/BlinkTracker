@@ -155,7 +155,7 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher, OverlayPermi
     }
 
     override fun launchPictureInPicture() {
-        enterPictureInPictureIfPossible()
+        schedulePictureInPictureLaunch()
     }
 
     override fun onUserLeaveHint() {
@@ -200,6 +200,12 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher, OverlayPermi
             root.onCurrentLensChanged(CameraLens.FRONT)
         } else {
             root.onCurrentLensChanged(CameraLens.NOT_AVAILABLE)
+        }
+    }
+
+    private fun schedulePictureInPictureLaunch() {
+        window.decorView.post {
+            enterPictureInPictureIfPossible()
         }
     }
 
