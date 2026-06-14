@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +42,7 @@ import com.sedsoftware.blinktracker.components.statistic.BlinkStatistic
 import com.sedsoftware.blinktracker.components.statistic.model.CustomChartEntry
 import com.sedsoftware.blinktracker.components.statistic.model.DisplayedPeriod
 import com.sedsoftware.blinktracker.ui.component.PeriodChips
+import com.sedsoftware.blinktracker.ui.component.StatsSummaryRow
 import com.sedsoftware.blinktracker.ui.component.rememberChartStyle
 import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
@@ -70,11 +70,11 @@ private fun StatsPanelCard(
     Card(
         shape = RoundedCornerShape(size = 16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.primaryContainer,
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 8.dp,
+            defaultElevation = 4.dp,
         ),
         modifier = modifier
             .fillMaxWidth()
@@ -115,20 +115,17 @@ private fun StatsPanelDetails(
     Column {
         Text(
             text = stringResource(id = R.string.your_stats),
-            style = MaterialTheme.typography.bodyLarge,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp)
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp)
         )
 
         AnimatedVisibility(visible = !isLoading && !isEmpty) {
-            Text(
-                text = "${stringResource(id = R.string.min)}: $min | " +
-                    "${stringResource(id = R.string.max)}: $max | " +
-                    "${stringResource(id = R.string.average)}: $average",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+            StatsSummaryRow(
+                min = min,
+                max = max,
+                average = average,
+                modifier = Modifier.padding(start = 16.dp, top = 8.dp, end = 16.dp),
             )
         }
 
@@ -142,7 +139,7 @@ private fun StatsPanelDetails(
                         Text(
                             text = stringResource(id = R.string.loading),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.padding(all = 32.dp),
                         )
@@ -157,7 +154,7 @@ private fun StatsPanelDetails(
                         Text(
                             text = stringResource(id = R.string.stats_placeholder),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.padding(all = 32.dp),
                         )
@@ -191,7 +188,7 @@ private fun StatsPanelDetails(
                                     autoScrollCondition = AutoScrollCondition.OnModelSizeIncreased,
                                 ),
                                 modifier = Modifier
-                                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 0.dp)
+                                    .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 0.dp)
                                     .fillMaxSize(),
                             )
                         }
@@ -283,7 +280,7 @@ private fun PreviewStatsContentLight() {
 @Composable
 @Preview(showBackground = true, widthDp = 400, heightDp = 300)
 private fun PreviewStatsContentDark() {
-    BlinkTrackerTheme(darkTheme = false) {
+    BlinkTrackerTheme(darkTheme = true) {
         Surface(color = MaterialTheme.colorScheme.primaryContainer) {
             StatsPanelCard(
                 model = PreviewStubs.statsFull,

@@ -1,8 +1,10 @@
 package com.sedsoftware.blinktracker.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -193,57 +195,12 @@ private fun MainScreenActive(
                 CameraState.DETECTED -> {
                     Box(modifier = modifier.fillMaxSize()) {
                         Column(modifier = modifier.align(Alignment.TopCenter)) {
-                            Card(
-                                shape = RoundedCornerShape(size = 16.dp),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    contentColor = MaterialTheme.colorScheme.primaryContainer,
-                                ),
-                                elevation = CardDefaults.cardElevation(
-                                    defaultElevation = 8.dp,
-                                ),
+                            TrackingSummaryCard(
+                                tracker = tracker,
                                 modifier = Modifier
                                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)
-                                    .fillMaxWidth()
-                            ) {
-                                Column(modifier = Modifier.padding(all = 16.dp)) {
-                                    Text(
-                                        text = stringResource(id = R.string.tracking),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        color = MaterialTheme.colorScheme.primary,
-                                        fontWeight = FontWeight.Medium,
-                                        modifier = Modifier.padding(bottom = 4.dp)
-                                    )
-
-                                    if (tracker.isTrackingActive) {
-                                        Text(
-                                            text = stringResource(id = R.string.tracking_active),
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                            fontWeight = FontWeight.Medium,
-                                        )
-                                    } else {
-                                        Text(
-                                            text = stringResource(id = R.string.tracking_not_active),
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.error,
-                                            fontWeight = FontWeight.Medium,
-                                        )
-                                    }
-
-                                    Text(
-                                        text = "${stringResource(id = R.string.blinks_last_minute)}: ${tracker.blinksPerLastMinute}",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    )
-
-                                    Text(
-                                        text = "${stringResource(id = R.string.blinks_total)}: ${tracker.blinksTotal}",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    )
-                                }
-                            }
+                                    .fillMaxWidth(),
+                            )
 
                             BlinkStatisticContent(
                                 state = stats,
@@ -280,6 +237,118 @@ private fun MainScreenActive(
             }
 
         else -> {}
+    }
+}
+
+@Composable
+private fun TrackingSummaryCard(
+    tracker: BlinkTracker.Model,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        shape = RoundedCornerShape(size = 16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp,
+        ),
+        modifier = modifier,
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier.padding(all = 16.dp),
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(
+                    text = stringResource(id = R.string.tracking),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.weight(1f),
+                )
+
+                TrackingStatePill(isTrackingActive = tracker.isTrackingActive)
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                TrackingMetric(
+                    label = stringResource(id = R.string.blinks_last_minute),
+                    value = tracker.blinksPerLastMinute.toString(),
+                    modifier = Modifier.weight(1f),
+                )
+
+                TrackingMetric(
+                    label = stringResource(id = R.string.blinks_total),
+                    value = tracker.blinksTotal.toString(),
+                    modifier = Modifier.weight(1f),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun TrackingStatePill(
+    isTrackingActive: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    val containerColor = if (isTrackingActive) {
+        MaterialTheme.colorScheme.secondaryContainer
+    } else {
+        MaterialTheme.colorScheme.errorContainer
+    }
+    val contentColor = if (isTrackingActive) {
+        MaterialTheme.colorScheme.onSecondaryContainer
+    } else {
+        MaterialTheme.colorScheme.onErrorContainer
+    }
+    val labelRes = if (isTrackingActive) {
+        R.string.tracking_active
+    } else {
+        R.string.tracking_not_active
+    }
+
+    Surface(
+        color = containerColor,
+        contentColor = contentColor,
+        shape = MaterialTheme.shapes.large,
+        modifier = modifier,
+    ) {
+        Text(
+            text = stringResource(id = labelRes),
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+        )
+    }
+}
+
+@Composable
+private fun TrackingMetric(
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = value,
+            style = MaterialTheme.typography.displayLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 

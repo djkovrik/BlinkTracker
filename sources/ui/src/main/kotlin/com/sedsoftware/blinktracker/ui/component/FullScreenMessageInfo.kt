@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.sedsoftware.blinktracker.ui.R
 
 @Composable
 fun FullScreenMessageInfo(
@@ -31,7 +32,7 @@ fun FullScreenMessageInfo(
     ) {
         Image(
             painter = painterResource(id = iconRes),
-            contentDescription = "Camera icon",
+            contentDescription = stringResource(id = R.string.cd_camera_icon),
             modifier = modifier
                 .size(size = 176.dp)
                 .padding(all = 16.dp)
