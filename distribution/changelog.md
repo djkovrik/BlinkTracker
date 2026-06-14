@@ -1,1 +1,1 @@
-* Add auto-start on screen unlock feature (#37)
+* Design review fixes (#39e)
