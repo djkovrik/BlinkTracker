@@ -20,7 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -63,27 +62,23 @@ fun TrackingControls(
             if (model.isTrackingActive) {
                 Icon(
                     imageVector = Icons.Default.Stop,
-                    contentDescription = "Stop",
-                    tint = MaterialTheme.colorScheme.secondaryContainer,
+                    contentDescription = stringResource(id = R.string.cd_stop_tracking),
                     modifier = Modifier
                 )
                 Text(
                     text = stringResource(id = R.string.button_stop),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    style = MaterialTheme.typography.labelLarge,
                     modifier = Modifier.padding(horizontal = 4.dp),
                 )
             } else {
                 Icon(
                     imageVector = Icons.Default.PlayArrow,
-                    contentDescription = "Start",
-                    tint = MaterialTheme.colorScheme.secondaryContainer,
+                    contentDescription = stringResource(id = R.string.cd_start_tracking),
                     modifier = Modifier
                 )
                 Text(
                     text = stringResource(id = R.string.button_start),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.secondaryContainer,
+                    style = MaterialTheme.typography.labelLarge,
                     modifier = Modifier.padding(horizontal = 4.dp),
                 )
             }
@@ -101,18 +96,15 @@ fun TrackingControls(
             modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .defaultMinSize(minWidth = minButtonWidth, minHeight = minButtonHeight)
-                .alpha(alpha = if (model.isTrackingActive) 1.0f else 0.4f)
         ) {
             Icon(
                 imageVector = Icons.Default.CropFree,
-                contentDescription = "Minimize",
-                tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                contentDescription = stringResource(id = R.string.cd_minimize),
                 modifier = Modifier
             )
             Text(
                 text = stringResource(id = R.string.button_minimize),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                style = MaterialTheme.typography.labelLarge,
                 modifier = Modifier.padding(horizontal = 4.dp),
             )
         }

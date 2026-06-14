@@ -56,4 +56,15 @@
     </string>
     <string name="overlay_permission_rationale_ok">Open settings</string>
     <string name="overlay_permission_rationale_cancel">Cancel</string>
+    <string name="cd_back">Back</string>
+    <string name="cd_enabled">Enabled</string>
+    <string name="cd_disabled">Disabled</string>
+    <string name="cd_settings">Settings</string>
+    <string name="cd_info">Information</string>
+    <string name="cd_start_tracking">Start tracking</string>
+    <string name="cd_stop_tracking">Stop tracking</string>
+    <string name="cd_minimize">Minimize tracking window</string>
+    <string name="cd_camera_icon">Camera status</string>
+    <string name="cd_camera_preview">Camera preview</string>
+    <string name="pip_no_face">No face</string>
 </resources>

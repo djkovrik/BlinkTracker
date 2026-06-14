@@ -55,4 +55,15 @@
     </string>
     <string name="overlay_permission_rationale_ok">Открыть настройки</string>
     <string name="overlay_permission_rationale_cancel">Отмена</string>
+    <string name="cd_back">Назад</string>
+    <string name="cd_enabled">Включено</string>
+    <string name="cd_disabled">Отключено</string>
+    <string name="cd_settings">Настройки</string>
+    <string name="cd_info">Информация</string>
+    <string name="cd_start_tracking">Начать отслеживание</string>
+    <string name="cd_stop_tracking">Остановить отслеживание</string>
+    <string name="cd_minimize">Свернуть окно отслеживания</string>
+    <string name="cd_camera_icon">Статус камеры</string>
+    <string name="cd_camera_preview">Предпросмотр камеры</string>
+    <string name="pip_no_face">Лицо не найдено</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.sedsoftware.blinktracker.ui.component
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -13,19 +12,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,19 +51,21 @@ fun CustomAppBar(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .height(height = 96.dp)
+            .height(height = 88.dp)
             .background(color = MaterialTheme.colorScheme.surface)
     ) {
 
         when (cameraModel.cameraState) {
             CameraState.DETECTED -> {
+                val cameraPreviewDescription = stringResource(id = R.string.cd_camera_preview)
+
                 Box(
                     modifier = Modifier
                         .aspectRatio(1f)
-                        .padding(all = 16.dp)
+                        .padding(all = 14.dp)
                         .clip(shape = RoundedCornerShape(size = 8.dp))
                         .border(
-                            width = 3.dp,
+                            width = 2.dp,
                             color = if (trackerModel.hasFaceDetected) {
                                 MaterialTheme.colorScheme.secondary
                             } else {
@@ -71,6 +73,9 @@ fun CustomAppBar(
                             },
                             shape = RoundedCornerShape(size = 8.dp),
                         )
+                        .semantics {
+                            contentDescription = cameraPreviewDescription
+                        }
 
                 ) {
                     cameraPreview()
@@ -86,39 +91,31 @@ fun CustomAppBar(
                         .weight(1f),
                 )
                 // Prefs
-                OutlinedIconButton(
+                FilledTonalIconButton(
                     onClick = onPreferencesIconClick.withSound(LocalContext.current),
-                    border = BorderStroke(
-                        width = 0.dp,
-                        color = Color.Transparent
-                    ),
-                    colors = IconButtonDefaults.outlinedIconButtonColors(
+                    colors = IconButtonDefaults.filledTonalIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                     ),
                     modifier = Modifier.padding(horizontal = 8.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Settings,
-                        contentDescription = "Settings",
+                        contentDescription = stringResource(id = R.string.cd_settings),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier
                     )
                 }
                 // Help
-                OutlinedIconButton(
+                FilledTonalIconButton(
                     onClick = onHelpIconClick.withSound(LocalContext.current),
-                    border = BorderStroke(
-                        width = 0.dp,
-                        color = Color.Transparent
-                    ),
-                    colors = IconButtonDefaults.outlinedIconButtonColors(
+                    colors = IconButtonDefaults.filledTonalIconButtonColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                     ),
                     modifier = Modifier.padding(end = 8.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.QuestionMark,
-                        contentDescription = "Info",
+                        contentDescription = stringResource(id = R.string.cd_info),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer,
                         modifier = Modifier
                     )

@@ -3,18 +3,13 @@
 package com.sedsoftware.blinktracker.ui
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -105,7 +100,7 @@ private fun BlinkPreferencesScreen(
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
+                            contentDescription = stringResource(id = R.string.cd_back),
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier
                         )
@@ -115,9 +110,11 @@ private fun BlinkPreferencesScreen(
         }
     ) { paddingValues: PaddingValues ->
         LazyColumn(
+            contentPadding = PaddingValues(top = 8.dp, bottom = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
         ) {
@@ -146,12 +143,8 @@ private fun BlinkPreferencesScreen(
                 )
             }
 
-            item {
-                AnimatedVisibility(
-                    visible = model.rationaleDisplayed,
-                    enter = fadeIn() + expandVertically(),
-                    exit = fadeOut() + shrinkVertically(),
-                ) {
+            if (model.rationaleDisplayed) {
+                item {
                     AutostartRationale(
                         onAgree = onDisplayOverlayAgree,
                         onDisagree = onDisplayOverlayDisagree,
@@ -166,7 +159,6 @@ private fun BlinkPreferencesScreen(
                     labelRes = R.string.prefs_notify_vibro,
                     onValueChanged = onNotifyVibroChange,
                 )
-                Spacer(modifier = modifier.height(16.dp))
             }
             item {
                 PrefsOptionSlider(
@@ -177,7 +169,6 @@ private fun BlinkPreferencesScreen(
                     labelRes = R.string.prefs_threshold,
                     onValueChanged = onThresholdChange,
                 )
-                Spacer(modifier = modifier.height(16.dp))
             }
             item {
                 PrefsOptionSlider(
@@ -189,7 +180,11 @@ private fun BlinkPreferencesScreen(
                     onValueChanged = onMinimizedOpacityChange,
                 )
 
-                Box(modifier = Modifier.size(width = 120.dp, height = 240.dp)) {
+                Box(
+                    modifier = Modifier
+                        .padding(top = 12.dp)
+                        .size(width = 120.dp, height = 180.dp)
+                ) {
                     MainScreenMinimized(
                         model = BlinkTracker.Model(
                             isTrackingActive = true,
@@ -216,38 +211,44 @@ private fun PrefsOptionSwitch(
     @StringRes labelRes: Int,
     onValueChanged: (Boolean) -> Unit,
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth()
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        shape = MaterialTheme.shapes.medium,
+        modifier = modifier.fillMaxWidth(),
     ) {
-        Text(
-            text = stringResource(id = labelRes),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically),
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+        ) {
+            Text(
+                text = stringResource(id = labelRes),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f),
+            )
 
-        Switch(
-            checked = isChecked,
-            onCheckedChange = onValueChanged,
-            modifier = Modifier,
-            thumbContent = {
-                if (isChecked) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = "Allowed",
-                        modifier = Modifier.size(SwitchDefaults.IconSize)
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = "Denied",
-                        modifier = Modifier.size(SwitchDefaults.IconSize)
-                    )
+            Switch(
+                checked = isChecked,
+                onCheckedChange = onValueChanged,
+                modifier = Modifier,
+                thumbContent = {
+                    if (isChecked) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = stringResource(id = R.string.cd_enabled),
+                            modifier = Modifier.size(SwitchDefaults.IconSize)
+                        )
+                    } else {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = stringResource(id = R.string.cd_disabled),
+                            modifier = Modifier.size(SwitchDefaults.IconSize)
+                        )
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 }
 
@@ -260,21 +261,40 @@ private fun PrefsOptionSlider(
     @StringRes labelRes: Int,
     onValueChanged: (Float) -> Unit,
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        Text(
-            text = "${stringResource(id = labelRes)}: ${value.toInt()}",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier,
-        )
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        shape = MaterialTheme.shapes.medium,
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(
+                    text = stringResource(id = labelRes),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.weight(1f),
+                )
 
-        Slider(
-            value = value,
-            valueRange = valueRange,
-            steps = steps,
-            onValueChange = onValueChanged,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
+                Text(
+                    text = value.toInt().toString(),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+
+            Slider(
+                value = value,
+                valueRange = valueRange,
+                steps = steps,
+                onValueChange = onValueChanged,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
 }
 

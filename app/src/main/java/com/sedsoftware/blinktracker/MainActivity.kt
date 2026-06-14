@@ -16,6 +16,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.arkivanov.decompose.defaultComponentContext
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
@@ -154,12 +155,12 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher, OverlayPermi
     }
 
     override fun launchPictureInPicture() {
-        enterPictureInPictureMode(getPictureInPictureParams())
+        schedulePictureInPictureLaunch()
     }
 
     override fun onUserLeaveHint() {
         if (!settingsOverlayVisible) {
-            enterPictureInPictureMode(getPictureInPictureParams())
+            enterPictureInPictureIfPossible()
         }
     }
 
@@ -202,6 +203,12 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher, OverlayPermi
         }
     }
 
+    private fun schedulePictureInPictureLaunch() {
+        window.decorView.post {
+            enterPictureInPictureIfPossible()
+        }
+    }
+
     private fun getPictureInPictureParams(): PictureInPictureParams {
         val params = PictureInPictureParams.Builder()
             .setAspectRatio(Rational(Constants.PIP_RATIO_WIDTH, Constants.PIP_RATIO_HEIGHT))
@@ -214,6 +221,19 @@ class MainActivity : ComponentActivity(), PictureInPictureLauncher, OverlayPermi
             .build()
         setPictureInPictureParams(params)
         return params
+    }
+
+    private fun enterPictureInPictureIfPossible() {
+        if (isInPictureInPictureMode || !lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+            Timber.w("Skipping picture-in-picture launch. State: ${lifecycle.currentState}, in PiP: $isInPictureInPictureMode")
+            return
+        }
+
+        try {
+            enterPictureInPictureMode(getPictureInPictureParams())
+        } catch (exception: IllegalStateException) {
+            Timber.e(exception, "Failed to enter picture-in-picture")
+        }
     }
 
     private fun enableKeepScreenOn(enabled: Boolean) {

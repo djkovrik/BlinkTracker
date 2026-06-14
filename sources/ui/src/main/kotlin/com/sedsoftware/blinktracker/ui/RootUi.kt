@@ -1,7 +1,10 @@
 package com.sedsoftware.blinktracker.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
@@ -9,7 +12,6 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.plus
 import com.arkivanov.decompose.extensions.compose.stack.animation.scale
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
-import androidx.compose.foundation.layout.systemBarsPadding
 import com.sedsoftware.blinktracker.root.BlinkRoot
 import com.sedsoftware.blinktracker.ui.camera.core.VisionImageProcessor
 
@@ -20,26 +22,32 @@ fun BlinkRootContent(
 ) {
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .systemBarsPadding()
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface)
     ) {
-        Children(
-            stack = component.childStack,
-            animation = stackAnimation(fade() + scale()),
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .systemBarsPadding()
         ) {
-            when (val child = it.instance) {
-                is BlinkRoot.Child.Home ->
-                    BlinkHomeContent(
-                        component = child.component,
-                        processor = processor,
-                        onPreferencesClicked = component::openPreferencesScreen,
-                    )
+            Children(
+                stack = component.childStack,
+                animation = stackAnimation(fade() + scale()),
+            ) {
+                when (val child = it.instance) {
+                    is BlinkRoot.Child.Home ->
+                        BlinkHomeContent(
+                            component = child.component,
+                            processor = processor,
+                            onPreferencesClicked = component::openPreferencesScreen,
+                        )
 
-                is BlinkRoot.Child.Preferences ->
-                    BlinkPreferencesContent(
-                        component = child.component,
-                        onBackClicked = component::closePreferencesScreen,
-                    )
+                    is BlinkRoot.Child.Preferences ->
+                        BlinkPreferencesContent(
+                            component = child.component,
+                            onBackClicked = component::closePreferencesScreen,
+                        )
+                }
             }
         }
     }

@@ -211,11 +211,19 @@ fun BlinkTrackerTheme(
         else -> lightColors
     }
     val view = LocalView.current
+    val activity = view.context as? Activity
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            activity?.window?.let { window ->
+                val systemBarColor = colorScheme.surface.toArgb()
+                val useDarkSystemBarIcons = !darkTheme
+                val insetsController = WindowCompat.getInsetsController(window, view)
+
+                window.statusBarColor = systemBarColor
+                window.navigationBarColor = systemBarColor
+                insetsController.isAppearanceLightStatusBars = useDarkSystemBarIcons
+                insetsController.isAppearanceLightNavigationBars = useDarkSystemBarIcons
+            }
         }
     }
 

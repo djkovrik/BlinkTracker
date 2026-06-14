@@ -36,6 +36,10 @@ tasks.withType<io.gitlab.arturbosch.detekt.DetektCreateBaselineTask>().configure
     jvmTarget = "21"
 }
 
-tasks.register<GradleBuild>("runOnGitHub") {
-    tasks = listOf("detekt", "assembleDebug")
+tasks.named("detekt") {
+    mustRunAfter(":app:assembleDebug")
+}
+
+tasks.register("runOnGitHub") {
+    dependsOn(":app:assembleDebug", "detekt")
 }

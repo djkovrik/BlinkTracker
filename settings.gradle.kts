@@ -1,6 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
 pluginManagement {
+    includeBuild("paparazzi-plugin")
+
     repositories {
         google()
         mavenCentral()

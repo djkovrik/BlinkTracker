@@ -13,11 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sedsoftware.blinktracker.components.tracker.BlinkTracker
 import com.sedsoftware.blinktracker.ui.Constants
+import com.sedsoftware.blinktracker.ui.R
 import com.sedsoftware.blinktracker.ui.preview.PreviewStubs
 import com.sedsoftware.blinktracker.ui.theme.BlinkTrackerTheme
 
@@ -34,19 +36,19 @@ fun MainScreenMinimized(
                 color = if (model.hasFaceDetected) {
                     MaterialTheme.colorScheme.primaryContainer
                 } else {
-                    MaterialTheme.colorScheme.errorContainer
+                    MaterialTheme.colorScheme.surfaceVariant
                 }
             )
             .fillMaxSize()
     ) {
-        Column {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 text = model.timerLabel,
                 style = MaterialTheme.typography.displayLarge,
                 color = if (model.hasFaceDetected) {
                     MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
-                    MaterialTheme.colorScheme.onErrorContainer
+                    MaterialTheme.colorScheme.onSurface
                 },
                 textAlign = TextAlign.Center,
                 modifier = modifier
@@ -60,13 +62,28 @@ fun MainScreenMinimized(
                 color = if (model.hasFaceDetected) {
                     MaterialTheme.colorScheme.onPrimaryContainer
                 } else {
-                    MaterialTheme.colorScheme.onErrorContainer
+                    MaterialTheme.colorScheme.onSurfaceVariant
                 },
                 textAlign = TextAlign.Center,
                 modifier = modifier
                     .padding(horizontal = 32.dp, vertical = 8.dp)
                     .fillMaxWidth(),
             )
+
+            if (!model.hasFaceDetected) {
+                Surface(
+                    color = MaterialTheme.colorScheme.errorContainer,
+                    contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                    shape = MaterialTheme.shapes.large,
+                    modifier = Modifier.padding(top = 8.dp),
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.pip_no_face),
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                    )
+                }
+            }
         }
     }
 }

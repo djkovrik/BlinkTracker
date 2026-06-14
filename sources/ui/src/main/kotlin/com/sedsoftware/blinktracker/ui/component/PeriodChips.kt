@@ -5,6 +5,7 @@ package com.sedsoftware.blinktracker.ui.component
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -18,6 +19,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,7 +39,8 @@ fun PeriodChips(
     val listState = rememberLazyListState()
 
     LazyRow(
-        horizontalArrangement = Arrangement.Center,
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
         state = listState,
         modifier = modifier.fillMaxWidth()
     ) {
@@ -47,17 +50,17 @@ fun PeriodChips(
                 selected = isSelected,
                 onClick = { onSelect.invoke(item) },
                 colors = FilterChipDefaults.filterChipColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = MaterialTheme.colorScheme.surface,
                     selectedContainerColor = MaterialTheme.colorScheme.primary,
                 ),
                 label = {
                     Text(
                         text = item.asString(),
-                        style = MaterialTheme.typography.labelSmall,
+                        style = MaterialTheme.typography.labelMedium,
                         color = if (isSelected) {
                             MaterialTheme.colorScheme.onPrimary
                         } else {
-                            MaterialTheme.colorScheme.onPrimaryContainer
+                            MaterialTheme.colorScheme.onSurfaceVariant
                         },
                         modifier = Modifier.padding(all = 0.dp)
                     )
@@ -73,7 +76,6 @@ fun PeriodChips(
                     null
                 },
                 shape = MaterialTheme.shapes.large,
-                modifier = Modifier.padding(all = 4.dp),
             )
         }
     }
