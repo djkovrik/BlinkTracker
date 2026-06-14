@@ -1,7 +1,9 @@
 plugins {
     alias(libs.plugins.com.android.library)
     alias(libs.plugins.org.jetbrains.kotlin.compose.compiler)
+    alias(libs.plugins.paparazzi)
     kotlin("android")
+    id("io.github.sergio-sastre.composable-preview-scanner.paparazzi-plugin")
 }
 
 android {
@@ -21,6 +23,24 @@ android {
     buildFeatures {
         compose = true
     }
+    sourceSets {
+        getByName("test") {
+            java.srcDir(layout.buildDirectory.dir("generated/source/composablePreviewPaparazziTests"))
+        }
+    }
+    testOptions {
+        unitTests.all { test ->
+            test.jvmArgs("-Xmx4g")
+        }
+    }
+}
+
+composablePreviewPaparazzi {
+    enable.set(true)
+    packages.set(listOf("com.sedsoftware.blinktracker.ui"))
+    includePrivatePreviews.set(true)
+    testClassName.set("BlinkTrackerComposablePreviewPaparazziTest")
+    testPackageName.set("com.sedsoftware.blinktracker.ui.previewtest")
 }
 
 dependencies {
@@ -40,6 +60,7 @@ dependencies {
 
     implementation(libs.ark.decompose.core)
     implementation(libs.ark.decompose.extensions)
+    implementation(libs.foundation)
     implementation(libs.ui)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
@@ -54,4 +75,7 @@ dependencies {
     implementation(libs.vico.compose)
 
     debugImplementation(libs.ui.tooling)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.composable.preview.scanner.android)
 }

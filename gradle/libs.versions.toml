@@ -29,6 +29,8 @@ appcompat = "1.7.1"
 material = "1.13.0"
 timber = "5.0.1"
 vico = "1.6.6"
+paparazzi = "2.0.0-alpha05"
+composable-preview-scanner = "0.9.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -45,6 +47,7 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 compose-icons = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "compose-icons" }
 ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+foundation = { group = "androidx.compose.foundation", name = "foundation" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 face-detection = { group = "com.google.mlkit", name = "face-detection", version.ref = "face-detection" }
@@ -66,6 +69,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 vico-core = { group = "com.patrykandpatrick.vico", name = "core", version.ref = "vico" }
 vico-compose = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
+composable-preview-scanner-android = { group = "io.github.sergio-sastre.ComposablePreviewScanner", name = "android", version.ref = "composable-preview-scanner" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
@@ -76,6 +80,7 @@ google-play-services = { id = "com.google.gms.google-services", version.ref = "g
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf" }
 org-jetbrains-kotlin-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 
 [bundles]
 

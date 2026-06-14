@@ -23,6 +23,15 @@ On macOS/Linux, use `./gradlew assembleDebug` and `./gradlew detekt`.
 
 `assembleDebug` must pass before the final `detekt` run. The final validation step is always `detekt`; fix all new findings before finishing. CI runs the custom `runOnGitHub` Gradle task, which executes `detekt` and `assembleDebug`.
 
+Screenshot tests for Compose previews live in `sources/ui` and use Paparazzi with generated tests from ComposablePreviewScanner. When a change affects UI design, layout, theme, typography, colors, icons, strings visible in previews, chart rendering, or preview data, update the screenshot baseline:
+
+```powershell
+.\gradlew.bat :sources:ui:recordPaparazziDebug
+.\gradlew.bat :sources:ui:verifyPaparazziDebug
+```
+
+On macOS/Linux, use `./gradlew :sources:ui:recordPaparazziDebug` and `./gradlew :sources:ui:verifyPaparazziDebug`. Commit the updated PNG files under `sources/ui/src/test/snapshots/images` when the visual changes are intentional. If a UI-related change should not affect screenshots, run `verifyPaparazziDebug` and investigate any diff instead of recording over it.
+
 There are currently no dedicated unit or instrumentation test source sets in the repo. Add focused tests when changing logic with meaningful branching or persistence behavior, but still run the required Gradle tasks above.
 
 ## Repository Layout
